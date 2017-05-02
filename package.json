@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/Mojotatan/Towerfall#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "path": "^0.12.7",
     "phaser-ce": "^2.7.7"
   }
 }
