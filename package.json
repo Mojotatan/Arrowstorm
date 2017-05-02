@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack -w & nodemon server/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
     "express": "^4.15.2",
     "morgan": "^1.8.1",
     "path": "^0.12.7",
-    "phaser-ce": "^2.7.7"
+    "phaser-ce": "^2.7.7",
+    "webpack": "^2.4.1"
   }
 }
