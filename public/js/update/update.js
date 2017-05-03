@@ -1,20 +1,26 @@
+import {findA} from '../util'
 
 export default function updateFunc(d) {
 
-    console.log('player in update', d.player)
-
     //Define collisions
-    let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player)
+    let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.roboraj)
     // let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.guy)
 
     // initializing cursor 
     let cursors = d.game.input.keyboard.createCursorKeys();
+    let aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
+    let aimUp = d.game.input.keyboard.addKey(Phaser.Keyboard.W)
+    let aimRight = d.game.input.keyboard.addKey(Phaser.Keyboard.D)
+    let aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
+
     //stand still
-    d.player.body.velocity.x = 0
+    d.roboraj.body.velocity.x = 0
+    d.bow.rotation = 0
+    d.bow.position.set(0, 8)
 
     if (cursors.left.isDown)
     {
-      d.player.body.velocity.x = -250
+      d.roboraj.body.velocity.x = -250
 
       if (d.roboraj.scale.x < 0) d.roboraj.scale.x *= -1
 
@@ -24,8 +30,7 @@ export default function updateFunc(d) {
     else if (cursors.right.isDown)
     {
         //  Move to the right
-        d.player.body.velocity.x = 250
-
+        d.roboraj.body.velocity.x = 250
 
         if (d.roboraj.scale.x > 0) d.roboraj.scale.x *= -1
 
@@ -36,7 +41,47 @@ export default function updateFunc(d) {
     }
 
     if((cursors.up.isDown) && d.roboraj.body.touching.down && hitPlatform) {
-      d.player.body.velocity.y = -350
+      d.roboraj.body.velocity.y = -350
     }
+
+    // you can turn your player by either moving in a direction or by aiming in a direction
+    // the direction you aim in takes precedent over the direction you move in
+    // which allows for strafing
+    if (aimLeft.isDown) {
+      if (d.roboraj.scale.x < 0) d.roboraj.scale.x *= -1
+    }
+    else if (aimRight.isDown) {
+      if (d.roboraj.scale.x > 0) d.roboraj.scale.x *= -1
+    }
+
+    if (aimDown.isDown) {
+      if (aimDown.isDown && aimLeft.isDown) {
+        d.bow.rotation = -.785
+        d.bow.position.set(0, 0)
+      }
+      else if (aimDown.isDown && aimRight.isDown) {
+        d.bow.rotation = .785
+        d.bow.position.set(0, 0)
+      }
+      else {
+        d.bow.rotation = -1.57
+        d.bow.position.set(8, 32)
+      }
+    }
+    if (aimUp.isDown) {
+      if (aimUp.isDown && aimLeft.isDown) {
+        d.bow.rotation = -.785
+        d.bow.position.set(0, 0)
+      }
+      else if (aimUp.isDown && aimRight.isDown) {
+        d.bow.rotation = .785
+        d.bow.position.set(0, 0)
+      }
+      else {
+        d.bow.rotation = 1.57
+        d.bow.position.set(24, 0)
+      }
+    }
+    
 
 }

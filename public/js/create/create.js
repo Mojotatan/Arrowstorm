@@ -4,23 +4,14 @@ export default function createFunc(d) {
     //  We're going to be using physics, so enable the Arcade Physics system
     d.game.physics.startSystem(Phaser.Physics.ARCADE);
     //set platforms
-<<<<<<< HEAD
-    d.platforms = game.add.group()
-
-    //enable physics on platforms
-=======
     d.platforms = d.game.add.group()
 
     //enable physics on platforms 
->>>>>>> 125f2275d5fa1e4a04fa7a6475616608505a0c54
     d.platforms.enableBody = true
     d.platforms.physicsBodyType = Phaser.Physics.ARCADE
     //creating the ground 
     let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
-<<<<<<< HEAD
-=======
     let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
->>>>>>> 125f2275d5fa1e4a04fa7a6475616608505a0c54
 
     //scaling the ground 
     ground.scale.setTo(2, 2)
@@ -29,7 +20,6 @@ export default function createFunc(d) {
     ground.body.immovable = true
     ground2.body.immovable = true
 
-<<<<<<< HEAD
     d.guy = d.game.add.sprite(0, 400, 'raj')
     d.guy.scale.set(4, 4)
 
@@ -41,22 +31,28 @@ export default function createFunc(d) {
     d.guy.body.collideWorldBounds = true
 
 
-    d.player = d.game.add.group()
-    d.player.enableBody = true
-    d.player.physicsBodyType = Phaser.Physics.ARCADE
+    // d.player = d.game.add.group()
+    // d.game.physics.arcade.enable(d.player)
+    // d.player.enableBody = true
+    // d.player.physicsBodyType = Phaser.Physics.ARCADE
 
-    d.roboraj = d.player.create(128, 0, 'roboraj')
+    d.roboraj = d.game.add.sprite(128, 0, 'roboraj')
     d.roboraj.scale.set(4, 4)
     d.roboraj.pivot.set(15, 0)
-    // d.game.physics.arcade.enable(roboraj)
+    d.game.physics.arcade.enable(d.roboraj)
     d.roboraj.body.gravity.y = 500
     // d.roboraj.body.bounce.y = 0.3
     d.roboraj.body.collideWorldBounds = true
 
     d.roboraj.animations.add('walk', [0, 1], 10, true)
 
-    bow = d.player.create(384, 400, 'bow')
-    bow.scale.set(4, 4)
+    d.bow = d.game.add.sprite(0, 0, 'bow')
+    d.bow.anchor.set(1, .5)
+    // d.bow.position.set
+    d.roboraj.addChild(d.bow)
+    // d.bow.pivot.set(16, 16)
+    // d.bow.rotation = .785 + .785
+    // character sprites should be 20 by 32
 
     let arrow = d.game.add.sprite(256, 0, 'arrow')
     arrow.scale.set(4, 4)
