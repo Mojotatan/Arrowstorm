@@ -16,6 +16,7 @@ const gameFunc = function() {
     d.game.load.image('arrow', 'sprites/roboraj-arrow.png')
     d.game.load.image('bow', 'sprites/bow.png')
     d.game.load.image('ground', 'sprites/platform.png')
+    d.game.load.image('brick', 'sprites/brick.png')
   }
 
   function create() {

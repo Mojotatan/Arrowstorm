@@ -4,6 +4,9 @@ export default function updateFunc(d) {
 
     //Define collisions 
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.guy)
+    let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.guy)
+
+    //d.game.physics.arcade.overlap(d.guy, d.platforms, d.leftWall, null, this)
 
     // initializing cursor 
     let cursors = d.game.input.keyboard.createCursorKeys();
@@ -12,12 +15,12 @@ export default function updateFunc(d) {
 
     if (cursors.left.isDown)
     {
-      d.guy.body.velocity.x = -250
+      d.guy.body.velocity.x = -350
     }
     else if (cursors.right.isDown)
     {
         //  Move to the right
-        d.guy.body.velocity.x = 250
+        d.guy.body.velocity.x = 350
 
         //player.animations.play('right');
     }
