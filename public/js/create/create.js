@@ -33,18 +33,25 @@ export default function createFunc(d) {
     roboraj.scale.set(4, 4)
 
     // Create arrow group
-    arrows = game.add.group()
-    arrows.enableBody = true
-    arrows.physicsBodyType = Phaser.Physics.ARCADE
+    d.arrows = d.game.add.group()
+    d.arrows.enableBody = true
+    d.arrows.physicsBodyType = Phaser.Physics.ARCADE
 
-    arrows.create(guy.x, guy.y, 'arrow')
-    arrows.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetArrow);
+    d.arrows.createMultiple(1, 'arrow')
+    d.arrows.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetArrow);
+    d.arrows.callAll('anchor.setTo', 'anchor', 0.5, 1.0)
+    d.arrows.setAll('checkWorldBounds', true)
+
+    d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
+    d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
 
     let bow = d.game.add.sprite(384, 0, 'bow')
     bow.scale.set(4, 4)
 
     d.game.stage.backgroundColor = "#999999"
 
-  export function resetArrow(arrow) {
-      arrow.kill()
-  }
+}
+
+export function resetArrow(arrow) {
+    arrow.kill()
+}

@@ -8,9 +8,6 @@ const gameFunc = function() {
   d.game.antialias = false
 
   function init() {
-    let keys = [Phaser.KeyCode.SPACEBAR]
-    phaserKeys = game.input.keyboard.addKeys(keys)
-    game.input.keyboard.addKeyCapture(keys)
   }
 
   function preload() {

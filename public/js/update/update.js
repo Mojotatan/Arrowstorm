@@ -25,19 +25,18 @@ export default function updateFunc(d) {
       d.guy.body.velocity.y = -350
     }
 
-    // Loop over keyboard keys
-    phaserKeys.forEach(key => {
-        if (key.justDown) {
-            fireArrow(arrows)
-        }
-    })
+    if (d.spaceBar.isDown) {
+        console.log('spaceBar is down!!!!')
+        fireArrow(d)
+    }
 
 }
 
-function fireArrow(arrows) {
-    let arrow = arrows.getFirstExists()
+function fireArrow(d) {
+    console.log('arrow has been fired!!!!!')
+    let arrow = d.arrows.getFirstExists(false)
     if (arrow) {
-        arrow.reset(guy.x, guy.y)
+        arrow.reset(d.guy.x, d.guy.y)
         arrow.body.velocity.x = -500
     }
 }
