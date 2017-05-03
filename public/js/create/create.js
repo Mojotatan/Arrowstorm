@@ -1,33 +1,35 @@
-//import Phaser from '../../phaser/phaser'
+export default function createFunc(d) {
 
-export default function createFunc({game, guy, platforms, arrows}) {
     //  We're going to be using physics, so enable the Arcade Physics system
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-    //set platform
-    platforms = game.add.group()
+    d.game.physics.startSystem(Phaser.Physics.ARCADE);
+    //set platforms
+    d.platforms = d.game.add.group()
 
-    //enable physics on platform
-    platforms.enableBody = true
-    platforms.physicsBodyType = Phaser.Physics.ARCADE
+    //enable physics on platforms
+    d.platforms.enableBody = true
+    d.platforms.physicsBodyType = Phaser.Physics.ARCADE
     //creating the ground
-    let ground = platforms.create(0, game.world.height - 64, 'ground')
+    let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
+    let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
 
     //scaling the ground
     ground.scale.setTo(2, 2)
+    ground2.scale.setTo(2, 2)
 
     ground.body.immovable = true
+    ground2.body.immovable = true
 
-    guy = game.add.sprite(0, 400, 'raj')
-    guy.scale.set(4, 4)
+    d.guy = d.game.add.sprite(0, 400, 'raj')
+    d.guy.scale.set(4, 4)
 
-    //setting physics to guy
-    game.physics.arcade.enable(guy)
+    //setting physics to d.guy
+    d.game.physics.arcade.enable(d.guy)
 
-    guy.body.gravity.y = 300
-    guy.body.bounce.y = 0.3
-    guy.body.collideWorldBounds = true
+    d.guy.body.gravity.y = 300
+    d.guy.body.bounce.y = 0.3
+    d.guy.body.collideWorldBounds = true
 
-    let roboraj = game.add.sprite(128, 0, 'roboraj1')
+    let roboraj = d.game.add.sprite(128, 0, 'roboraj1')
     roboraj.scale.set(4, 4)
 
     // Create arrow group
@@ -38,21 +40,10 @@ export default function createFunc({game, guy, platforms, arrows}) {
     arrows.create(guy.x, guy.y, 'arrow')
     arrows.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetArrow);
 
-    let arrow = game.add.sprite(256, 0, 'arrow')
-    arrow.scale.set(4, 4)
-
-    let bow = game.add.sprite(384, 0, 'bow')
+    let bow = d.game.add.sprite(384, 0, 'bow')
     bow.scale.set(4, 4)
 
-    game.stage.backgroundColor = "#999999"
-
-    return {
-        guy,
-        platforms,
-        arrows,
-    }
-
-  }
+    d.game.stage.backgroundColor = "#999999"
 
   export function resetArrow(arrow) {
       arrow.kill()
