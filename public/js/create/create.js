@@ -1,18 +1,18 @@
 //import Phaser from '../../phaser/phaser'
 
-export default function createFunc({game, guy, platforms}) {
+export default function createFunc({game, guy, platforms, arrows}) {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
     //set platform
     platforms = game.add.group()
 
-    //enable physics on platform 
+    //enable physics on platform
     platforms.enableBody = true
     platforms.physicsBodyType = Phaser.Physics.ARCADE
-    //creating the ground 
+    //creating the ground
     let ground = platforms.create(0, game.world.height - 64, 'ground')
 
-    //scaling the ground 
+    //scaling the ground
     ground.scale.setTo(2, 2)
 
     ground.body.immovable = true
@@ -20,7 +20,7 @@ export default function createFunc({game, guy, platforms}) {
     guy = game.add.sprite(0, 400, 'raj')
     guy.scale.set(4, 4)
 
-    //setting physics to guy 
+    //setting physics to guy
     game.physics.arcade.enable(guy)
 
     guy.body.gravity.y = 300
@@ -29,6 +29,14 @@ export default function createFunc({game, guy, platforms}) {
 
     let roboraj = game.add.sprite(128, 0, 'roboraj1')
     roboraj.scale.set(4, 4)
+
+    // Create arrow group
+    arrows = game.add.group()
+    arrows.enableBody = true
+    arrows.physicsBodyType = Phaser.Physics.ARCADE
+
+    arrows.create(guy.x, guy.y, 'arrow')
+    arrows.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetArrow);
 
     let arrow = game.add.sprite(256, 0, 'arrow')
     arrow.scale.set(4, 4)
@@ -39,10 +47,13 @@ export default function createFunc({game, guy, platforms}) {
     game.stage.backgroundColor = "#999999"
 
     return {
-        guy, 
+        guy,
         platforms,
+        arrows,
     }
 
+  }
 
-
+  export function resetArrow(arrow) {
+      arrow.kill()
   }

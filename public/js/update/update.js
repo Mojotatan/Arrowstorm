@@ -1,11 +1,9 @@
-console.log('the phaser in update', Phaser)
+export default function updateFunc({game, guy, platforms, arrows}) {
 
-export default function updateFunc({game, guy, platforms}) {
-
-    //Define collisions 
+    //Define collisions
     let hitPlatform = game.physics.arcade.collide(platforms, guy)
 
-    // initializing cursor 
+    // initializing cursor
     let cursors = game.input.keyboard.createCursorKeys();
     //stand still
     guy.body.velocity.x = 0
@@ -26,4 +24,21 @@ export default function updateFunc({game, guy, platforms}) {
       guy.body.velocity.y = -350
     }
 
+    // Loop over keyboard keys
+    phaserKeys.forEach(key => {
+        if (key.justDown) {
+            fireArrow(arrows)
+        }
+    })
+
 }
+
+function fireArrow(arrows) {
+    let arrow = arrows.getFirstExists()
+    if (arrow) {
+        arrow.reset(guy.x, guy.y)
+        arrow.body.velocity.x = -500
+    }
+}
+
+

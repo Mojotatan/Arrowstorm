@@ -3,10 +3,15 @@ import createFunc from './create/create'
 //import Phaser from '../phaser/phaser'
 const gameFunc = function() {
   //
-  let guy, platforms
+  let guy, platforms, arrows
   let game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
   game.antialias = false
 
+  function init() {
+    let keys = [Phaser.KeyCode.SPACEBAR]
+    phaserKeys = game.input.keyboard.addKeys(keys)
+    game.input.keyboard.addKeyCapture(keys)
+  }
 
   function preload() {
     game.load.image('raj', 'sprites/raj.png')
@@ -18,16 +23,18 @@ const gameFunc = function() {
   }
 
   function create() {
-
+    console.log('guy in createFunc', guy)
     let obj = createFunc({
       game,
       guy,
-      platforms,  
+      platforms,
+      arrows,
     })
 
-    guy = obj.guy
-    platforms = obj.platforms
 
+    // guy = obj.guy
+    // platforms = obj.platforms
+    // arrows = obj.arrows
   }
 
 
@@ -35,9 +42,10 @@ const gameFunc = function() {
   function update() {
 
     updateFunc({
-      game, 
-      guy, 
+      game,
+      guy,
       platforms,
+      arrows,
     })
   }
 
