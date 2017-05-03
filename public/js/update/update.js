@@ -6,7 +6,7 @@ export default function updateFunc(d) {
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.roboraj)
     // let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.guy)
 
-    // initializing cursor 
+    // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
     let aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
     let aimUp = d.game.input.keyboard.addKey(Phaser.Keyboard.W)
@@ -84,4 +84,20 @@ export default function updateFunc(d) {
     }
     
 
+    if (d.spaceBar.isDown) {
+        console.log('spaceBar is down!!!!')
+        fireArrow(d)
+    }
+
 }
+
+function fireArrow(d) {
+    console.log('arrow has been fired!!!!!')
+    let arrow = d.arrows.getFirstExists(false)
+    if (arrow) {
+        arrow.reset(d.roboraj.x, d.roboraj.y)
+        arrow.body.velocity.x = -500
+    }
+}
+
+
