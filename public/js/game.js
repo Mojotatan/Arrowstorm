@@ -2,12 +2,13 @@ import updateFunc from './update/update'
 import createFunc from './create/create'
 //import Phaser from '../phaser/phaser'
 const gameFunc = function() {
-  //
-  let guy, platforms
+
   let d = {}
   d.game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
   d.game.antialias = false
 
+  function init() {
+  }
 
   function preload() {
     d.game.load.image('raj', 'sprites/raj.png')
@@ -29,6 +30,7 @@ const gameFunc = function() {
   function update() {
 
     updateFunc(d)
+
   }
 
   return {}

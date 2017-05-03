@@ -1,12 +1,11 @@
-console.log('the phaser in update', Phaser)
-
 export default function updateFunc(d) {
 
-    //Define collisions 
+    //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.guy)
 
-    // initializing cursor 
+    // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
+
     //stand still
     d.guy.body.velocity.x = 0
 
@@ -26,4 +25,20 @@ export default function updateFunc(d) {
       d.guy.body.velocity.y = -350
     }
 
+    if (d.spaceBar.isDown) {
+        console.log('spaceBar is down!!!!')
+        fireArrow(d)
+    }
+
 }
+
+function fireArrow(d) {
+    console.log('arrow has been fired!!!!!')
+    let arrow = d.arrows.getFirstExists(false)
+    if (arrow) {
+        arrow.reset(d.guy.x, d.guy.y)
+        arrow.body.velocity.x = -500
+    }
+}
+
+
