@@ -25,7 +25,7 @@ export default function createFunc(d) {
     d.leftWall.enableBody = true 
 
     for (let i = 0; i < 9; i++) {
-        var leftBlockStack = d.leftWall.create(0, i * 60.5, 'brick')
+        var leftBlockStack = d.leftWall.create(99, i * 60.5, 'brick')
 
         leftBlockStack.scale.setTo(3, 3)
 
@@ -39,7 +39,7 @@ export default function createFunc(d) {
     d.rightWall.enableBody = true
 
     for (let j = 0; j < 9; j++) {
-        var rightBlockStack = d.leftWall.create(930, j * 60.5, 'brick')
+        var rightBlockStack = d.leftWall.create(837, j * 60.5, 'brick')
 
         rightBlockStack.scale.setTo(3, 3)
         rightBlockStack.body.immovable = true
@@ -47,38 +47,34 @@ export default function createFunc(d) {
 
 
     //creating ledge 
-    let ledge = d.platforms.create(350, 385, 'ground');
+    let ledge = d.platforms.create(320, 425, 'ground');
     ledge.body.immovable = true
 
     //creating walls 
-    // let wall = d.platforms.create(0, 580, 'ground');
-    // wall.rotation = 23.565
-    // wall.scale.setTo(3, 3)
-    // wall.body.immovable = true
+    let wall = d.platforms.create(0, 580, 'ground');
+    wall.rotation = 23.565
+    wall.scale.setTo(3, 3)
+    wall.body.immovable = true
 
     let wall2 = d.platforms.create(930, 600, 'ground')
     wall2.rotation = 23.565
     wall2.scale.setTo(3, 3)
     wall2.body.immovable = true
 
-    let ledgeLeft = d.platforms.create(-90, 200, 'ground')
+    let ledgeLeft = d.platforms.create(-90, 300, 'ground')
     ledgeLeft.body.immovable = true
 
-    d.guy = d.game.add.sprite(0, 400, 'raj')
-    d.guy.scale.set(2, 2)
+    let upperLedge = d.platforms.create(450, 200, 'grassBlock')
+    upperLedge.body.immovable = true
 
-    //setting physics to guy 
-    d.game.physics.arcade.enable(d.guy)
-
-    d.guy.body.gravity.y = 300
-    d.guy.body.bounce.y = 0.3
-    d.guy.body.collideWorldBounds = true
+    let ledgeRight = d.platforms.create(d.game.world.width - 192 - 84, 100, 'grassBlock')
+    ledgeRight.body.immovable = true
 
     d.roboraj = d.game.add.sprite(128, 0, 'roboraj')
-    d.roboraj.scale.set(4, 4)
+    d.roboraj.scale.set(2, 2)
     d.roboraj.pivot.set(15, 0)
     d.game.physics.arcade.enable(d.roboraj)
-    d.roboraj.body.gravity.y = 500
+    d.roboraj.body.gravity.y = 400
     // d.roboraj.body.bounce.y = 0.3
     d.roboraj.body.collideWorldBounds = true
 
