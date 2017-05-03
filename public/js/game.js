@@ -2,31 +2,34 @@ import updateFunc from './update/update'
 import createFunc from './create/create'
 //import Phaser from '../phaser/phaser'
 const gameFunc = function() {
-  //
-  let guy, platforms
-  let game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
-  game.antialias = false
+
+  let d = {}
+  // game play area is a box so walls of 192 width on each side
+  d.game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
+  d.game.antialias = false
+
+  // let guy, platforms, roboraj, player, bow
 
 
   function preload() {
-    game.load.image('raj', 'sprites/raj.png')
-    game.load.image('roboraj1', 'sprites/roboraj-1.png')
-    game.load.image('roboraj2', 'sprites/roboraj-2.png')
-    game.load.image('arrow', 'sprites/roboraj-arrow.png')
-    game.load.image('bow', 'sprites/bow.png')
-    game.load.image('ground', 'sprites/platform.png')
+    d.game.load.image('raj', 'sprites/raj.png')
+    // game.load.image('roboraj1', 'sprites/roboraj-1.png')
+    // game.load.image('roboraj2', 'sprites/roboraj-2.png')
+    d.game.load.spritesheet('roboraj', 'sprites/roboraj.png', 32, 32)
+    d.game.load.image('arrow', 'sprites/Arrow.png')
+    d.game.load.image('bow', 'sprites/bow-crop.png')
+    d.game.load.image('ground', 'sprites/platform.png')
   }
 
   function create() {
 
-    let obj = createFunc({
-      game,
-      guy,
-      platforms,  
-    })
+    createFunc(d)
 
-    guy = obj.guy
-    platforms = obj.platforms
+    // guy = sprites.guy
+    // roboraj = sprites.roboraj
+    // bow = sprites.bow
+    // player = sprites.player
+    // platforms = sprites.platforms
 
   }
 
@@ -34,11 +37,7 @@ const gameFunc = function() {
 
   function update() {
 
-    updateFunc({
-      game, 
-      guy, 
-      platforms,
-    })
+    updateFunc(d)
   }
 
   return {}
