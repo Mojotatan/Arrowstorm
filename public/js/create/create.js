@@ -67,15 +67,31 @@ export default function createFunc(d) {
     d.guy = d.game.add.sprite(0, 400, 'raj')
     d.guy.scale.set(2, 2)
 
-    //setting physics to d.guy
+    //setting physics to guy 
     d.game.physics.arcade.enable(d.guy)
 
     d.guy.body.gravity.y = 300
     d.guy.body.bounce.y = 0.3
     d.guy.body.collideWorldBounds = true
 
-    // let roboraj = d.game.add.sprite(128, 0, 'roboraj1')
-    // roboraj.scale.set(4, 4)
+    d.roboraj = d.game.add.sprite(128, 0, 'roboraj')
+    d.roboraj.scale.set(4, 4)
+    d.roboraj.pivot.set(15, 0)
+    d.game.physics.arcade.enable(d.roboraj)
+    d.roboraj.body.gravity.y = 500
+    // d.roboraj.body.bounce.y = 0.3
+    d.roboraj.body.collideWorldBounds = true
+
+    d.roboraj.animations.add('walk', [0, 1], 10, true)
+
+    d.bow = d.game.add.sprite(0, 0, 'bow')
+    d.bow.anchor.set(1, .5)
+    // d.bow.position.set
+    d.roboraj.addChild(d.bow)
+    // d.bow.pivot.set(16, 16)
+    // d.bow.rotation = .785 + .785
+    // character sprites should be 20 by 32
+
 
     // Create arrow group
     d.arrows = d.game.add.group()
@@ -89,13 +105,11 @@ export default function createFunc(d) {
 
     d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
     d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-
-    // let bow = d.game.add.sprite(384, 0, 'bow')
-    // bow.scale.set(4, 4)
-
+    
     d.game.stage.backgroundColor = "#999999"
 
-}
+
+  }
 
 export function resetArrow(arrow) {
     arrow.kill()
