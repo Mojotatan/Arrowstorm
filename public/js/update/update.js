@@ -5,6 +5,7 @@ export default function updateFunc(d) {
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player)
+    // let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.guy)
 
     // initializing cursor 
     let cursors = d.game.input.keyboard.createCursorKeys();
@@ -18,11 +19,13 @@ export default function updateFunc(d) {
       if (d.roboraj.scale.x < 0) d.roboraj.scale.x *= -1
 
       d.roboraj.animations.play('walk')
+
     }
     else if (cursors.right.isDown)
     {
         //  Move to the right
         d.player.body.velocity.x = 250
+
 
         if (d.roboraj.scale.x > 0) d.roboraj.scale.x *= -1
 

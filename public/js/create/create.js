@@ -4,19 +4,32 @@ export default function createFunc(d) {
     //  We're going to be using physics, so enable the Arcade Physics system
     d.game.physics.startSystem(Phaser.Physics.ARCADE);
     //set platforms
+<<<<<<< HEAD
     d.platforms = game.add.group()
 
     //enable physics on platforms
+=======
+    d.platforms = d.game.add.group()
+
+    //enable physics on platforms 
+>>>>>>> 125f2275d5fa1e4a04fa7a6475616608505a0c54
     d.platforms.enableBody = true
     d.platforms.physicsBodyType = Phaser.Physics.ARCADE
     //creating the ground 
     let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
+<<<<<<< HEAD
+=======
+    let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
+>>>>>>> 125f2275d5fa1e4a04fa7a6475616608505a0c54
 
     //scaling the ground 
     ground.scale.setTo(2, 2)
+    ground2.scale.setTo(2, 2)
 
     ground.body.immovable = true
+    ground2.body.immovable = true
 
+<<<<<<< HEAD
     d.guy = d.game.add.sprite(0, 400, 'raj')
     d.guy.scale.set(4, 4)
 
@@ -44,7 +57,6 @@ export default function createFunc(d) {
 
     bow = d.player.create(384, 400, 'bow')
     bow.scale.set(4, 4)
-
 
     let arrow = d.game.add.sprite(256, 0, 'arrow')
     arrow.scale.set(4, 4)
