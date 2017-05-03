@@ -4,29 +4,23 @@ import createFunc from './create/create'
 const gameFunc = function() {
   //
   let guy, platforms
-  let game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
-  game.antialias = false
+  let d = {}
+  d.game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
+  d.game.antialias = false
 
 
   function preload() {
-    game.load.image('raj', 'sprites/raj.png')
-    game.load.image('roboraj1', 'sprites/roboraj-1.png')
-    game.load.image('roboraj2', 'sprites/roboraj-2.png')
-    game.load.image('arrow', 'sprites/roboraj-arrow.png')
-    game.load.image('bow', 'sprites/bow.png')
-    game.load.image('ground', 'sprites/platform.png')
+    d.game.load.image('raj', 'sprites/raj.png')
+    d.game.load.image('roboraj1', 'sprites/roboraj-1.png')
+    d.game.load.image('roboraj2', 'sprites/roboraj-2.png')
+    d.game.load.image('arrow', 'sprites/roboraj-arrow.png')
+    d.game.load.image('bow', 'sprites/bow.png')
+    d.game.load.image('ground', 'sprites/platform.png')
   }
 
   function create() {
 
-    let obj = createFunc({
-      game,
-      guy,
-      platforms,  
-    })
-
-    guy = obj.guy
-    platforms = obj.platforms
+    createFunc(d)
 
   }
 
@@ -34,11 +28,7 @@ const gameFunc = function() {
 
   function update() {
 
-    updateFunc({
-      game, 
-      guy, 
-      platforms,
-    })
+    updateFunc(d)
   }
 
   return {}
