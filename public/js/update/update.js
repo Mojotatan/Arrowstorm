@@ -10,10 +10,10 @@ export default function updateFunc(d) {
 
     // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
-    let aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
-    let aimUp = d.game.input.keyboard.addKey(Phaser.Keyboard.W)
-    let aimRight = d.game.input.keyboard.addKey(Phaser.Keyboard.D)
-    let aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
+    d.aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
+    d.aimUp = d.game.input.keyboard.addKey(Phaser.Keyboard.W)
+    d.aimRight = d.game.input.keyboard.addKey(Phaser.Keyboard.D)
+    d.aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
 
     //stand still
     d.roboraj.body.velocity.x = 0
@@ -49,19 +49,19 @@ export default function updateFunc(d) {
     // you can turn your player by either moving in a direction or by aiming in a direction
     // the direction you aim in takes precedent over the direction you move in
     // which allows for strafing
-    if (aimLeft.isDown) {
+    if (d.aimLeft.isDown) {
       if (d.roboraj.scale.x < 0) d.roboraj.scale.x *= -1
     }
-    else if (aimRight.isDown) {
+    else if (d.aimRight.isDown) {
       if (d.roboraj.scale.x > 0) d.roboraj.scale.x *= -1
     }
 
-    if (aimDown.isDown) {
-      if (aimDown.isDown && aimLeft.isDown) {
+    if (d.aimDown.isDown) {
+      if (d.aimDown.isDown && d.aimLeft.isDown) {
         d.bow.rotation = -.785
         d.bow.position.set(0, 0)
       }
-      else if (aimDown.isDown && aimRight.isDown) {
+      else if (d.aimDown.isDown && d.aimRight.isDown) {
         d.bow.rotation = .785
         d.bow.position.set(0, 0)
       }
@@ -70,12 +70,12 @@ export default function updateFunc(d) {
         d.bow.position.set(8, 32)
       }
     }
-    if (aimUp.isDown) {
-      if (aimUp.isDown && aimLeft.isDown) {
+    if (d.aimUp.isDown) {
+      if (d.aimUp.isDown && d.aimLeft.isDown) {
         d.bow.rotation = -.785
         d.bow.position.set(0, 0)
       }
-      else if (aimUp.isDown && aimRight.isDown) {
+      else if (d.aimUp.isDown && d.aimRight.isDown) {
         d.bow.rotation = .785
         d.bow.position.set(0, 0)
       }
@@ -84,21 +84,57 @@ export default function updateFunc(d) {
         d.bow.position.set(24, 0)
       }
     }
-    
+
 
     if (d.spaceBar.isDown) {
-        console.log('spaceBar is down!!!!')
         fireArrow(d)
     }
 
 }
 
 function fireArrow(d) {
-    console.log('arrow has been fired!!!!!')
     let arrow = d.arrows.getFirstExists(false)
     if (arrow) {
+        arrow.scale.set(4,4)
+        arrow.animations.play('fire')
+        arrow.body.gravity.y = 400
+        //arrow.body.collideWorldBounds = true
         arrow.reset(d.roboraj.x, d.roboraj.y)
-        arrow.body.velocity.x = -500
+
+
+        if (d.aimUp.isDown) {
+            if (d.aimLeft.isDown) {
+                arrow.rotation = -0.785
+                arrow.body.velocity.y = -1000
+                arrow.body.velocity.x = -1000
+            } else if (d.aimRight.isDown) {
+                arrow.rotation = 0.785
+                arrow.body.velocity.y = -1000
+                arrow.body.velocity.x = 1000
+            } else {
+                arrow.rotation = 0
+                arrow.body.velocity.y = -1000
+            }
+        } else if (d.aimDown.isDown) {
+            if (d.aimLeft.isDown) {
+                arrow.rotation = -2.355
+                arrow.body.velocity.y = 1000
+                arrow.body.velocity.x = -1000
+            } else if (d.aimRight.isDown) {
+                arrow.rotation = 2.355
+                arrow.body.velocity.y = 1000
+                arrow.body.velocity.x = 1000
+            } else {
+                arrow.rotation = 3.14
+                arrow.body.velocity.y = 1000
+            }
+        } else if (d.aimRight.isDown) {
+            arrow.rotation = 1.57
+            arrow.body.velocity.x = 1000
+        } else {
+            arrow.rotation = -1.57
+            arrow.body.velocity.x = -1000
+        }
     }
 }
 

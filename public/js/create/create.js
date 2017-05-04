@@ -11,10 +11,10 @@ export default function createFunc(d) {
     d.platforms.enableBody = true
     d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
-    //creating the ground 
+    //creating the ground
     let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
     let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
-    
+
     //scaling the ground
     ground.scale.setTo(2, 2)
     ground2.scale.setTo(2, 2)
@@ -24,14 +24,14 @@ export default function createFunc(d) {
 
     // Creating left brick wall
     d.leftWall = d.game.add.group()
-    d.leftWall.enableBody = true 
+    d.leftWall.enableBody = true
 
     for (let i = 0; i < 9; i++) {
         var leftBlockStack = d.leftWall.create(99, i * 60.5, 'brick')
 
         leftBlockStack.scale.setTo(3, 3)
 
-        leftBlockStack.body.immovable = true 
+        leftBlockStack.body.immovable = true
 
         //leftBlockStack.gravity.y = 6
     }
@@ -69,6 +69,7 @@ export default function createFunc(d) {
     let upperLedge = d.platforms.create(450, 200, 'grassBlock')
     upperLedge.body.immovable = true
 
+
     let ledgeRight = d.platforms.create(d.game.world.width - 192 - 84, 100, 'grassBlock')
     ledgeRight.body.immovable = true
 
@@ -103,7 +104,7 @@ export default function createFunc(d) {
 
     d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
     d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-    
+
     d.game.stage.backgroundColor = "#999999"
 
 
