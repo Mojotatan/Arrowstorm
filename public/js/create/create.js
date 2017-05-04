@@ -9,10 +9,10 @@ export default function createFunc(d) {
     d.platforms.enableBody = true
     d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
-    //creating the ground 
+    //creating the ground
     let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
     let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
-    
+
     //scaling the ground
     ground.scale.setTo(2, 2)
     ground2.scale.setTo(2, 2)
@@ -22,14 +22,14 @@ export default function createFunc(d) {
 
     // Creating left brick wall
     d.leftWall = d.game.add.group()
-    d.leftWall.enableBody = true 
+    d.leftWall.enableBody = true
 
     for (let i = 0; i < 9; i++) {
         var leftBlockStack = d.leftWall.create(0, i * 60.5, 'brick')
 
         leftBlockStack.scale.setTo(3, 3)
 
-        leftBlockStack.body.immovable = true 
+        leftBlockStack.body.immovable = true
 
         //leftBlockStack.gravity.y = 6
     }
@@ -46,11 +46,11 @@ export default function createFunc(d) {
     }
 
 
-    //creating ledge 
+    //creating ledge
     let ledge = d.platforms.create(350, 385, 'ground');
     ledge.body.immovable = true
 
-    //creating walls 
+    //creating walls
     // let wall = d.platforms.create(0, 580, 'ground');
     // wall.rotation = 23.565
     // wall.scale.setTo(3, 3)
@@ -67,7 +67,7 @@ export default function createFunc(d) {
     d.guy = d.game.add.sprite(0, 400, 'raj')
     d.guy.scale.set(2, 2)
 
-    //setting physics to guy 
+    //setting physics to guy
     d.game.physics.arcade.enable(d.guy)
 
     d.guy.body.gravity.y = 300
@@ -105,7 +105,7 @@ export default function createFunc(d) {
 
     d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
     d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-    
+
     d.game.stage.backgroundColor = "#999999"
 
 
