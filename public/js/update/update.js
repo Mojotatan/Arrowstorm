@@ -4,9 +4,7 @@ export default function updateFunc(d) {
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.roboraj)
-    // let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.guy)
-    let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.guy)
-    //d.game.physics.arcade.overlap(d.guy, d.platforms, d.leftWall, null, this)
+    let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.roboraj)
 
     // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
@@ -18,7 +16,7 @@ export default function updateFunc(d) {
     //stand still
     d.roboraj.body.velocity.x = 0
     d.bow.rotation = 0
-    d.bow.position.set(0, 8)
+    d.bow.position.set(8, 16)
 
     if (cursors.left.isDown)
     {
@@ -49,6 +47,7 @@ export default function updateFunc(d) {
     // you can turn your player by either moving in a direction or by aiming in a direction
     // the direction you aim in takes precedent over the direction you move in
     // which allows for strafing
+
     if (aimLeft.isDown) {
       if (d.roboraj.scale.x < 0) d.roboraj.scale.x *= -1
     }
@@ -56,32 +55,35 @@ export default function updateFunc(d) {
       if (d.roboraj.scale.x > 0) d.roboraj.scale.x *= -1
     }
 
+    // for the diagonal directions
+    let distanceFromCenter = findA(8)
+
     if (aimDown.isDown) {
       if (aimDown.isDown && aimLeft.isDown) {
         d.bow.rotation = -.785
-        d.bow.position.set(0, 0)
+        d.bow.position.set(16 - distanceFromCenter, 16 + distanceFromCenter)
       }
       else if (aimDown.isDown && aimRight.isDown) {
-        d.bow.rotation = .785
-        d.bow.position.set(0, 0)
+        d.bow.rotation = -.785
+        d.bow.position.set(16 - distanceFromCenter, 16 + distanceFromCenter)
       }
       else {
         d.bow.rotation = -1.57
-        d.bow.position.set(8, 32)
+        d.bow.position.set(16, 24)
       }
     }
     if (aimUp.isDown) {
       if (aimUp.isDown && aimLeft.isDown) {
-        d.bow.rotation = -.785
-        d.bow.position.set(0, 0)
+        d.bow.rotation = .785
+        d.bow.position.set(16 - distanceFromCenter, 16 - distanceFromCenter)
       }
       else if (aimUp.isDown && aimRight.isDown) {
         d.bow.rotation = .785
-        d.bow.position.set(0, 0)
+        d.bow.position.set(16 - distanceFromCenter, 16 - distanceFromCenter)
       }
       else {
         d.bow.rotation = 1.57
-        d.bow.position.set(24, 0)
+        d.bow.position.set(16, 8)
       }
     }
     

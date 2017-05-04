@@ -64,18 +64,8 @@ export default function createFunc(d) {
     let ledgeLeft = d.platforms.create(-90, 200, 'ground')
     ledgeLeft.body.immovable = true
 
-    d.guy = d.game.add.sprite(0, 400, 'raj')
-    d.guy.scale.set(2, 2)
-
-    //setting physics to guy 
-    d.game.physics.arcade.enable(d.guy)
-
-    d.guy.body.gravity.y = 300
-    d.guy.body.bounce.y = 0.3
-    d.guy.body.collideWorldBounds = true
-
     d.roboraj = d.game.add.sprite(128, 0, 'roboraj')
-    d.roboraj.scale.set(4, 4)
+    d.roboraj.scale.set(2, 2)
     d.roboraj.pivot.set(15, 0)
     d.game.physics.arcade.enable(d.roboraj)
     d.roboraj.body.gravity.y = 500
