@@ -1,5 +1,7 @@
 export default function createFunc(d) {
 
+    //add background 
+    d.game.add.image(0, 0, 'background')
     //  We're going to be using physics, so enable the Arcade Physics system
     d.game.physics.startSystem(Phaser.Physics.ARCADE);
     //set platforms
@@ -47,7 +49,7 @@ export default function createFunc(d) {
 
 
     //creating ledge 
-    let ledge = d.platforms.create(320, 425, 'ground');
+    let ledge = d.platforms.create(450, 425, 'grassBlockLedge');
     ledge.body.immovable = true
 
     //creating walls 
@@ -61,7 +63,7 @@ export default function createFunc(d) {
     wall2.scale.setTo(3, 3)
     wall2.body.immovable = true
 
-    let ledgeLeft = d.platforms.create(-90, 300, 'ground')
+    let ledgeLeft = d.platforms.create(180, 300, 'grassBlockLedge')
     ledgeLeft.body.immovable = true
 
     let upperLedge = d.platforms.create(450, 200, 'grassBlock')
@@ -71,7 +73,7 @@ export default function createFunc(d) {
     ledgeRight.body.immovable = true
 
     d.roboraj = d.game.add.sprite(128, 0, 'roboraj')
-    d.roboraj.scale.set(2, 2)
+    d.roboraj.scale.set(1.5, 1.5)
     d.roboraj.pivot.set(15, 0)
     d.game.physics.arcade.enable(d.roboraj)
     d.roboraj.body.gravity.y = 400
