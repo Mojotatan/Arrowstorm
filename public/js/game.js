@@ -16,6 +16,7 @@ const gameFunc = function() {
     // game.load.image('roboraj1', 'sprites/roboraj-1.png')
     // game.load.image('roboraj2', 'sprites/roboraj-2.png')
     d.game.load.spritesheet('roboraj', 'sprites/roboraj.png', 32, 32)
+    d.game.load.spritesheet('fatKid', 'sprites/fat-kid.png', 20, 32)
     d.game.load.image('arrow', 'sprites/Arrow.png')
     d.game.load.image('bow', 'sprites/bow-crop.png')
     d.game.load.image('ground', 'sprites/platform.png')
