@@ -6,9 +6,12 @@ export default function createFunc(d) {
   d.game.add.image(0, 0, 'background')
   //  We're going to be using physics, so enable the Arcade Physics system
   d.game.physics.startSystem(Phaser.Physics.ARCADE);
+//   d.game.physics.arcade.bounds = new Phaser.Rectangle(192, 0, 640, 640)
+  d.game.physics.arcade.OVERLAP_BIAS = 1
   //set platforms
   d.platforms = d.game.add.group()
 
+  console.log(d.game.physics)
   //enable physics on platforms
   d.platforms.enableBody = true
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
@@ -24,6 +27,7 @@ export default function createFunc(d) {
   ground.body.immovable = true
   ground2.body.immovable = true
 
+
   // Creating left brick wall
   d.leftWall = d.game.add.group()
   d.leftWall.enableBody = true
@@ -35,7 +39,8 @@ export default function createFunc(d) {
 
       leftBlockStack.body.immovable = true
 
-      //leftBlockStack.gravity.y = 6
+      leftBlockStack.body.checkCollision.up = false
+      leftBlockStack.body.checkCollision.down = false
   }
 
   //creating right wall
@@ -47,11 +52,13 @@ export default function createFunc(d) {
 
       rightBlockStack.scale.setTo(4, 4)
       rightBlockStack.body.immovable = true
+      rightBlockStack.body.checkCollision.up = false
+      rightBlockStack.body.checkCollision.down = false
   }
 
 
   //creating ledge 
-  let ledge = d.platforms.create(450, 425, 'grassBlockLedge');
+  let ledge = d.platforms.create(450, 300, 'grassBlockLedge');
   ledge.body.immovable = true
 
   //creating walls 
@@ -65,15 +72,26 @@ export default function createFunc(d) {
   wall2.scale.setTo(3, 3)
   wall2.body.immovable = true
 
-  let ledgeLeft = d.platforms.create(180, 300, 'grassBlockLedge')
+  let ledgeLeft = d.platforms.create(180, 250, 'grassBlockLedge')
   ledgeLeft.body.immovable = true
 
-  let upperLedge = d.platforms.create(450, 200, 'grassBlock')
+  let upperLedge = d.platforms.create(450, 100, 'grassBlock')
   upperLedge.body.immovable = true
 
 
   let ledgeRight = d.platforms.create(d.game.world.width - 192 - 84, 100, 'grassBlock')
   ledgeRight.body.immovable = true
+
+  let blocktest = d.platforms.create(768, 512, 'dirt')
+  blocktest.scale.set(.5, .5)
+  blocktest.body.immovable = true
+  blocktest.body.checkCollision.down = false
+  blocktest.body.checkCollision.up = false
+
+  let blocktest2 = d.platforms.create(768, 448, 'dirt')
+  blocktest2.scale.set(.5, .5)
+  blocktest2.body.immovable = true
+  blocktest2.body.checkCollision.down = false
 
 
   createPlayer(d, 'fatKid', 'player1', {x: 128, y: 0})

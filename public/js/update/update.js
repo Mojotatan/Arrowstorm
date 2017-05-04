@@ -15,23 +15,44 @@ export default function updateFunc(d) {
     d.aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
 
     //stand still
-    d.player1.body.velocity.x = 0
+    // if (d.player1.body.touching.down) d.player1.body.velocity.x = 0
+    // else if (d.player1.body.velocity.x > 0) d.player1.body.velocity.x -= 100
+    // else if (d.player1.body.velocity.x < 0) d.player1.body.velocity.x += 100
+
+    // if (d.player1.body.velocity.x < 300 && d.player1.body.velocity.x > -300) d.player1.body.velocity.x = 0
+
+    if (d.player1.body.velocity.y >= -200) d.player1.forceJump = false
+    if (d.player1.body.touching.down || d.player1.body.touching.right || d.player1.body.touching.left) d.player1.jump = false
+    if (!d.player1.forceJump) {
+        if (!d.player1.body.touching.down) {
+            if (d.player1.body.velocity.x > 150) d.player1.body.velocity.x = 150
+            else if (d.player1.body.velocity.x < -150) d.player1.body.velocity.x = -150
+        } else {
+            d.player1.body.velocity.x = 0
+        }
+    }
+
     d.bow.rotation = 0
     d.bow.position.set(2, 16)
 
-    if (cursors.left.isDown)
+
+    d.player1.body.gravity.y = (d.player1.body.touching.left || d.player1.body.touching.right) && d.player1.body.velocity.y > 0 ? 50 : 1200
+
+    if (cursors.left.isDown && !d.player1.forceJump)
     {
-      d.player1.body.velocity.x = -300
+      d.player1.body.velocity.x += d.player1.body.touching.down ? -300 : -150
+      if (d.player1.jump === 'right' && d.player1.body.velocity.x < 150) d.player1.body.velocity.x = 150
 
       if (d.player1.scale.x < 0) d.player1.scale.x *= -1
 
       d.player1.animations.play('walk')
 
     }
-    else if (cursors.right.isDown)
+    else if (cursors.right.isDown && !d.player1.forceJump)
     {
         //  Move to the right
-        d.player1.body.velocity.x = 300
+        d.player1.body.velocity.x += d.player1.body.touching.down ? 300 : 150
+        if (d.player1.jump === 'left' && d.player1.body.velocity.x > -150) d.player1.body.velocity.x = -150
 
         if (d.player1.scale.x > 0) d.player1.scale.x *= -1
 
@@ -42,8 +63,16 @@ export default function updateFunc(d) {
       d.player1.frame = 2
     }
 
-    if((cursors.up.isDown) && d.player1.body.touching.down && hitPlatform) {
-      d.player1.body.velocity.y = -500
+    if (cursors.up.isDown && d.player1.body.touching.down && hitPlatform) {
+      d.player1.body.velocity.y = -600
+    }
+    else if (cursors.up.isDown && !d.player1.jump && (d.player1.body.touching.right || d.player1.body.touching.left) && (hitPlatform || hitBricks)) {
+      d.player1.body.velocity.y = -600
+      let dir = d.player1.body.touching.right ? -1 : 1
+      d.player1.body.velocity.x = 300 * dir
+      d.player1.scale.x *= -1
+      d.player1.forceJump = true
+      d.player1.jump = d.player1.body.touching.right ? 'left' : 'right'
     }
 
     // you can turn your player by either moving in a direction or by aiming in a direction
