@@ -5,7 +5,7 @@ export default function updateFunc(d) {
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.roboraj)
     // let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.guy)
-    let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.guy)
+    let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.roboraj)
     //d.game.physics.arcade.overlap(d.guy, d.platforms, d.leftWall, null, this)
 
     // initializing cursor
