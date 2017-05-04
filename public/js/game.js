@@ -20,6 +20,9 @@ const gameFunc = function() {
     d.game.load.image('bow', 'sprites/bow-crop.png')
     d.game.load.image('ground', 'sprites/platform.png')
     d.game.load.image('brick', 'sprites/brick.png')
+    d.game.load.image('grassBlock', 'sprites/grass_2x1.png')
+    d.game.load.image('background', 'sprites/background.png')
+    d.game.load.image('grassBlockLedge', 'sprites/grass_4x1.png')
   }
 
   function create() {

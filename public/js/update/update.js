@@ -6,6 +6,7 @@ export default function updateFunc(d) {
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.roboraj)
     let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.roboraj)
 
+
     // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
     d.aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
