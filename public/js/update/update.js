@@ -1,4 +1,5 @@
 import {findA} from '../util'
+import fireArrow from './fireArrow'
 
 export default function updateFunc(d) {
 
@@ -87,57 +88,14 @@ export default function updateFunc(d) {
       }
     }
 
+    d.game.physics.arcade.collide(d.arrow, d.leftWall)
+    d.game.physics.arcade.collide(d.arrow, d.rightWall)
+    //d.game.physics.arcade.collide(d.arrow, d.platforms)
+    d.arrow.angle -= 1
 
     if (d.spaceBar.isDown) {
         fireArrow(d)
     }
 
+
 }
-
-function fireArrow(d) {
-    let arrow = d.arrows.getFirstExists(false)
-    if (arrow) {
-        arrow.scale.set(4,4)
-        arrow.animations.play('fire')
-        arrow.body.gravity.y = 400
-        //arrow.body.collideWorldBounds = true
-        arrow.reset(d.roboraj.x, d.roboraj.y)
-
-
-        if (d.aimUp.isDown) {
-            if (d.aimLeft.isDown) {
-                arrow.rotation = -0.785
-                arrow.body.velocity.y = -1000
-                arrow.body.velocity.x = -1000
-            } else if (d.aimRight.isDown) {
-                arrow.rotation = 0.785
-                arrow.body.velocity.y = -1000
-                arrow.body.velocity.x = 1000
-            } else {
-                arrow.rotation = 0
-                arrow.body.velocity.y = -1000
-            }
-        } else if (d.aimDown.isDown) {
-            if (d.aimLeft.isDown) {
-                arrow.rotation = -2.355
-                arrow.body.velocity.y = 1000
-                arrow.body.velocity.x = -1000
-            } else if (d.aimRight.isDown) {
-                arrow.rotation = 2.355
-                arrow.body.velocity.y = 1000
-                arrow.body.velocity.x = 1000
-            } else {
-                arrow.rotation = 3.14
-                arrow.body.velocity.y = 1000
-            }
-        } else if (d.aimRight.isDown) {
-            arrow.rotation = 1.57
-            arrow.body.velocity.x = 1000
-        } else {
-            arrow.rotation = -1.57
-            arrow.body.velocity.x = -1000
-        }
-    }
-}
-
-
