@@ -1,10 +1,22 @@
 import {findA} from '../util'
+import fireArrow from './fireArrow'
+import {playerMoved} from '../client'
+import d from '../game'
+//import Client from '../client'
 
-export default function updateFunc(d) {
+export default function updateFunc() {
+
+    //Check for existing players 
+
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
     let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.player1)
+
+    // define collisions for new players 
+    for (let i = 0; i < d.playerMap.length; i++) {
+        d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
+    }
 
 
     // initializing cursor
@@ -117,57 +129,22 @@ export default function updateFunc(d) {
       }
     }
 
+    d.game.physics.arcade.collide(d.arrow, d.leftWall)
+    d.game.physics.arcade.collide(d.arrow, d.rightWall)
+    //d.game.physics.arcade.collide(d.arrow, d.platforms)
+    d.arrow.angle -= 1
 
     if (d.spaceBar.isDown) {
         fireArrow(d)
     }
+    // console.log('player1 x is', d.player1.x)
+    playerMoved(d.player1.x, d.player1.y)
 
 }
 
-function fireArrow(d) {
-    let arrow = d.arrows.getFirstExists(false)
-    if (arrow) {
-        arrow.scale.set(4,4)
-        arrow.animations.play('fire')
-        arrow.body.gravity.y = 400
-        //arrow.body.collideWorldBounds = true
-        arrow.reset(d.player1.x, d.player1.y)
-
-
-        if (d.aimUp.isDown) {
-            if (d.aimLeft.isDown) {
-                arrow.rotation = -0.785
-                arrow.body.velocity.y = -1000
-                arrow.body.velocity.x = -1000
-            } else if (d.aimRight.isDown) {
-                arrow.rotation = 0.785
-                arrow.body.velocity.y = -1000
-                arrow.body.velocity.x = 1000
-            } else {
-                arrow.rotation = 0
-                arrow.body.velocity.y = -1000
-            }
-        } else if (d.aimDown.isDown) {
-            if (d.aimLeft.isDown) {
-                arrow.rotation = -2.355
-                arrow.body.velocity.y = 1000
-                arrow.body.velocity.x = -1000
-            } else if (d.aimRight.isDown) {
-                arrow.rotation = 2.355
-                arrow.body.velocity.y = 1000
-                arrow.body.velocity.x = 1000
-            } else {
-                arrow.rotation = 3.14
-                arrow.body.velocity.y = 1000
-            }
-        } else if (d.aimRight.isDown) {
-            arrow.rotation = 1.57
-            arrow.body.velocity.x = 1000
-        } else {
-            arrow.rotation = -1.57
-            arrow.body.velocity.x = -1000
-        }
-    }
+export function opponentPos(positionObj) {
+    console.log('the new position is ', positionObj)
+    d.player1.x = positionObj.x
+    d.player1.y = positionObj.y
 }
-
 
