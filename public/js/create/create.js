@@ -1,12 +1,13 @@
 import Client from '../client'
 import createPlayer from './player'
+import createArrows from './createArrows'
 
 export default function createFunc(d) {
 
     // Obj for all players
     d.playerMap = {}
-
-    //add background 
+  
+    //add background
     d.game.add.image(0, 0, 'background')
     //  We're going to be using physics, so enable the Arcade Physics system
     d.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -61,16 +62,16 @@ export default function createFunc(d) {
   let ledge = d.platforms.create(450, 300, 'grassBlockLedge');
   ledge.body.immovable = true
 
-  //creating walls 
-  let wall = d.platforms.create(0, 580, 'ground');
-  wall.rotation = 23.565
-  wall.scale.setTo(3, 3)
-  wall.body.immovable = true
-
-  let wall2 = d.platforms.create(930, 600, 'ground')
-  wall2.rotation = 23.565
-  wall2.scale.setTo(3, 3)
-  wall2.body.immovable = true
+    //creating walls
+    let wall = d.platforms.create(0, 580, 'ground');
+    wall.rotation = 23.565
+    wall.scale.setTo(3, 3)
+    wall.body.immovable = true
+  
+    let wall2 = d.platforms.create(930, 600, 'ground')
+    wall2.rotation = 23.565
+    wall2.scale.setTo(3, 3)
+    wall2.body.immovable = true
 
   let ledgeLeft = d.platforms.create(180, 250, 'grassBlockLedge')//this is the ledge on the left brick wall
   ledgeLeft.body.immovable = true
@@ -96,23 +97,17 @@ export default function createFunc(d) {
 
   createPlayer(d, 'fatKid', 'player1', {x: 128, y: 0})
 
-
-  // Create arrow group
-  d.arrows = d.game.add.group()
-  d.arrows.enableBody = true
-  d.arrows.physicsBodyType = Phaser.Physics.ARCADE
-
-  d.arrows.createMultiple(1, 'arrow')
-  d.arrows.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetArrow);
-  d.arrows.callAll('anchor.setTo', 'anchor', 0.5, 1.0)
-  d.arrows.setAll('checkWorldBounds', true)
-
   Client.askNewPlayer();
+  
+Client.askNewPlayer();
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
 
+
   d.game.stage.backgroundColor = "#999999"
 
+    // Create arrow group
+    createArrows(d)
 
 }
 

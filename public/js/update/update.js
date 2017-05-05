@@ -1,9 +1,10 @@
 import {findA} from '../util'
+import fireArrow from './fireArrow'
 import {playerMoved} from '../client'
 import d from '../game'
 //import Client from '../client'
 
-export default function updateFunc(d) {
+export default function updateFunc() {
 
     //Check for existing players 
 
@@ -128,11 +129,14 @@ export default function updateFunc(d) {
       }
     }
 
+    d.game.physics.arcade.collide(d.arrow, d.leftWall)
+    d.game.physics.arcade.collide(d.arrow, d.rightWall)
+    //d.game.physics.arcade.collide(d.arrow, d.platforms)
+    d.arrow.angle -= 1
 
     if (d.spaceBar.isDown) {
         fireArrow(d)
     }
-
     // console.log('player1 x is', d.player1.x)
     playerMoved(d.player1.x, d.player1.y)
 
@@ -189,8 +193,4 @@ export function opponentPos(positionObj) {
     d.player1.x = positionObj.x
     d.player1.y = positionObj.y
 }
-
-
-
-
 
