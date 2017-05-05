@@ -1,24 +1,26 @@
+import Client from '../client'
 import createPlayer from './player'
 
 export default function createFunc(d) {
 
-  //add background 
-  d.game.add.image(0, 0, 'background')
-  //  We're going to be using physics, so enable the Arcade Physics system
-  d.game.physics.startSystem(Phaser.Physics.ARCADE);
-//   d.game.physics.arcade.bounds = new Phaser.Rectangle(192, 0, 640, 640)
-  d.game.physics.arcade.OVERLAP_BIAS = 1
-  //set platforms
-  d.platforms = d.game.add.group()
+    // Obj for all players
+    d.playerMap = {}
+
+    //add background 
+    d.game.add.image(0, 0, 'background')
+    //  We're going to be using physics, so enable the Arcade Physics system
+    d.game.physics.startSystem(Phaser.Physics.ARCADE);
+    //set platforms
+    d.platforms = d.game.add.group()
 
   console.log(d.game.physics)
   //enable physics on platforms
   d.platforms.enableBody = true
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
-  //creating the ground
-  let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
-  let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
+    //creating the ground
+    let ground = d.platforms.create(0, d.game.world.height - 64, 'ground') //this is the ground
+    let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground') // so is this
 
   //scaling the ground
   ground.scale.setTo(2, 2)
@@ -38,10 +40,9 @@ export default function createFunc(d) {
       leftBlockStack.scale.setTo(4, 4)
 
       leftBlockStack.body.immovable = true
-
       leftBlockStack.body.checkCollision.up = false
       leftBlockStack.body.checkCollision.down = false
-  }
+}
 
   //creating right wall
   d.rightWall = d.game.add.group()
@@ -56,8 +57,7 @@ export default function createFunc(d) {
       rightBlockStack.body.checkCollision.down = false
   }
 
-
-  //creating ledge 
+  //creating ledge (this is the lowest ledge in the center)
   let ledge = d.platforms.create(450, 300, 'grassBlockLedge');
   ledge.body.immovable = true
 
@@ -72,7 +72,7 @@ export default function createFunc(d) {
   wall2.scale.setTo(3, 3)
   wall2.body.immovable = true
 
-  let ledgeLeft = d.platforms.create(180, 250, 'grassBlockLedge')
+  let ledgeLeft = d.platforms.create(180, 250, 'grassBlockLedge')//this is the ledge on the left brick wall
   ledgeLeft.body.immovable = true
 
   let upperLedge = d.platforms.create(450, 100, 'grassBlock')
@@ -107,6 +107,7 @@ export default function createFunc(d) {
   d.arrows.callAll('anchor.setTo', 'anchor', 0.5, 1.0)
   d.arrows.setAll('checkWorldBounds', true)
 
+  Client.askNewPlayer();
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
 
@@ -117,4 +118,11 @@ export default function createFunc(d) {
 
 export function resetArrow(arrow) {
     arrow.kill()
+}
+
+export function addNewPlayer(d, id, x, y) {
+    d.playerMap[id] = d.game.add.sprite(x, y, 'roboraj')
+    d.playerMap[id].scale.set(2, 2)
+    d.game.physics.arcade.enable(d.playerMap[id])
+    d.playerMap[id].body.gravity.y = 400
 }

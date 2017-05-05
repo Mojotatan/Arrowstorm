@@ -1,10 +1,21 @@
 import {findA} from '../util'
+import {playerMoved} from '../client'
+import d from '../game'
+//import Client from '../client'
 
 export default function updateFunc(d) {
+
+    //Check for existing players 
+
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
     let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.player1)
+
+    // define collisions for new players 
+    for (let i = 0; i < d.playerMap.length; i++) {
+        d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
+    }
 
 
     // initializing cursor
@@ -122,6 +133,9 @@ export default function updateFunc(d) {
         fireArrow(d)
     }
 
+    // console.log('player1 x is', d.player1.x)
+    playerMoved(d.player1.x, d.player1.y)
+
 }
 
 function fireArrow(d) {
@@ -169,5 +183,14 @@ function fireArrow(d) {
         }
     }
 }
+
+export function opponentPos(positionObj) {
+    console.log('the new position is ', positionObj)
+    d.player1.x = positionObj.x
+    d.player1.y = positionObj.y
+}
+
+
+
 
 
