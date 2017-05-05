@@ -133,8 +133,8 @@ export default function updateFunc(d) {
         fireArrow(d)
     }
 
-    // console.log('roboraj x is', d.roboraj.x)
-    playerMoved(d.roboraj.x, d.roboraj.y)
+    // console.log('player1 x is', d.player1.x)
+    playerMoved(d.player1.x, d.player1.y)
 
 }
 
@@ -186,8 +186,8 @@ function fireArrow(d) {
 
 export function opponentPos(positionObj) {
     console.log('the new position is ', positionObj)
-    d.roboraj.x = positionObj.x
-    d.roboraj.y = positionObj.y
+    d.player1.x = positionObj.x
+    d.player1.y = positionObj.y
 }
 
 
