@@ -142,52 +142,6 @@ export default function updateFunc() {
 
 }
 
-function fireArrow(d) {
-    let arrow = d.arrows.getFirstExists(false)
-    if (arrow) {
-        arrow.scale.set(4,4)
-        arrow.animations.play('fire')
-        arrow.body.gravity.y = 400
-        //arrow.body.collideWorldBounds = true
-        arrow.reset(d.player1.x, d.player1.y)
-
-
-        if (d.aimUp.isDown) {
-            if (d.aimLeft.isDown) {
-                arrow.rotation = -0.785
-                arrow.body.velocity.y = -1000
-                arrow.body.velocity.x = -1000
-            } else if (d.aimRight.isDown) {
-                arrow.rotation = 0.785
-                arrow.body.velocity.y = -1000
-                arrow.body.velocity.x = 1000
-            } else {
-                arrow.rotation = 0
-                arrow.body.velocity.y = -1000
-            }
-        } else if (d.aimDown.isDown) {
-            if (d.aimLeft.isDown) {
-                arrow.rotation = -2.355
-                arrow.body.velocity.y = 1000
-                arrow.body.velocity.x = -1000
-            } else if (d.aimRight.isDown) {
-                arrow.rotation = 2.355
-                arrow.body.velocity.y = 1000
-                arrow.body.velocity.x = 1000
-            } else {
-                arrow.rotation = 3.14
-                arrow.body.velocity.y = 1000
-            }
-        } else if (d.aimRight.isDown) {
-            arrow.rotation = 1.57
-            arrow.body.velocity.x = 1000
-        } else {
-            arrow.rotation = -1.57
-            arrow.body.velocity.x = -1000
-        }
-    }
-}
-
 export function opponentPos(positionObj) {
     console.log('the new position is ', positionObj)
     d.player1.x = positionObj.x

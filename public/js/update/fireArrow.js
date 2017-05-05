@@ -20,7 +20,7 @@ export default function fireArrow(d) {
     // This makes the arrow "alive"
     arrow.revive()
 
-    arrow.reset(d.roboraj.x, d.roboraj.y)
+    arrow.reset(d.player1.x, d.player1.y)
 
     // if (d.game.physics.arcade.collide(arrow, d.platforms, stopMoving, null, this)) {
     //     console.log('collision!!!')
