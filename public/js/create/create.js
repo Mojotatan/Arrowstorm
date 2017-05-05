@@ -1,12 +1,12 @@
 import Client from '../client'
 import createPlayer from './player'
-import createArrows from './createArrows'
+import fireArrow from '../update/fireArrow'
 
 export default function createFunc(d) {
 
     // Obj for all players
     d.playerMap = {}
-  
+
     //add background
     d.game.add.image(0, 0, 'background')
     //  We're going to be using physics, so enable the Arcade Physics system
@@ -14,7 +14,6 @@ export default function createFunc(d) {
     //set platforms
     d.platforms = d.game.add.group()
 
-  console.log(d.game.physics)
   //enable physics on platforms
   d.platforms.enableBody = true
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
@@ -67,7 +66,7 @@ export default function createFunc(d) {
     wall.rotation = 23.565
     wall.scale.setTo(3, 3)
     wall.body.immovable = true
-  
+
     let wall2 = d.platforms.create(930, 600, 'ground')
     wall2.rotation = 23.565
     wall2.scale.setTo(3, 3)
@@ -98,21 +97,15 @@ export default function createFunc(d) {
   createPlayer(d, 'fatKid', 'player1', {x: 128, y: 0})
 
   Client.askNewPlayer();
-  
+
 Client.askNewPlayer();
+
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-
+  d.spaceBar.onDown.add(() => fireArrow(d))
 
   d.game.stage.backgroundColor = "#999999"
 
-    // Create arrow group
-    createArrows(d)
-
-}
-
-export function resetArrow(arrow) {
-    arrow.kill()
 }
 
 export function addNewPlayer(d, id, x, y) {
