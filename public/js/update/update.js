@@ -156,8 +156,8 @@ function fireArrow(d) {
 
 export function opponentPos(positionObj) {
     console.log('the new position is ', positionObj)
-    d.playerMap[0].x = positionObj.x
-    d.playerMap[0].y = positionObj.y
+    d.roboraj.x = positionObj.x
+    d.roboraj.y = positionObj.y
 }
 
 
