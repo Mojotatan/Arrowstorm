@@ -14,7 +14,6 @@ export default function createFunc(d) {
     //set platforms
     d.platforms = d.game.add.group()
 
-  console.log(d.game.physics)
   //enable physics on platforms
   d.platforms.enableBody = true
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
@@ -94,12 +93,11 @@ export default function createFunc(d) {
   blocktest2.body.immovable = true
   blocktest2.body.checkCollision.down = false
 
+  // spawning both players at the start of game 
+  createPlayer(d, 'fatKid', 'player1', {x: 227, y: 186})
+  createPlayer(d, 'fatKid', 'player2', {x: 800, y: 0})
 
-  createPlayer(d, 'fatKid', 'player1', {x: 128, y: 0})
 
-  Client.askNewPlayer();
-  
-Client.askNewPlayer();
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
 
@@ -109,15 +107,17 @@ Client.askNewPlayer();
     // Create arrow group
     createArrows(d)
 
+  // Checks for new player - keep this at the end of this function
+  Client.askNewPlayer();
 }
 
 export function resetArrow(arrow) {
     arrow.kill()
 }
 
-export function addNewPlayer(d, id, x, y) {
-    d.playerMap[id] = d.game.add.sprite(x, y, 'roboraj')
-    d.playerMap[id].scale.set(2, 2)
-    d.game.physics.arcade.enable(d.playerMap[id])
-    d.playerMap[id].body.gravity.y = 400
-}
+// export function addNewPlayer(d, id, x, y) {
+//     d.playerMap[id] = d.game.add.sprite(x, y, 'fatKid')
+//     d.playerMap[id].scale.set(2, 2)
+//     d.game.physics.arcade.enable(d.playerMap[id])
+//     d.playerMap[id].body.gravity.y = 400
+// }

@@ -1,7 +1,7 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
 import {playerMoved} from '../client'
-import d from '../game'
+import d, { localState } from '../game'
 //import Client from '../client'
 
 export default function updateFunc() {
@@ -11,7 +11,10 @@ export default function updateFunc() {
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
+    let hitPlatformP2 = d.game.physics.arcade.collide(d.platforms, d.player2)
     let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.player1)
+    let hitBricksP2 = d.game.physics.arcade.collide(d.leftWall, d.player2)
+
 
     // define collisions for new players 
     for (let i = 0; i < d.playerMap.length; i++) {
@@ -138,13 +141,44 @@ export default function updateFunc() {
         fireArrow(d)
     }
     // console.log('player1 x is', d.player1.x)
-    playerMoved(d.player1.x, d.player1.y)
+    //playerMoved(d.player1.x, d.player1.y)
+    if (d.currentPlayer === 'Player1') {
+        playerMoved(d.currentPlayer, d.player1.x, d.player1.y)
+    }
+    else if (d.currentPlayer === 'Player2') {
+        playerMoved(d.currentPlayer, d.player2.x, d.player2.y)
+    }
 
 }
 
 export function opponentPos(positionObj) {
-    console.log('the new position is ', positionObj)
-    d.player1.x = positionObj.x
-    d.player1.y = positionObj.y
+    //console.log('the new position is ', positionObj)
+    // d.player2.x = positionObj.x
+    // d.player2.y = positionObj.y
+    // console.log ('the local state in update', localState)
+    console.log('the player map in update', d.playerMap)
+
+    if(d.currentPlayer === 'Player1') {
+        d.player2.x = positionObj.x
+        d.player2.y = positionObj.y
+    }
+    else if (d.currentPlayer === 'Player2') {
+        d.player1.x = positionObj.x
+        d.player1.y = positionObj.y
+    }
+    // console.log('the d is ', d)
+    // if (!d.playerMap) {
+    //    d.playerMap = {}
+    // }
+    // let keyArr = Object.keys(d.playerMap)
+    // console.log(keyArr)
+    // Object.keys(d.playerMap).forEach(function(key){
+    //     if (key !== localState.player) {
+    //         d.playerMap[key].x = positionObj.x
+    //         d.playerMap[key].y = positionObj.y
+    //     }
+    // })
+
+
 }
 
