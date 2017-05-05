@@ -79,20 +79,6 @@ export default function createFunc() {
   let ledge = d.platforms.create(450, 300, 'grassBlockLedge');
   ledge.body.immovable = true
 
-    //creating visual walls
-    // let wall = d.platforms.create(0, 580, 'ground');
-    // wall.rotation = 23.565
-    // wall.scale.setTo(3, 3)
-    // wall.body.immovable = true
-  
-    // let wall2 = d.platforms.create(930, 600, 'ground')
-    // wall2.rotation = 23.565
-    // wall2.scale.setTo(3, 3)
-    // wall2.body.immovable = true
-
-  // let ledgeLeft = d.platforms.create(180, 250, 'grassBlockLedge')//this is the ledge on the left brick wall
-  // ledgeLeft.body.immovable = true
-
   let upperLedge = d.platforms.create(450, 100, 'grassBlock')
   upperLedge.body.immovable = true
 
