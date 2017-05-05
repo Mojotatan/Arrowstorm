@@ -1,4 +1,10 @@
+import Client from '../client'
+//import d from '../game'
+
 export default function createFunc(d) {
+
+    // Obj for all players
+    d.playerMap = {}
 
     //add background 
     d.game.add.image(0, 0, 'background')
@@ -12,8 +18,8 @@ export default function createFunc(d) {
     d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
     //creating the ground
-    let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
-    let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
+    let ground = d.platforms.create(0, d.game.world.height - 64, 'ground') //this is the ground
+    let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground') // so is this
 
     //scaling the ground
     ground.scale.setTo(2, 2)
@@ -36,7 +42,7 @@ export default function createFunc(d) {
         //leftBlockStack.gravity.y = 6
     }
 
-    //creating right wall
+    //creating right brick wall
     d.rightWall = d.game.add.group()
     d.rightWall.enableBody = true
 
@@ -48,33 +54,34 @@ export default function createFunc(d) {
     }
 
 
-    //creating ledge 
+    //creating ledge (this is the lowest ledge in the center)
     let ledge = d.platforms.create(450, 425, 'grassBlockLedge');
     ledge.body.immovable = true
 
     //creating walls 
     let wall = d.platforms.create(0, 580, 'ground');
-    wall.rotation = 23.565
+    wall.rotation = 23.563
     wall.scale.setTo(3, 3)
     wall.body.immovable = true
 
     let wall2 = d.platforms.create(930, 600, 'ground')
-    wall2.rotation = 23.565
+    wall2.rotation = 23.56
     wall2.scale.setTo(3, 3)
     wall2.body.immovable = true
 
-    let ledgeLeft = d.platforms.create(180, 300, 'grassBlockLedge')
+    let ledgeLeft = d.platforms.create(180, 300, 'grassBlockLedge') //this is the ledge on the left brick wall
     ledgeLeft.body.immovable = true
 
     let upperLedge = d.platforms.create(450, 200, 'grassBlock')
     upperLedge.body.immovable = true
 
 
-    let ledgeRight = d.platforms.create(d.game.world.width - 192 - 84, 100, 'grassBlock')
+    let ledgeRight = d.platforms.create(d.game.world.width - 192 - 84, 100, 'grassBlock') //this is the ledge on the upper right 
     ledgeRight.body.immovable = true
 
     d.roboraj = d.game.add.sprite(128, 0, 'roboraj')
-    d.roboraj.scale.set(1.5, 1.5)
+    console.log('roboraj in create', d)
+    d.roboraj.scale.set(2, 2)
     d.roboraj.pivot.set(15, 0)
     d.game.physics.arcade.enable(d.roboraj)
     d.roboraj.body.gravity.y = 400
@@ -107,9 +114,18 @@ export default function createFunc(d) {
 
     d.game.stage.backgroundColor = "#999999"
 
+    Client.askNewPlayer();
+
 
   }
 
 export function resetArrow(arrow) {
     arrow.kill()
+}
+
+export function addNewPlayer(d, id, x, y) {
+    d.playerMap[id] = d.game.add.sprite(x, y, 'roboraj')
+    d.playerMap[id].scale.set(2, 2)
+    d.game.physics.arcade.enable(d.playerMap[id])
+    d.playerMap[id].body.gravity.y = 400
 }

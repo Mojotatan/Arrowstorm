@@ -1,9 +1,13 @@
 import updateFunc from './update/update'
 import createFunc from './create/create'
 //import Phaser from '../phaser/phaser'
+
+let d = {}
+export default d
+
 const gameFunc = function() {
 
-  let d = {}
+  
   // game play area is a box so walls of 192 width on each side
   d.game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
   d.game.antialias = false
