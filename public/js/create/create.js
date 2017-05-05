@@ -7,26 +7,33 @@ export default function createFunc(d) {
   //  We're going to be using physics, so enable the Arcade Physics system
   d.game.physics.startSystem(Phaser.Physics.ARCADE);
 //   d.game.physics.arcade.bounds = new Phaser.Rectangle(192, 0, 640, 640)
-  d.game.physics.arcade.OVERLAP_BIAS = 1
+//   d.game.physics.arcade.OVERLAP_BIAS = 1
   //set platforms
   d.platforms = d.game.add.group()
-
-  console.log(d.game.physics)
+  
   //enable physics on platforms
   d.platforms.enableBody = true
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
-  //creating the ground
-  let ground = d.platforms.create(0, d.game.world.height - 64, 'ground')
-  let ground2 = d.platforms.create(250, d.game.world.height - 64, 'ground')
+//   //creating the ground
+//   let ground = d.platforms.create(-800, d.game.world.height - 64, 'ground')
+//   let ground2 = d.platforms.create(400, d.game.world.height - 64, 'ground')
 
-  //scaling the ground
-  ground.scale.setTo(2, 2)
-  ground2.scale.setTo(2, 2)
+//   //scaling the ground
+//   ground.scale.setTo(2, 2)
+//   ground2.scale.setTo(2, 2)
 
-  ground.body.immovable = true
-  ground2.body.immovable = true
+//   ground.body.immovable = true
+//   ground2.body.immovable = true
 
+
+//   for (let i = 0; i < 20; i++) {
+//       let block = d.platforms.create(192 + 32 * i, 608, 'grass')
+
+//       block.scale.set(.25, .25)
+
+//       block.body.immovable
+//   }
 
   // Creating left brick wall
   d.leftWall = d.game.add.group()
@@ -110,7 +117,7 @@ export default function createFunc(d) {
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
 
-  d.game.stage.backgroundColor = "#999999"
+//   d.game.stage.backgroundColor = "#999999"
 
 
 }
