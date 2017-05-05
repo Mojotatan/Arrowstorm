@@ -24,11 +24,14 @@ const gameFunc = function() {
     d.game.load.image('ground', 'sprites/platform.png')
     d.game.load.image('brick', 'sprites/brick.png')
     d.game.load.image('grassBlock', 'sprites/grass_2x1.png')
-    d.game.load.image('background', 'sprites/background.png')
     d.game.load.image('grassBlockLedge', 'sprites/grass_4x1.png')
     d.game.load.image('dirt', 'sprites/dirt.png')
     d.game.load.image('grass', 'sprites/grass.png')
     d.game.load.image('stone', 'sprites/stone.png')
+    d.game.load.image('wood', 'sprites/wood.png')
+    d.game.load.image('cobble', 'sprites/cobblestone.png')
+    d.game.load.image('space', 'sprites/space-crop.png')
+    d.game.load.text('map', 'maps/default.json')
   }
 
   function create() {
