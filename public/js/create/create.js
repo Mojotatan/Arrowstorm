@@ -1,8 +1,9 @@
 import Client from '../client'
 import createPlayer from './player'
 import createArrows from './createArrows'
+import d from '../game'
 
-export default function createFunc(d) {
+export default function createFunc() {
     // Obj for all players
     d.playerMap = {}
   
@@ -17,90 +18,98 @@ export default function createFunc(d) {
   d.platforms.enableBody = true
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
-//   //creating the ground
-//   let ground = d.platforms.create(-800, d.game.world.height - 64, 'ground') //this is the ground
-//   let ground2 = d.platforms.create(400, d.game.world.height - 64, 'ground') // so is this
-
-//   //scaling the ground
-//   ground.scale.setTo(2, 2)
-//   ground2.scale.setTo(2, 2)
-
-//   ground.body.immovable = true
-//   ground2.body.immovable = true
-
-//   for (let i = 0; i < 20; i++) {
-//       let block = d.platforms.create(192 + 32 * i, 608, 'grass')
-
-//       block.scale.set(.25, .25)
-
-//       block.body.immovable
-//   }
-
-  // Creating left brick wall
-  d.leftWall = d.game.add.group()
-  d.leftWall.enableBody = true
-
-  for (let i = 0; i < 5; i++) {
-      var leftBlockStack = d.leftWall.create(64, i * 32 * 4, 'brick')
-
-      leftBlockStack.scale.setTo(4, 4)
-
-      leftBlockStack.body.immovable = true
-      leftBlockStack.body.checkCollision.up = false
-      leftBlockStack.body.checkCollision.down = false
+  for (let i = 0; i < 20; i++) {
+      if (i === 4) i += 4
+      let block = d.platforms.create(192 + 32 * i, 608, 'stone')
+      block.scale.set(.25, .25)
+      block.body.immovable = true
+  }
+  // to avoid weirdness we would need to make another row of blocks off camera above and below
+  for (let i = 0; i < 20; i++) {
+    if (i === 4) i += 4
+    let block = d.platforms.create(192 + 32 * i, 0, 'stone')
+    block.scale.set(.25, .25)
+    block.body.immovable = true
 }
+
+  for (let i = 0; i < 19; i++) {
+      let block = d.platforms.create(192, 32 * i, 'stone')
+      block.scale.set(.25, .25)
+      block.body.immovable = true
+      block.body.checkCollision.up = false
+      block.body.checkCollision.down = false
+      if (i === 11) {
+        block.body.checkCollision.down = true
+        i += 3
+      } else if (i === 15) block.body.checkCollision.up = true
+  }
+
+  for (let i = 0; i < 19; i++) {
+    let block = d.platforms.create(800, 32 * i, 'stone')
+    block.scale.set(.25, .25)
+    block.body.immovable = true
+    block.body.checkCollision.up = false
+    block.body.checkCollision.down = false
+    if (i === 11) {
+      block.body.checkCollision.down = true
+      i += 3
+    } else if (i === 15) block.body.checkCollision.up = true
+  }
+
+    // Creating left brick wall
+    d.leftWall = d.game.add.group()
+    // d.leftWall.enableBody = true
+
+    for (let i = 0; i < 5; i++) {
+        var leftBlockStack = d.leftWall.create(64, i * 32 * 4, 'brick')
+
+        leftBlockStack.scale.setTo(4, 4)
+
+        // leftBlockStack.body.immovable = true
+        // leftBlockStack.body.checkCollision.up = false
+        // leftBlockStack.body.checkCollision.down = false
+    }
 
   //creating right wall
   d.rightWall = d.game.add.group()
-  d.rightWall.enableBody = true
+  // d.rightWall.enableBody = true
 
   for (let j = 0; j < 5; j++) {
       var rightBlockStack = d.leftWall.create(832, j * 32 * 4, 'brick')
 
       rightBlockStack.scale.setTo(4, 4)
-      rightBlockStack.body.immovable = true
-      rightBlockStack.body.checkCollision.up = false
-      rightBlockStack.body.checkCollision.down = false
+      // rightBlockStack.body.immovable = true
+      // rightBlockStack.body.checkCollision.up = false
+      // rightBlockStack.body.checkCollision.down = false
   }
 
   //creating ledge (this is the lowest ledge in the center)
   let ledge = d.platforms.create(450, 300, 'grassBlockLedge');
   ledge.body.immovable = true
 
-    //creating walls
-    let wall = d.platforms.create(0, 580, 'ground');
-    wall.rotation = 23.565
-    wall.scale.setTo(3, 3)
-    wall.body.immovable = true
+    //creating visual walls
+    // let wall = d.platforms.create(0, 580, 'ground');
+    // wall.rotation = 23.565
+    // wall.scale.setTo(3, 3)
+    // wall.body.immovable = true
   
-    let wall2 = d.platforms.create(930, 600, 'ground')
-    wall2.rotation = 23.565
-    wall2.scale.setTo(3, 3)
-    wall2.body.immovable = true
+    // let wall2 = d.platforms.create(930, 600, 'ground')
+    // wall2.rotation = 23.565
+    // wall2.scale.setTo(3, 3)
+    // wall2.body.immovable = true
 
-  let ledgeLeft = d.platforms.create(180, 250, 'grassBlockLedge')//this is the ledge on the left brick wall
-  ledgeLeft.body.immovable = true
+  // let ledgeLeft = d.platforms.create(180, 250, 'grassBlockLedge')//this is the ledge on the left brick wall
+  // ledgeLeft.body.immovable = true
 
   let upperLedge = d.platforms.create(450, 100, 'grassBlock')
   upperLedge.body.immovable = true
 
 
-  let ledgeRight = d.platforms.create(d.game.world.width - 192 - 84, 100, 'grassBlock')
-  ledgeRight.body.immovable = true
-
-  let blocktest = d.platforms.create(768, 512, 'dirt')
-  blocktest.scale.set(.5, .5)
-  blocktest.body.immovable = true
-  blocktest.body.checkCollision.down = false
-  blocktest.body.checkCollision.up = false
-
-  let blocktest2 = d.platforms.create(768, 448, 'dirt')
-  blocktest2.scale.set(.5, .5)
-  blocktest2.body.immovable = true
-  blocktest2.body.checkCollision.down = false
+  // let ledgeRight = d.platforms.create(d.game.world.width - 192 - 84, 100, 'grassBlock')
+  // ledgeRight.body.immovable = true
 
 
-  createPlayer(d, 'fatKid', 'player1', {x: 128, y: 0})
+  createPlayer(d, 'fatKid', 'player1', {x: 244, y: 0})
 
   Client.askNewPlayer();
   

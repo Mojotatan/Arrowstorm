@@ -28,6 +28,7 @@ const gameFunc = function() {
     d.game.load.image('grassBlockLedge', 'sprites/grass_4x1.png')
     d.game.load.image('dirt', 'sprites/dirt.png')
     d.game.load.image('grass', 'sprites/grass.png')
+    d.game.load.image('stone', 'sprites/stone.png')
   }
 
   function create() {
