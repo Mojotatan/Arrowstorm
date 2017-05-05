@@ -1,17 +1,21 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
 import {playerMoved} from '../client'
-import d from '../game'
+import d, { localState } from '../game'
+import wrap from './wrap'
+
 //import Client from '../client'
 
 export default function updateFunc() {
 
     //Check for existing players
 
+    //World wrap
+    wrap(d.player1)
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
-    let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.player1)
+    let hitPlatformP2 = d.game.physics.arcade.collide(d.platforms, d.player2)
 
     // define collisions for new players
     for (let i = 0; i < d.playerMap.length; i++) {
@@ -26,13 +30,8 @@ export default function updateFunc() {
     d.aimRight = d.game.input.keyboard.addKey(Phaser.Keyboard.D)
     d.aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
 
-    //stand still
-    // if (d.player1.body.touching.down) d.player1.body.velocity.x = 0
-    // else if (d.player1.body.velocity.x > 0) d.player1.body.velocity.x -= 100
-    // else if (d.player1.body.velocity.x < 0) d.player1.body.velocity.x += 100
 
-    // if (d.player1.body.velocity.x < 300 && d.player1.body.velocity.x > -300) d.player1.body.velocity.x = 0
-
+    // reset various parameters
     if (d.player1.body.velocity.y >= -200) d.player1.forceJump = false
     if (d.player1.body.touching.down || d.player1.body.touching.right || d.player1.body.touching.left) d.player1.jump = false
     if (!d.player1.forceJump) {
@@ -44,10 +43,13 @@ export default function updateFunc() {
         }
     }
 
+    // max downward velocity
+    if (d.player1.body.velocity.y > 1000) d.player1.body.velocity.y = 1000
+
     d.bow.rotation = 0
     d.bow.position.set(2, 16)
 
-
+    // d.player1.body.velocity.y = (d.player1.body.touching.left || d.player1.body.touching.right) && d.player1.body.velocity.y > 0 ? 6 : d.player1.body.velocity.y
     d.player1.body.gravity.y = (d.player1.body.touching.left || d.player1.body.touching.right) && d.player1.body.velocity.y > 0 ? 50 : 1200
 
     if (cursors.left.isDown && !d.player1.forceJump)
@@ -164,13 +166,44 @@ export default function updateFunc() {
     }
 
     // console.log('player1 x is', d.player1.x)
-    playerMoved(d.player1.x, d.player1.y)
+    //playerMoved(d.player1.x, d.player1.y)
+    if (d.currentPlayer === 'Player1') {
+        playerMoved(d.currentPlayer, d.player1.x, d.player1.y)
+    }
+    else if (d.currentPlayer === 'Player2') {
+        playerMoved(d.currentPlayer, d.player2.x, d.player2.y)
+    }
 
 }
 
 export function opponentPos(positionObj) {
-    console.log('the new position is ', positionObj)
-    d.player1.x = positionObj.x
-    d.player1.y = positionObj.y
+    //console.log('the new position is ', positionObj)
+    // d.player2.x = positionObj.x
+    // d.player2.y = positionObj.y
+    // console.log ('the local state in update', localState)
+    console.log('the player map in update', d.playerMap)
+
+    if(d.currentPlayer === 'Player1') {
+        d.player2.x = positionObj.x
+        d.player2.y = positionObj.y
+    }
+    else if (d.currentPlayer === 'Player2') {
+        d.player1.x = positionObj.x
+        d.player1.y = positionObj.y
+    }
+    // console.log('the d is ', d)
+    // if (!d.playerMap) {
+    //    d.playerMap = {}
+    // }
+    // let keyArr = Object.keys(d.playerMap)
+    // console.log(keyArr)
+    // Object.keys(d.playerMap).forEach(function(key){
+    //     if (key !== localState.player) {
+    //         d.playerMap[key].x = positionObj.x
+    //         d.playerMap[key].y = positionObj.y
+    //     }
+    // })
+
+
 }
 

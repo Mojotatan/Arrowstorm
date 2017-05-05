@@ -7,8 +7,6 @@ export default function createPlayer (d, spriteName, player, position) {
   d[player].numArrows = 5
   d.game.physics.arcade.enable(d[player])
   d[player].body.gravity.y = 1200
-  // d[player].body.bounce.y = 0.3
-  d[player].body.collideWorldBounds = true
 
   // the first two sprites on the sheet are always for walking
   // the last sprite is a standing animation if there is one
