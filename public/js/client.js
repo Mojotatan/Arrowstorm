@@ -22,13 +22,13 @@ Client.socket.on('newPlayer', function(data){
 //listener for obj "store"
 Client.socket.on('assignedPlayer1', function(data){
 	//localState.player = data.player
-	d.currentPlayer = "Player1"
+	d.currentPlayer = "player1"
 	console.log('the local player is', localState)
 })
 
 Client.socket.on('assignedPlayer2', function(data){
 	//localState.player = data.player
-	d.currentPlayer = "Player2"
+	d.currentPlayer = "player2"
 	console.log('the local player is', localState)
 })
 // Client.socket.on('allPlayers', function(data){

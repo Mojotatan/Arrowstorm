@@ -22,7 +22,7 @@ export default function createFunc() {
   //parse map data
   let map = JSON.parse(d.game.cache.getText('map'))
   createPlayer(d, 'fatKid', 'player1', map.p1Start)
-
+  createPlayer(d, 'fatKid', 'player2', map.p2Start)
 
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
