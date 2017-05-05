@@ -1,6 +1,6 @@
 import Client from '../client'
 import createPlayer from './player'
-import createArrows from './createArrows'
+import fireArrow from '../update/fireArrow'
 import d from '../game'
 
 export default function createFunc() {
@@ -30,45 +30,6 @@ export default function createFunc() {
     newBlock.body.immovable = true
   })
 
-//   for (let i = 0; i < 20; i++) {
-//       if (i === 4) i += 4
-//       let block = d.platforms.create(192 + 32 * i, 608, 'stone')
-//       block.scale.set(.25, .25)
-//       block.body.immovable = true
-//   }
-//   // to avoid weirdness we would need to make another row of blocks off camera above and below
-//   // but i don't think it's important for now
-//   for (let i = 0; i < 20; i++) {
-//     if (i === 4) i += 4
-//     let block = d.platforms.create(192 + 32 * i, 0, 'stone')
-//     block.scale.set(.25, .25)
-//     block.body.immovable = true
-// }
-
-//   for (let i = 0; i < 19; i++) {
-//       let block = d.platforms.create(192, 32 * i, 'stone')
-//       block.scale.set(.25, .25)
-//       block.body.immovable = true
-//       block.body.checkCollision.up = false
-//       block.body.checkCollision.down = false
-//       if (i === 11) {
-//         block.body.checkCollision.down = true
-//         i += 3
-//       } else if (i === 15) block.body.checkCollision.up = true
-//   }
-
-//   for (let i = 0; i < 19; i++) {
-//     let block = d.platforms.create(800, 32 * i, 'stone')
-//     block.scale.set(.25, .25)
-//     block.body.immovable = true
-//     block.body.checkCollision.up = false
-//     block.body.checkCollision.down = false
-//     if (i === 11) {
-//       block.body.checkCollision.down = true
-//       i += 3
-//     } else if (i === 15) block.body.checkCollision.up = true
-//   }
-
     // Creating left brick wall
     d.leftWall = d.game.add.group()
 
@@ -89,9 +50,7 @@ export default function createFunc() {
 
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-
-    // Create arrow group
-    createArrows(d)
+  d.spaceBar.onDown.add(() => fireArrow(d))
 
   // Checks for new player - keep this at the end of this function
   Client.askNewPlayer();

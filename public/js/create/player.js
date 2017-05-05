@@ -4,6 +4,7 @@ export default function createPlayer (d, spriteName, player, position) {
   d[player] = d.game.add.sprite(position.x, position.y, spriteName)
   d[player].scale.set(2, 2)
   d[player].pivot.set(10, 0)
+  d[player].numArrows = 5
   d.game.physics.arcade.enable(d[player])
   d[player].body.gravity.y = 1200
 
