@@ -25,6 +25,7 @@ export default function createFunc() {
       block.body.immovable = true
   }
   // to avoid weirdness we would need to make another row of blocks off camera above and below
+  // but i don't think it's important for now
   for (let i = 0; i < 20; i++) {
     if (i === 4) i += 4
     let block = d.platforms.create(192 + 32 * i, 0, 'stone')
@@ -58,29 +59,20 @@ export default function createFunc() {
 
     // Creating left brick wall
     d.leftWall = d.game.add.group()
-    // d.leftWall.enableBody = true
 
     for (let i = 0; i < 5; i++) {
         var leftBlockStack = d.leftWall.create(64, i * 32 * 4, 'brick')
 
         leftBlockStack.scale.setTo(4, 4)
-
-        // leftBlockStack.body.immovable = true
-        // leftBlockStack.body.checkCollision.up = false
-        // leftBlockStack.body.checkCollision.down = false
     }
 
   //creating right wall
   d.rightWall = d.game.add.group()
-  // d.rightWall.enableBody = true
 
   for (let j = 0; j < 5; j++) {
       var rightBlockStack = d.leftWall.create(832, j * 32 * 4, 'brick')
 
       rightBlockStack.scale.setTo(4, 4)
-      // rightBlockStack.body.immovable = true
-      // rightBlockStack.body.checkCollision.up = false
-      // rightBlockStack.body.checkCollision.down = false
   }
 
   //creating ledge (this is the lowest ledge in the center)

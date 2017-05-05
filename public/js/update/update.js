@@ -2,6 +2,8 @@ import {findA} from '../util'
 import fireArrow from './fireArrow'
 import {playerMoved} from '../client'
 import d from '../game'
+import wrap from './wrap'
+
 //import Client from '../client'
 
 export default function updateFunc() {
@@ -9,15 +11,10 @@ export default function updateFunc() {
     //Check for existing players 
 
     //World wrap
-    if (d.player1.y >= 640) d.player1.y = -d.player1.height
-    else if (d.player1.y <= -d.player1.height) d.player1.y = 640
-
-    if (d.player1.x >= 832) d.player1.x = 192
-    else if (d.player1.x <= 192) d.player1.x = 832
+    wrap(d.player1)
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
-    let hitBricks = d.game.physics.arcade.collide(d.leftWall, d.player1)
 
     // define collisions for new players 
     for (let i = 0; i < d.playerMap.length; i++) {
