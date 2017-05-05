@@ -12,6 +12,7 @@ export default function updateFunc() {
 
     //World wrap
     wrap(d.player1)
+    if (d.arrow) wrap(d.arrow)
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
