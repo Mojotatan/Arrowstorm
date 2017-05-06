@@ -9,8 +9,7 @@ console.log('before update', d)
 
 export default function updateFunc() {
 
-  //Check for existing players
-  
+  //Check if current player has been asssigned yet
   if (d.currentPlayer) {
     let currPlayer = d.currentPlayer
     

@@ -22,14 +22,14 @@ app.get('*', (req, res) => {
 
 let allPlayersObj = {
 	player1: null,
-	player2: null, 
+	player2: null,
 }
 
 io.on('connection', function(socket){
 	console.log('connected new user!', socket.id)
 	socket.on('newPlayer', function(){
 		let socketsArr = Object.keys(io.sockets.connected)
-		console.log('sockets length is', socketsArr.length)
+		// assiging players their number (i.e. player1, player2) as soon as they come online
 		if (socketsArr.length === 1) {
 			allPlayersObj.player1 = socket.id
 			io.sockets.connected[socket.id].emit('assignedPlayer1', {player: socket.id})
@@ -38,40 +38,38 @@ io.on('connection', function(socket){
 			allPlayersObj.player2 = socket.id
 			io.sockets.connected[socket.id].emit('assignedPlayer2', {player: socket.id})
 		}
-		console.log('the allplayersobj is', allPlayersObj)
-		console.log('***entering on new player', socket.id)
-		const player = socket.player = {
-			id: socket.id,
-			x: 228,
-			y: 200,
-		}
+		console.log('the players obj on connection', allPlayersObj)
+		//socket.emit('allPlayers', getAllPlayers())
 
-
-		socket.emit('allPlayers', getAllPlayers())
-		//socket.broadcast.emit('newPlayer', socket.player)
 		socket.emit('newPlayer', socket.player)
 
 		socket.on('disconnect', function(){
-			io.emit('remove', socket.player.id)
+			// io.emit('remove', socket.player.id)
+			console.log('the disconnected user', socket.id)
+			removeSocketPlayer(socket.id)
+			console.log('the playersObj on disconnect', allPlayersObj)
 		})
 
 		socket.on('playerHasMoved', function(newPos){
-			//console.log('The id is************', newPos)
 			socket.broadcast.emit('opponentHasMoved', newPos)
 		})
 	})
 })
 
-function removeSocketPlayer(){
-
+function removeSocketPlayer(socketID){
+	for (var key in allPlayersObj){
+		if (allPlayersObj[key] === socketID) {
+			allPlayersObj[key] = null
+		}
+	}
 }
 
-function getAllPlayers(){
-	var players = []
-	Object.keys(io.sockets.connected).forEach(function(socketID){
-		var player = io.sockets.connected[socketID].player
-		if(player) players.push(player)
-	})
-	console.log('the players are *******', players)
-	return players
-}
+// function getAllPlayers(){
+// 	var players = []
+// 	Object.keys(io.sockets.connected).forEach(function(socketID){
+// 		var player = io.sockets.connected[socketID].player
+// 		if(player) players.push(player)
+// 	})
+// 	console.log('the players are *******', players)
+// 	return players
+// }
