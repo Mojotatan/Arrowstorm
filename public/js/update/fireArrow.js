@@ -42,7 +42,6 @@ export default function fireArrow(d, opponent) {
         
     }
 
-
     if (d.aimUp.isDown) {
         if (d.aimLeft.isDown) {
             d.arrow.rotation = -0.785
@@ -79,7 +78,7 @@ export default function fireArrow(d, opponent) {
             d.arrow.body.velocity.y = 1414
             d.arrow.body.acceleration.y = -1000
         }
-    } else if (d.aimRight.isDown) {
+    } else if (d.aimRight.isDown || d[currPlayer].scale.x < 0) {
         d.arrow.rotation = 1.57
         d.arrow.body.velocity.x = 1414
         d.arrow.body.acceleration.x = -1000
