@@ -75,11 +75,15 @@ export default function createFunc() {
     rightBlockStack.scale.setTo(4, 4)
   }
 
+  // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => fireArrow(d))
 
   d.arrowsArray = []
+
+  //create treasures array
+  d.treasuresArray = []
 
   // Checks for new player - keep this at the end of this function
   Client.askNewPlayer();
