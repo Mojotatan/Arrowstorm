@@ -27,15 +27,14 @@ let allPlayersObj = {
 
 io.on('connection', function(socket){
 	console.log('connected new user!', socket.id)
-	console.log(server.lastPlayerID)
 	socket.on('newPlayer', function(){
 		let socketsArr = Object.keys(io.sockets.connected)
-
+		console.log('sockets length is', socketsArr.length)
 		if (socketsArr.length === 1) {
 			allPlayersObj.player1 = socket.id
 			io.sockets.connected[socket.id].emit('assignedPlayer1', {player: socket.id})
 		}
-		else {
+		else if (socketsArr.length === 2) {
 			allPlayersObj.player2 = socket.id
 			io.sockets.connected[socket.id].emit('assignedPlayer2', {player: socket.id})
 		}
