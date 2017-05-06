@@ -28,6 +28,12 @@ Client.socket.on('assignedPlayer2', function(data){
 	console.log('the local player is', localState)
 })
 
+Client.socket.on('newGame', function(data) {
+	if (d.game.state.current === 'menu') {
+		d.mapBtn = d.game.add.button(0, 256, 'start', this.startMap, this)
+	}
+})
+
 // Client.socket.on('remove', function(id){
 // 	d.playerMap[id].destroy()
 // 	delete d.playerMap[id]
@@ -39,7 +45,6 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 })
 
 export function playerMoved(player, x, y, frame, scale) {
-	console.log('the scale is', scale)
 	Client.socket.emit('playerHasMoved', {x, y, frame, scale})
 }
 

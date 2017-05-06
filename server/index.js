@@ -43,16 +43,22 @@ io.on('connection', function(socket){
 
 		socket.emit('newPlayer', socket.player)
 
-		socket.on('disconnect', function(){
-			// io.emit('remove', socket.player.id)
-			console.log('the disconnected user', socket.id)
-			removeSocketPlayer(socket.id)
-			console.log('the playersObj on disconnect', allPlayersObj)
-		})
+	})
 
-		socket.on('playerHasMoved', function(newPos){
-			socket.broadcast.emit('opponentHasMoved', newPos)
-		})
+	socket.on('newGame', function(data) {
+		console.log('new game bby')
+		socket.broadcast.emit('newGame', data)
+	})
+
+	socket.on('disconnect', function(){
+		// io.emit('remove', socket.player.id)
+		console.log('the disconnected user', socket.id)
+		removeSocketPlayer(socket.id)
+		console.log('the playersObj on disconnect', allPlayersObj)
+	})
+
+	socket.on('playerHasMoved', function(newPos){
+		socket.broadcast.emit('opponentHasMoved', newPos)
 	})
 })
 
