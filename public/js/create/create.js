@@ -78,7 +78,7 @@ export default function createFunc() {
   // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-  d.spaceBar.onDown.add(() => fireArrow(d))
+  d.spaceBar.onDown.add(() => fireArrow(d, false))
 
   d.arrowsArray = []
 
