@@ -77,10 +77,8 @@ export default function createFunc() {
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => fireArrow(d))
 
+  d.arrowsArray = []
+
   // Checks for new player - keep this at the end of this function
   Client.askNewPlayer();
-}
-
-export function resetArrow(arrow) {
-  arrow.kill()
 }

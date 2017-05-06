@@ -13,24 +13,39 @@ Client.askNewPlayer = function(){
 }
 
 Client.socket.on('newPlayer', function(data){
-	//addNewPlayer(d, data.id, data.x, data.y)
 	console.log('the d in newplayer', d)
-	//createPlayer(d, 'fatKid', 'player1', {id: data.id, x: data.x, y: data.y})
-	// d.game.add.sprite(data.x, data.y, 'roboraj')
 })
 
-//listener for obj "store"
+// assigning player 1 to first player that logs on
 Client.socket.on('assignedPlayer1', function(data){
-	//localState.player = data.player
 	d.currentPlayer = "player1"
 	console.log('the local player is', localState)
 })
 
+// assigning player 2 to second player that logs on
 Client.socket.on('assignedPlayer2', function(data){
-	//localState.player = data.player
 	d.currentPlayer = "player2"
 	console.log('the local player is', localState)
 })
+
+// Client.socket.on('remove', function(id){
+// 	d.playerMap[id].destroy()
+// 	delete d.playerMap[id]
+// 	console.log('the playerMap in remove', d.playerMap)
+// })
+
+Client.socket.on('opponentHasMoved', function(newOpponentPos){
+	opponentPos(newOpponentPos)
+})
+
+export function playerMoved(player, x, y) {
+	Client.socket.emit('playerHasMoved', {x, y})
+}
+
+
+export default Client
+
+
 // Client.socket.on('allPlayers', function(data){
 // 	console.log('all players in client', data)
 // 	for (let i = 0; i < data.length; i++){
@@ -39,22 +54,3 @@ Client.socket.on('assignedPlayer2', function(data){
 // 		//createPlayer(d, 'fatKid', 'player2', {x: 328, y: 0})
 // 	}
 // })
-
-Client.socket.on('remove', function(id){
-	d.playerMap[id].destroy()
-	delete d.playerMap[id]
-	console.log('the playerMap in remove', d.playerMap)
-})
-
-Client.socket.on('opponentHasMoved', function(newOpponentPos){
-	//console.log('the opponents position is', opponentPos)
-	opponentPos(newOpponentPos)
-})
-
-export function playerMoved(player, x, y) {
-	//console.log('the playermoved arguments', player, x, y)
-	Client.socket.emit('playerHasMoved', {x, y})
-}
-
-
-export default Client
