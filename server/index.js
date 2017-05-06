@@ -53,6 +53,10 @@ io.on('connection', function(socket){
 		socket.on('playerHasMoved', function(newPos){
 			socket.broadcast.emit('opponentHasMoved', newPos)
 		})
+
+		socket.on('playerHasShot', function(){
+			socket.broadcast.emit('opponentHasShot', {})
+		})
 	})
 })
 

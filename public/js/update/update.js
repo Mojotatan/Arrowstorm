@@ -84,7 +84,7 @@ export default function updateFunc() {
     if (cursors.up.isDown && d[currPlayer].body.touching.down && hitPlatform) {
       d[currPlayer].body.velocity.y = -600
     }
-    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && (hitPlatform || hitBricks)) {
+    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && (hitPlatform)) {
       d[currPlayer].body.velocity.y = -600
       let dir = d[currPlayer].body.touching.right ? -1 : 1
       d[currPlayer].body.velocity.x = 300 * dir
@@ -185,18 +185,13 @@ export default function updateFunc() {
       playerMoved(d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x) //just sending the scale.x not the entire obj
     }
     else if (d.currentPlayer === 'player2') {
-      playerMoved(d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player1.scale.x)
+      playerMoved(d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x)
     }
   }
 
 }
 
 export function opponentPos(positionObj) {
-  //console.log('the new position is ', positionObj)
-  // d.player2.x = positionObj.x
-  // d.player2.y = positionObj.y
-  // console.log ('the local state in update', localState)
-  //console.log('the player map in update', positionObj)
 
   if (d.currentPlayer === 'player1') {
     d.player2.x = positionObj.x
@@ -210,19 +205,5 @@ export function opponentPos(positionObj) {
     d.player1.frame = positionObj.frame
     d.player1.scale.x = positionObj.scale // positionObj.scale is the scale.x value
   }
-  // console.log('the d is ', d)
-  // if (!d.playerMap) {
-  //    d.playerMap = {}
-  // }
-  // let keyArr = Object.keys(d.playerMap)
-  // console.log(keyArr)
-  // Object.keys(d.playerMap).forEach(function(key){
-  //     if (key !== localState.player) {
-  //         d.playerMap[key].x = positionObj.x
-  //         d.playerMap[key].y = positionObj.y
-  //     }
-  // })
-
-
 }
 
