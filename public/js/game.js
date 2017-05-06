@@ -6,9 +6,6 @@ import Client from './client'
 let d = {}
 export default d
 
-// obj for storing local player name
-export const localState = {player: null}
-
 const gameFunc = function() {
 
 

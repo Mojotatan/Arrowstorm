@@ -3,7 +3,7 @@ import { addNewPlayer } from './create/create'
 import d, { localState } from './game'
 import { opponentPos } from './update/update'
 import createPlayer from './create/player'
-
+import fireArrow from './update/fireArrow'
 
 var Client = {}
 Client.socket = io.connect()
@@ -19,13 +19,11 @@ Client.socket.on('newPlayer', function(data){
 // assigning player 1 to first player that logs on
 Client.socket.on('assignedPlayer1', function(data){
 	d.currentPlayer = "player1"
-	console.log('the local player is', localState)
 })
 
 // assigning player 2 to second player that logs on
 Client.socket.on('assignedPlayer2', function(data){
 	d.currentPlayer = "player2"
-	console.log('the local player is', localState)
 })
 
 Client.socket.on('newGame', function(data) {
@@ -44,10 +42,18 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 	opponentPos(newOpponentPos)
 })
 
+Client.socket.on('opponentHasShot', function(){
+	console.log('the opponent has shot!!')
+	fireArrow(d, true)
+})
+
 export function playerMoved(player, x, y, frame, scale) {
 	Client.socket.emit('playerHasMoved', {x, y, frame, scale})
 }
 
+export function arrowShot() {
+	Client.socket.emit('playerHasShot', {})
+}
 
 export default Client
 
