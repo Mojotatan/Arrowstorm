@@ -8,8 +8,6 @@ import wrap from './wrap'
 console.log('before update', d)
 
 export default function updateFunc() {
-  //Check for existing players
-  
   if (d.currentPlayer) {
     let currPlayer = d.currentPlayer
     
