@@ -8,16 +8,17 @@ import wrap from './wrap'
 console.log('before update', d)
 
 export default function updateFunc() {
-
-    //Check for existing players
-
-    if (d.currentPlayer) {
-        let currPlayer = d.currentPlayer
-
+  //Check for existing players
+  
+  if (d.currentPlayer) {
+    let currPlayer = d.currentPlayer
+    
 
     //console.log('the d in update is', d[currPlayer], currPlayer)
     //World wrap
-    wrap(d[currPlayer])
+    wrap(d.player1)
+    wrap(d.player2)
+    
     if (d.arrow) wrap(d.arrow)
 
     //Define collisions
@@ -26,7 +27,7 @@ export default function updateFunc() {
 
     // define collisions for new players
     for (let i = 0; i < d.playerMap.length; i++) {
-        d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
+      d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
     }
 
 
@@ -42,12 +43,12 @@ export default function updateFunc() {
     if (d[currPlayer].body.velocity.y >= -200) d[currPlayer].forceJump = false
     if (d[currPlayer].body.touching.down || d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) d[currPlayer].jump = false
     if (!d[currPlayer].forceJump) {
-        if (!d[currPlayer].body.touching.down) {
-            if (d[currPlayer].body.velocity.x > 150) d[currPlayer].body.velocity.x = 150
-            else if (d[currPlayer].body.velocity.x < -150) d[currPlayer].body.velocity.x = -150
-        } else {
-            d[currPlayer].body.velocity.x = 0
-        }
+      if (!d[currPlayer].body.touching.down) {
+        if (d[currPlayer].body.velocity.x > 150) d[currPlayer].body.velocity.x = 150
+        else if (d[currPlayer].body.velocity.x < -150) d[currPlayer].body.velocity.x = -150
+      } else {
+        d[currPlayer].body.velocity.x = 0
+      }
     }
 
     // max downward velocity
@@ -59,8 +60,7 @@ export default function updateFunc() {
     // d[currPlayer].body.velocity.y = (d[currPlayer].body.touching.left || d[currPlayer].body.touching.right) && d[currPlayer].body.velocity.y > 0 ? 6 : d[currPlayer].body.velocity.y
     d[currPlayer].body.gravity.y = (d[currPlayer].body.touching.left || d[currPlayer].body.touching.right) && d[currPlayer].body.velocity.y > 0 ? 50 : 1200
 
-    if (cursors.left.isDown && !d[currPlayer].forceJump)
-    {
+    if (cursors.left.isDown && !d[currPlayer].forceJump) {
       d[currPlayer].body.velocity.x += d[currPlayer].body.touching.down ? -300 : -150
       if (d[currPlayer].jump === 'right' && d[currPlayer].body.velocity.x < 150) d[currPlayer].body.velocity.x = 150
 
@@ -69,15 +69,14 @@ export default function updateFunc() {
       d[currPlayer].animations.play('walk')
 
     }
-    else if (cursors.right.isDown && !d[currPlayer].forceJump)
-    {
-        //  Move to the right
-        d[currPlayer].body.velocity.x += d[currPlayer].body.touching.down ? 300 : 150
-        if (d[currPlayer].jump === 'left' && d[currPlayer].body.velocity.x > -150) d[currPlayer].body.velocity.x = -150
+    else if (cursors.right.isDown && !d[currPlayer].forceJump) {
+      //  Move to the right
+      d[currPlayer].body.velocity.x += d[currPlayer].body.touching.down ? 300 : 150
+      if (d[currPlayer].jump === 'left' && d[currPlayer].body.velocity.x > -150) d[currPlayer].body.velocity.x = -150
 
-        if (d[currPlayer].scale.x > 0) d[currPlayer].scale.x *= -1
+      if (d[currPlayer].scale.x > 0) d[currPlayer].scale.x *= -1
 
-        d[currPlayer].animations.play('walk')
+      d[currPlayer].animations.play('walk')
     }
     else {
       d[currPlayer].animations.stop()
@@ -144,85 +143,83 @@ export default function updateFunc() {
     let arrowHitPlatforms = d.game.physics.arcade.collide(d.arrow, d.platforms)
 
     if (d.arrow) {
-        if (d.arrow.body.velocity.x > 0) {
-            d.arrow.angle += 1
-        }
-        if (d.arrow.body.velocity.x < 0) {
-            d.arrow.angle -= 1
-        }
+      if (d.arrow.body.velocity.x > 0) {
+        d.arrow.angle += 1
+      }
+      if (d.arrow.body.velocity.x < 0) {
+        d.arrow.angle -= 1
+      }
     }
 
     if (arrowHitPlatforms || arrowHitrightWall || arrowHitleftWall) {
-        d.arrow.body.velocity.x = 0
-        d.arrow.body.velocity.y = 0
-        d.arrow.body.acceleration = 0
-        d.arrow.body.gravity.y = 0
-        d.arrow.body.immovable = true
+      d.arrow.body.velocity.x = 0
+      d.arrow.body.velocity.y = 0
+      d.arrow.body.acceleration = 0
+      d.arrow.body.gravity.y = 0
+      d.arrow.body.immovable = true
     }
 
     d.arrowsArray.forEach(arrow => {
-        if (d.game.physics.arcade.collide(arrow, d.player1)) {
-            if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
-                arrow.kill()
-                d.arrowsArray.push(arrow)
-                d.player1.numArrows++
-            } else {
-                d.player1.kill()
-                d.player1.numArrows = 0
-            }
+      if (d.game.physics.arcade.collide(arrow, d.player1)) {
+        if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
+          arrow.kill()
+          d.arrowsArray.push(arrow)
+          d.player1.numArrows++
+        } else {
+          d.player1.kill()
+          d.player1.numArrows = 0
         }
+      }
 
-        if (d.game.physics.arcade.collide(arrow, d.player2)) {
-            if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
-                arrow.kill()
-                d.arrowsArray.push(arrow)
-                d.player2.numArrows++
-            } else {
-                d.player2.kill()
-                d.player2.numArrows = 0
-            }
+      if (d.game.physics.arcade.collide(arrow, d.player2)) {
+        if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
+          arrow.kill()
+          d.arrowsArray.push(arrow)
+          d.player2.numArrows++
+        } else {
+          d.player2.kill()
+          d.player2.numArrows = 0
         }
+      }
     })
 
-    // console.log('player1 x is', d.player1.x)
-    //playerMoved(d.player1.x, d.player1.y)
     if (d.currentPlayer === 'player1') {
-        playerMoved(d.currentPlayer, d.player1.x, d.player1.y)
+      playerMoved(d.currentPlayer, d.player1.x, d.player1.y)
     }
     else if (d.currentPlayer === 'player2') {
-        playerMoved(d.currentPlayer, d.player2.x, d.player2.y)
+      playerMoved(d.currentPlayer, d.player2.x, d.player2.y)
     }
-}
+  }
 
 }
 
 export function opponentPos(positionObj) {
-    //console.log('the new position is ', positionObj)
-    // d.player2.x = positionObj.x
-    // d.player2.y = positionObj.y
-    // console.log ('the local state in update', localState)
-    //console.log('the player map in update', positionObj)
+  //console.log('the new position is ', positionObj)
+  // d.player2.x = positionObj.x
+  // d.player2.y = positionObj.y
+  // console.log ('the local state in update', localState)
+  //console.log('the player map in update', positionObj)
 
-    if (d.currentPlayer === 'player1') {
-        d.player2.x = positionObj.x
-        d.player2.y = positionObj.y
-    }
-    else if (d.currentPlayer === 'player2') {
-        d.player1.x = positionObj.x
-        d.player1.y = positionObj.y
-    }
-    // console.log('the d is ', d)
-    // if (!d.playerMap) {
-    //    d.playerMap = {}
-    // }
-    // let keyArr = Object.keys(d.playerMap)
-    // console.log(keyArr)
-    // Object.keys(d.playerMap).forEach(function(key){
-    //     if (key !== localState.player) {
-    //         d.playerMap[key].x = positionObj.x
-    //         d.playerMap[key].y = positionObj.y
-    //     }
-    // })
+  if (d.currentPlayer === 'player1') {
+    d.player2.x = positionObj.x
+    d.player2.y = positionObj.y
+  }
+  else if (d.currentPlayer === 'player2') {
+    d.player1.x = positionObj.x
+    d.player1.y = positionObj.y
+  }
+  // console.log('the d is ', d)
+  // if (!d.playerMap) {
+  //    d.playerMap = {}
+  // }
+  // let keyArr = Object.keys(d.playerMap)
+  // console.log(keyArr)
+  // Object.keys(d.playerMap).forEach(function(key){
+  //     if (key !== localState.player) {
+  //         d.playerMap[key].x = positionObj.x
+  //         d.playerMap[key].y = positionObj.y
+  //     }
+  // })
 
 
 }
