@@ -19,13 +19,38 @@ export default function createFunc() {
   d.platforms.enableBody = true
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
+  // the shield wall tiles should be impassible to arrows but passible to players
+  // CURRENTLY NOT IMPLEMENTED -- WILL DO LATER IF DEEMED IMPORTANT ENOUGH
+  d.shields = d.game.add.group()
+  d.shields.enableBody = true
+  d.shields.physicsBodyType = Phaser.Physics.ARCADE
+
+  // the spike tiles should kill players upon collision
+  d.spikes = d.game.add.group()
+  d.spikes.enableBody = true
+  d.spikes.physicsBodyType = Phaser.Physics.ARCADE
+
   //parse map data
   let map = JSON.parse(d.game.cache.getText('map'))
 
+  console.log(map)
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
     newBlock.scale.set(.25, .25)
     newBlock.body.immovable = true
+  })
+
+  map.shields.forEach(shield => {
+    let newShield = d.shields.create(shield.x, shield.y, 'shieldWall')
+    newShield.body.immovable = true
+    newShield.rotation = shield.rotation
+  })
+
+  map.spikes.forEach(spike => {
+    let newSpike = d.spikes.create(spike.x, spike.y, 'spikes')
+    newSpike.body.immovable = true
+    newSpike.anchor.set(.5, .5)
+    newSpike.rotation = spike.rotation
   })
 
   // create players

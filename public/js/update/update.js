@@ -22,6 +22,18 @@ export default function updateFunc() {
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
     let hitPlatformP2 = d.game.physics.arcade.collide(d.platforms, d.player2)
+    let hitSpikes = d.game.physics.arcade.collide(d.spikes, d.player1)
+    let hitSpikesP2 = d.game.physics.arcade.collide(d.spikes, d.player2)
+
+    //Spike collisions
+    if (hitSpikes) {
+      d.player1.kill()
+      d.player1.numArrows = 0
+    }
+    if (hitSpikesP2) {
+      d.player2.kill()
+      d.player2.numArrows = 0
+    }
 
     // define collisions for new players
     for (let i = 0; i < d.playerMap.length; i++) {
@@ -84,7 +96,7 @@ export default function updateFunc() {
     if (cursors.up.isDown && d[currPlayer].body.touching.down && hitPlatform) {
       d[currPlayer].body.velocity.y = -600
     }
-    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && (hitPlatform || hitBricks)) {
+    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && hitPlatform) {
       d[currPlayer].body.velocity.y = -600
       let dir = d[currPlayer].body.touching.right ? -1 : 1
       d[currPlayer].body.velocity.x = 300 * dir
