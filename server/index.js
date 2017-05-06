@@ -30,11 +30,11 @@ io.on('connection', function(socket){
 	socket.on('newPlayer', function(){
 		let socketsArr = Object.keys(io.sockets.connected)
 		// assiging players their number (i.e. player1, player2) as soon as they come online
-		if (socketsArr.length === 1) {
+		if (allPlayersObj.player1 === null) {
 			allPlayersObj.player1 = socket.id
 			io.sockets.connected[socket.id].emit('assignedPlayer1', {player: socket.id})
 		}
-		else if (socketsArr.length === 2) {
+		else if (allPlayersObj.player2 === null) {
 			allPlayersObj.player2 = socket.id
 			io.sockets.connected[socket.id].emit('assignedPlayer2', {player: socket.id})
 		}
