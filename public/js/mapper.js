@@ -28,8 +28,10 @@ for (let i = 0; i < 20; i++) {
   if ((i > 3 && i < 8) || (i > 11 && i < 16)) {
     obj.blocks.push({tile: 'cobble', x: 192 + 32 * i, y: 448})
   }
-  if (i === 9 || i === 10) {
-    obj.spikes.push({x: 192 + 32 * i, y: 288 - 16, rotation: 0})
+  if (i === 1) {
+    obj.spikes.push({x: 192 + 32 * i + 16, y: 288 + 16, rotation: 1.57})
+  } else if (i === 18) {
+    obj.spikes.push({x: 192 + 32 * i + 16, y: 288 + 16, rotation: -1.57})
   }
 }
 

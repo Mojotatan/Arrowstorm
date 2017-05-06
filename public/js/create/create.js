@@ -20,6 +20,7 @@ export default function createFunc() {
   d.platforms.physicsBodyType = Phaser.Physics.ARCADE
 
   // the shield wall tiles should be impassible to arrows but passible to players
+  // CURRENTLY NOT IMPLEMENTED -- WILL DO LATER IF DEEMED IMPORTANT ENOUGH
   d.shields = d.game.add.group()
   d.shields.enableBody = true
   d.shields.physicsBodyType = Phaser.Physics.ARCADE
@@ -48,6 +49,7 @@ export default function createFunc() {
   map.spikes.forEach(spike => {
     let newSpike = d.spikes.create(spike.x, spike.y, 'spikes')
     newSpike.body.immovable = true
+    newSpike.anchor.set(.5, .5)
     newSpike.rotation = spike.rotation
   })
 
