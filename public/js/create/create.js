@@ -21,8 +21,6 @@ export default function createFunc() {
 
   //parse map data
   let map = JSON.parse(d.game.cache.getText('map'))
-  createPlayer(d, 'fatKid', 'player1', map.p1Start)
-  createPlayer(d, 'fatKid', 'player2', map.p2Start)
 
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
@@ -30,22 +28,26 @@ export default function createFunc() {
     newBlock.body.immovable = true
   })
 
+  // create players
+  createPlayer(d, 'blackMage', 'player1', map.p1Start)
+  createPlayer(d, 'fatKid', 'player2', map.p2Start)
+
     // Creating left brick wall
     d.leftWall = d.game.add.group()
 
     for (let i = 0; i < 5; i++) {
-        var leftBlockStack = d.leftWall.create(64, i * 32 * 4, 'brick')
+      var leftBlockStack = d.leftWall.create(64, i * 32 * 4, 'brick')
 
-        leftBlockStack.scale.setTo(4, 4)
+      leftBlockStack.scale.setTo(4, 4)
     }
 
   //creating right wall
   d.rightWall = d.game.add.group()
 
   for (let j = 0; j < 5; j++) {
-      var rightBlockStack = d.leftWall.create(832, j * 32 * 4, 'brick')
+    var rightBlockStack = d.leftWall.create(832, j * 32 * 4, 'brick')
 
-      rightBlockStack.scale.setTo(4, 4)
+    rightBlockStack.scale.setTo(4, 4)
   }
 
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
@@ -57,12 +59,5 @@ export default function createFunc() {
 }
 
 export function resetArrow(arrow) {
-    arrow.kill()
+  arrow.kill()
 }
-
-// export function addNewPlayer(d, id, x, y) {
-//     d.playerMap[id] = d.game.add.sprite(x, y, 'fatKid')
-//     d.playerMap[id].scale.set(2, 2)
-//     d.game.physics.arcade.enable(d.playerMap[id])
-//     d.playerMap[id].body.gravity.y = 400
-// }
