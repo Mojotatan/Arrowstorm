@@ -38,8 +38,9 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 	opponentPos(newOpponentPos)
 })
 
-export function playerMoved(player, x, y) {
-	Client.socket.emit('playerHasMoved', {x, y})
+export function playerMoved(player, x, y, frame, scale) {
+	console.log('the scale is', scale)
+	Client.socket.emit('playerHasMoved', {x, y, frame, scale})
 }
 
 

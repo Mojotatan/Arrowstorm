@@ -182,10 +182,10 @@ export default function updateFunc() {
     })
 
     if (d.currentPlayer === 'player1') {
-      playerMoved(d.currentPlayer, d.player1.x, d.player1.y)
+      playerMoved(d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x) //just sending the scale.x not the entire obj
     }
     else if (d.currentPlayer === 'player2') {
-      playerMoved(d.currentPlayer, d.player2.x, d.player2.y)
+      playerMoved(d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player1.scale.x)
     }
   }
 
@@ -201,10 +201,14 @@ export function opponentPos(positionObj) {
   if (d.currentPlayer === 'player1') {
     d.player2.x = positionObj.x
     d.player2.y = positionObj.y
+    d.player2.frame = positionObj.frame
+    d.player2.scale.x = positionObj.scale
   }
   else if (d.currentPlayer === 'player2') {
     d.player1.x = positionObj.x
     d.player1.y = positionObj.y
+    d.player1.frame = positionObj.frame
+    d.player1.scale.x = positionObj.scale // positionObj.scale is the scale.x value
   }
   // console.log('the d is ', d)
   // if (!d.playerMap) {
