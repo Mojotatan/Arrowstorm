@@ -10,7 +10,7 @@ export const localState = {player: null}
 
 const gameFunc = function() {
 
-  
+
   // game play area is a box so walls of 192 width on each side
   d.game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
   d.game.antialias = false
@@ -36,6 +36,7 @@ const gameFunc = function() {
     d.game.load.image('cobble', 'sprites/cobblestone.png')
     d.game.load.image('space', 'sprites/space-crop.png')
     d.game.load.text('map', 'maps/default.json')
+    d.game.load.image('treasure', 'sprites/treasure-chest.png')
   }
 
   function create() {

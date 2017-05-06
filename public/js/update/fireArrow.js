@@ -23,6 +23,7 @@ export default function fireArrow(d) {
         createArrow(d, d[currPlayer])
     }
 
+    console.log('d in fireArrow', d)
     // If there aren't any arrows available then don't shoot
     if (!d.arrow || d[currPlayer].numArrows <= 0) return
 
@@ -62,7 +63,7 @@ export default function fireArrow(d) {
             d.arrow.body.velocity.y = 1414
             d.arrow.body.acceleration.y = -1000
         }
-    } else if (d.aimRight.isDown) {
+    } else if (d.aimRight.isDown || d[currPlayer].scale.x < 0) {
         d.arrow.rotation = 1.57
         d.arrow.body.velocity.x = 1414
         d.arrow.body.acceleration.x = -1000
