@@ -10,14 +10,14 @@ console.log('before update', d)
 export default function updateFunc() {
 
     //Check for existing players
-    
+
     if (d.currentPlayer) {
         let currPlayer = d.currentPlayer
-    
+
 
     //console.log('the d in update is', d[currPlayer], currPlayer)
     //World wrap
-    wrap(d.player1)
+    wrap(d[currPlayer])
     if (d.arrow) wrap(d.arrow)
 
     //Define collisions
@@ -142,7 +142,6 @@ export default function updateFunc() {
     let arrowHitleftWall = d.game.physics.arcade.collide(d.arrow, d.leftWall)
     let arrowHitrightWall = d.game.physics.arcade.collide(d.arrow, d.rightWall)
     let arrowHitPlatforms = d.game.physics.arcade.collide(d.arrow, d.platforms)
-    let arrowHitPlayer = d.game.physics.arcade.collide(d.arrow, d[currPlayer])
 
     if (d.arrow) {
         if (d.arrow.body.velocity.x > 0) {
@@ -161,16 +160,29 @@ export default function updateFunc() {
         d.arrow.body.immovable = true
     }
 
-    if (arrowHitPlayer) {
-        if (d.arrow.body.velocity.x === 0 && d.arrow.body.velocity.y === 0) {
-            d.arrow.kill()
-            d[currPlayer].numArrows++
-        } else {
-            d[currPlayer].kill()
-            d[currPlayer].numArrows = 0
+    d.arrowsArray.forEach(arrow => {
+        if (d.game.physics.arcade.collide(arrow, d.player1)) {
+            if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
+                arrow.kill()
+                d.arrowsArray.push(arrow)
+                d.player1.numArrows++
+            } else {
+                d.player1.kill()
+                d.player1.numArrows = 0
+            }
         }
 
-    }
+        if (d.game.physics.arcade.collide(arrow, d.player2)) {
+            if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
+                arrow.kill()
+                d.arrowsArray.push(arrow)
+                d.player2.numArrows++
+            } else {
+                d.player2.kill()
+                d.player2.numArrows = 0
+            }
+        }
+    })
 
     // console.log('player1 x is', d.player1.x)
     //playerMoved(d.player1.x, d.player1.y)
