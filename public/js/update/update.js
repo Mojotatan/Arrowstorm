@@ -244,10 +244,10 @@ export default function updateFunc() {
     }
 
     if (d.currentPlayer === 'player1') {
-      playerMoved(d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x) //just sending the scale.x not the entire obj
+      playerMoved(d.myGame.id, d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x) //just sending the scale.x not the entire obj
     }
     else if (d.currentPlayer === 'player2') {
-      playerMoved(d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x)
+      playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x)
     }
   }
 

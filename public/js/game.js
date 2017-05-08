@@ -48,6 +48,8 @@ const gameFunc = function() {
       
       d.mapBtn = d.game.add.button(768, 0, 'start', this.startMap, this)
       d.mapBtn.scale.set(4, 4)
+
+      d.lobbyGames = d.game.add.group()
     },
     startGame: function () {
       Client.socket.emit('newGame', {})
@@ -64,11 +66,25 @@ const gameFunc = function() {
     create: function() {
       d.startBtn = d.game.add.button(384, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
+
+      let p1 = (d.myGame) ? d.myGame.player1 : 'BLAR'
+      let p2 = (d.myGame) ? d.myGame.player2 : 'BLAR'
+      d.gameReady = d.game.add.text(384, 128, '', {fill: '#FFFFFF'})
+      d.lobbyP1 = d.game.add.text(0, 0, `Player 1: ${p1}`, {fill: '#FFFFFF'})
+      d.lobbyP2 = d.game.add.text(0, 32, `Player 2: ${p2}`, {fill: '#FFFFFF'})
+
+      d.leaveBtn = d.game.add.button(896, 0, 'start', this.leaveGame, this)
+      d.leaveBtn.scale.set(2, 2)
       Client.askNewPlayer()
     },
     startGame: function () {
       // d.game.state.start('runGame')
-      Client.letsGo()
+      if (d.gameReady.text === 'ready!') {
+        Client.letsGo(d.myGame.id)
+      }
+    },
+    leaveGame: function() {
+      d.game.state.start('menu')
     }
   }
 

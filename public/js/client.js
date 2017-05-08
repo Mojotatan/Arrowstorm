@@ -12,32 +12,55 @@ Client.askNewPlayer = function(){
 	Client.socket.emit('newPlayer')
 }
 
-Client.socket.on('newPlayer', function(data){
-	console.log('the d in newplayer', d)
-})
+// Client.socket.on('newPlayer', function(data){
+// 	console.log('the d in newplayer', d)
+// })
 
 // assigning player 1 to first player that logs on
 Client.socket.on('assignedPlayer1', function(data){
 	d.currentPlayer = "player1"
+	d.myGame = data
 })
 
 // assigning player 2 to second player that logs on
 Client.socket.on('assignedPlayer2', function(data){
 	d.currentPlayer = "player2"
+	d.myGame = data
 })
 
 Client.socket.on('newGame', function(data) {
 	if (d.game.state.current === 'menu') {
-		d.mapBtn = d.game.add.button(0, 256, 'start', function() {d.game.state.start('newGameOptions')})
+		let newGame = new Phaser.Button(d.game, 0, 256, 'start', function() {
+			Client.socket.emit('joinGame', this.id)
+			d.game.state.start('newGameOptions')
+		})
+		newGame.id = data
+		d.lobbyGames.addChild(newGame)
 	}
 })
 
-Client.socket.on('start', function(data) {
+Client.socket.on('playerJoined', function(data) {
+	d.myGame = data
+	if (d.game.state.current === 'newGameOptions') { 
+		if (d.myGame.player1) d.lobbyP1.text = `Player 1: ${d.myGame.player1}`
+		if (d.myGame.player2) d.lobbyP2.text = `Player 2: ${d.myGame.player2}`
+		if (data.player1 && data.player2) d.gameReady.text = 'ready!'
+	}
+})
+
+Client.socket.on('start', function() {
+	console.log('let the games begin')
 	d.game.state.start('runGame')
 })
 
-Client.letsGo = function() {
-	Client.socket.emit('start', {})
+Client.letsGo = function(id) {
+	// this is supposed to remove games that launch but it isn't working rn so whatevs
+	// d.lobbyGames.children.forEach((child, index) => {
+	// 	if (child.id === id) {
+	// 		d.lobbyGames.removeChild(index)
+	// 	}
+	// })
+	Client.socket.emit('start', id)
 }
 
 // Client.socket.on('remove', function(id){
@@ -55,12 +78,12 @@ Client.socket.on('opponentHasShot', function(opponentName){
 	fireArrow(d, true, opponentName)
 })
 
-export function playerMoved(player, x, y, frame, scale) {
-	Client.socket.emit('playerHasMoved', {x, y, frame, scale})
+export function playerMoved(id, player, x, y, frame, scale) {
+	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale})
 }
 
-export function arrowShot(playerName) {
-	Client.socket.emit('playerHasShot', {player: playerName})
+export function arrowShot(id, playerName) {
+	Client.socket.emit('playerHasShot', {id, player: playerName})
 }
 
 export default Client
