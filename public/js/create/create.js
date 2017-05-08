@@ -80,6 +80,7 @@ export default function createFunc() {
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => fireArrow(d, false))
+  console.log('the arrow in create is', d.arrow)
 
   d.arrowsArray = []
 
