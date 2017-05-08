@@ -58,8 +58,8 @@ export default function createFunc() {
   })
 
   // create players
-  createPlayer(d, 'blackMage', 'player1', map.p1Start)
-  createPlayer(d, 'fatKid', 'player2', map.p2Start)
+  createPlayer(d, d.myGame.chars[1], 'player1', map.p1Start)
+  createPlayer(d, d.myGame.chars[2], 'player2', map.p2Start)
 
     // Creating left brick wall
     d.leftWall = d.game.add.group()

@@ -29,7 +29,7 @@ io.on('connection', function(socket){
 	// logic for creating and joining games via lobby
 	socket.on('newGame', function(data) {
 		console.log('new game bby')
-		allGames.push({id: count, player1: socket.id, player2: null})
+		allGames.push({id: count, player1: socket.id, player2: null, chars: {1: 'blackMage', 2: 'fatKid'}, map: 'default.json'})
 		socket.join(`game ${count}`)
 		console.log('Gaimes', allGames)
 		console.log('joining channel', `game ${count}`)
@@ -55,11 +55,19 @@ io.on('connection', function(socket){
 		io.in(`game ${id}`).emit('start')
 	})
 
+	socket.on('charSwap', function(data) {
+		if (allGames[data.id].player1 === socket.id) {
+			allGames[data.id].chars[1] = data.char
+			io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
+		} else if (allGames[data.id].player2 === socket.id) {
+			allGames[data.id].chars[2] = data.char
+			io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
+		}
+	})
+
 	socket.on('disconnect', function(){
 		// io.emit('remove', socket.player.id)
 		console.log('the disconnected user', socket.id)
-		removeSocketPlayer(socket.id)
-		console.log('the playersObj on disconnect', allPlayersObj)
 	})
 
 	socket.on('playerHasMoved', function(newPos){

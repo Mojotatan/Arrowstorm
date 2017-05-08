@@ -75,6 +75,17 @@ const gameFunc = function() {
 
       d.leaveBtn = d.game.add.button(896, 0, 'start', this.leaveGame, this)
       d.leaveBtn.scale.set(2, 2)
+
+      //player options
+      let avatar = function(char) {
+        return function() {
+          Client.chooseChar({char, id: d.myGame.id})
+        }
+      }
+      d.chooseRoboraj = d.game.add.button(0, 256, 'roboraj', avatar('roboraj'))
+      d.chooseFatKid = d.game.add.button(32, 256, 'fatKid', avatar('fatKid'))
+      d.chooseBlackMage = d.game.add.button(64, 256, 'blackMage', avatar('blackMage'))
+
       Client.askNewPlayer()
     },
     startGame: function () {
