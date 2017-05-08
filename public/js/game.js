@@ -19,6 +19,7 @@ const gameFunc = function() {
       d.game.load.spritesheet('fatKid', 'sprites/fat-kid.png', 20, 32)
       d.game.load.spritesheet('blackMage', 'sprites/black-mage.png', 20, 32)
       d.game.load.image('arrow', 'sprites/Arrow.png')
+      d.game.load.image('arrowSide', 'sprites/Arrow copy.png')
       d.game.load.image('bow', 'sprites/bow-crop.png')
       d.game.load.image('ground', 'sprites/platform.png')
       d.game.load.image('brick', 'sprites/brick.png')

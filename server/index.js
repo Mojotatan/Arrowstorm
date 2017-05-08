@@ -68,6 +68,21 @@ io.on('connection', function(socket){
 
 	socket.on('playerHasShot', function(data){
 		socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', {})
+
+// 	socket.on('playerAimIsRight', function(aimRight){
+// 		socket.broadcast.emit('opponentAimRight', {aimRight})
+// 	})
+
+// 	socket.on('playerAimIsUp', function(aimUp){
+// 		socket.broadcast.emit('opponentAimUp', {aimUp})
+// 	})
+
+// 	socket.on('playerAimIsLeft', function(aimLeft){
+// 		socket.broadcast.emit('opponentAimLeft', {aimLeft})
+// 	})
+
+// 	socket.on('playerAimIsDown', function(aimDown){
+// 		socket.broadcast.emit('opponentAimDown', {aimDown})
 	})
 
 })

@@ -1,5 +1,6 @@
 export default function createPlayer (d, spriteName, player, position) {
   // character sprites are 20 by 32
+  console.log()
 
   d[player] = d.game.add.sprite(position.x, position.y, spriteName)
   d[player].scale.set(2, 2)
@@ -14,9 +15,9 @@ export default function createPlayer (d, spriteName, player, position) {
   // the last sprite is a standing animation if there is one
   d[player].animations.add('walk', [0, 1], 10, true)
 
-  d.bow = d.game.add.sprite(0, 0, 'bow')
-  d.bow.anchor.set(1, .5)
+  d[player].bow = d.game.add.sprite(0, 0, 'bow')
+  d[player].bow.anchor.set(1, .5)
 
-  d[player].addChild(d.bow)
+  d[player].addChild(d[player].bow)
 
 }
