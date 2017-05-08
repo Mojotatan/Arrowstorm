@@ -18,12 +18,14 @@ Client.askNewPlayer = function(){
 
 // assigning player 1 to first player that logs on
 Client.socket.on('assignedPlayer1', function(data){
+	console.log('assigned to player1')
 	d.currentPlayer = "player1"
 	d.myGame = data
 })
 
 // assigning player 2 to second player that logs on
 Client.socket.on('assignedPlayer2', function(data){
+	console.log('assigned to player2')
 	d.currentPlayer = "player2"
 	d.myGame = data
 })

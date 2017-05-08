@@ -79,9 +79,9 @@ const gameFunc = function() {
     },
     startGame: function () {
       // d.game.state.start('runGame')
-      if (d.gameReady.text === 'ready!') {
+      // if (d.gameReady.text === 'ready!') {
         Client.letsGo(d.myGame.id)
-      }
+      // }
     },
     leaveGame: function() {
       d.game.state.start('menu')
