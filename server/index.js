@@ -60,8 +60,24 @@ io.on('connection', function(socket){
 		socket.broadcast.emit('opponentHasMoved', newPos)
 	})
 
-	socket.on('playerHasShot', function(){
-		socket.broadcast.emit('opponentHasShot', {})
+	socket.on('playerHasShot', function(player){
+		socket.broadcast.emit('opponentHasShot', {player})
+	})
+
+	socket.on('playerAimIsRight', function(aimRight){
+		socket.broadcast.emit('opponentAimRight', {aimRight})
+	})
+
+	socket.on('playerAimIsUp', function(aimUp){
+		socket.broadcast.emit('opponentAimUp', {aimUp})
+	})
+
+	socket.on('playerAimIsLeft', function(aimLeft){
+		socket.broadcast.emit('opponentAimLeft', {aimLeft})
+	})
+
+	socket.on('playerAimIsDown', function(aimDown){
+		socket.broadcast.emit('opponentAimDown', {aimDown})
 	})
 
 })

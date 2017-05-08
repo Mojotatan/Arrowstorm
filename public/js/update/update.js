@@ -1,6 +1,6 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
-import {playerMoved} from '../client'
+import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
@@ -56,9 +56,16 @@ export default function updateFunc() {
     // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
     d.aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
+    d.aimLeft.onDown.add(() => onAimLeft(d.aimLeft.isDown))
+
     d.aimUp = d.game.input.keyboard.addKey(Phaser.Keyboard.W)
+    d.aimUp.onDown.add(() => onAimUp(d.aimUp.isDown))
+
     d.aimRight = d.game.input.keyboard.addKey(Phaser.Keyboard.D)
+    d.aimRight.onDown.add(() => onAimRight(d.aimRight.isDown))
+
     d.aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
+    d.aimDown.onDown.add(() => onAimDown(d.aimDown.isDown))
 
 
     // reset various parameters
