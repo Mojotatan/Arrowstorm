@@ -1,4 +1,5 @@
 const fs = require('fs')
+const axios = require('axios')
 
 const mapToJson = function(obj, name) {
   let json = JSON.stringify(obj)
@@ -35,8 +36,22 @@ for (let i = 0; i < 20; i++) {
   }
 }
 obj.background = {
-  file: 'night', //for space use scale .3333
-  scale: 10
+  file: 'space',
+  scale: .3333
 }
 
 mapToJson(obj, 'default.json')
+
+const Map = require('../../server/db').Map
+
+Map.sync()
+.then(() => {
+  return Map.create({
+    name: 'default',
+    creator: 'mojo',
+    json: JSON.stringify(obj)
+  })
+})
+.then(() => {
+  console.log('sweet')
+})

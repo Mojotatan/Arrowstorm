@@ -1,3 +1,4 @@
+import axios from 'axios'
 import updateFunc from './update/update'
 import createFunc from './create/create'
 //import Phaser from '../phaser/phaser'
@@ -29,14 +30,20 @@ const gameFunc = function() {
       d.game.load.image('stone', 'sprites/stone.png')
       d.game.load.image('wood', 'sprites/wood.png')
       d.game.load.image('cobble', 'sprites/cobblestone.png')
-      // d.game.load.image('space', 'sprites/space-crop.png')
+      d.game.load.image('space', 'sprites/space-crop.png')
       d.game.load.spritesheet('shieldWall', 'sprites/shieldwall.png')
       d.game.load.image('spikes', 'sprites/spikes.png')
       d.game.load.image('start', 'sprites/start-btn.png')
       d.game.load.image('treasure', 'sprites/treasure-chest.png')
+      d.game.load.json('maps', '/maps')
     },
     create: function() {
-      d.game.state.start('menu')
+      axios.get('/maps')
+      .then(maps => {
+        // console.log(maps)
+        d.maps = maps.data
+        d.game.state.start('menu')
+      })
     }
   }
 
