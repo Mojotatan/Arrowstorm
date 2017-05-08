@@ -86,5 +86,5 @@ export default function createFunc() {
   d.treasuresArray = []
 
   // Checks for new player - keep this at the end of this function
-  Client.askNewPlayer();
+  // Client.askNewPlayer();
 }

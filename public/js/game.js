@@ -64,9 +64,11 @@ const gameFunc = function() {
     create: function() {
       d.startBtn = d.game.add.button(384, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
+      Client.askNewPlayer()
     },
     startGame: function () {
-      d.game.state.start('runGame')
+      // d.game.state.start('runGame')
+      Client.letsGo()
     }
   }
 

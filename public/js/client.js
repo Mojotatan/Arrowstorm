@@ -28,9 +28,17 @@ Client.socket.on('assignedPlayer2', function(data){
 
 Client.socket.on('newGame', function(data) {
 	if (d.game.state.current === 'menu') {
-		d.mapBtn = d.game.add.button(0, 256, 'start', this.startMap, this)
+		d.mapBtn = d.game.add.button(0, 256, 'start', function() {d.game.state.start('newGameOptions')})
 	}
 })
+
+Client.socket.on('start', function(data) {
+	d.game.state.start('runGame')
+})
+
+Client.letsGo = function() {
+	Client.socket.emit('start', {})
+}
 
 // Client.socket.on('remove', function(id){
 // 	d.playerMap[id].destroy()

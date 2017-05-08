@@ -50,6 +50,11 @@ io.on('connection', function(socket){
 		socket.broadcast.emit('newGame', data)
 	})
 
+	socket.on('start', function(data) {
+		console.log('let the games begin')
+		io.emit('start', data)
+	})
+
 	socket.on('disconnect', function(){
 		// io.emit('remove', socket.player.id)
 		console.log('the disconnected user', socket.id)
