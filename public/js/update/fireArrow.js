@@ -1,21 +1,19 @@
 import createArrow from '../create/createArrow'
 import { arrowShot } from '../client'
 
-export default function fireArrow(d, opponent) {
+export default function fireArrow(d, opponentBool, opponentName) {
 
     let currPlayer
 
     if (d.currentPlayer) {
         currPlayer = d.currentPlayer
     }
-    
-    if (opponent === true) {
-        if (d[currPlayer] === 'player1') {
-            createArrow(d, d['player2'])
-        }
-        else {
-            createArrow(d, d['player1'])
-        }
+
+    if (opponentBool === true) {
+        console.log('the opponent is', opponentName, d[opponentName])
+        let opponent = opponentName.player.player
+        createArrow(d, d[opponent])
+
     }
 
     else {
@@ -33,7 +31,9 @@ export default function fireArrow(d, opponent) {
         lastArrowShotAt = d.game.time.now
 
         if (d[currPlayer].numArrows > 0) {
-                arrowShot()
+                console.log('the player who shot in fireArrow', currPlayer, opponentBool)
+                let playerWhoShot = currPlayer
+                arrowShot(playerWhoShot)
                 createArrow(d, d[currPlayer])
         }
 
@@ -88,7 +88,7 @@ export default function fireArrow(d, opponent) {
         d.arrow.body.acceleration.x = 1000
     }
 
-    if (opponent === false) {
+    if (opponentBool === false) {
         d[currPlayer].numArrows--
     }
 
