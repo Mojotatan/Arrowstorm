@@ -44,6 +44,7 @@ export default function fireArrow(d, opponentBool, opponentName) {
 
     if (d.aimUp.isDown) {
         if (d.aimLeft.isDown) {
+            console.log('player in up left fireArrow is', d[currPlayer])
             d.arrow.rotation = -0.785
             d.arrow.body.velocity.y = -1000
             d.arrow.body.velocity.x = -1000
@@ -87,6 +88,11 @@ export default function fireArrow(d, opponentBool, opponentName) {
         d.arrow.body.velocity.x = -1414
         d.arrow.body.acceleration.x = 1000
     }
+
+    // if (d.arrow.type === 'bouncyArrow') {
+    //     d.arrow.rotation = 0
+    //     d.arrow.body.acceleration.set(0, 0)
+    // }
 
     if (opponentBool === false) {
         d[currPlayer].numArrows--

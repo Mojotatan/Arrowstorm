@@ -4,6 +4,7 @@ import {playerMoved} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
+import createWings from '../create/createWings'
 
 //import Client from '../client'
 console.log('before update', d)
@@ -166,11 +167,11 @@ export default function updateFunc() {
     }
 
     // arrow collisions
-    let arrowHitleftWall = d.game.physics.arcade.collide(d.arrow, d.leftWall)
-    let arrowHitrightWall = d.game.physics.arcade.collide(d.arrow, d.rightWall)
-    let arrowHitPlatforms = d.game.physics.arcade.collide(d.arrow, d.platforms)
 
     d.arrowsArray.forEach(arrow => {
+
+      let arrowHitPlatforms = d.game.physics.arcade.collide(arrow, d.platforms)
+      let arrowHitSpikes = d.game.physics.arcade.collide(arrow, d.spikes)
 
       if (arrow.body.velocity.x > 0) {
         arrow.angle += 1
@@ -179,7 +180,7 @@ export default function updateFunc() {
         arrow.angle -= 1
       }
 
-      if (arrow && arrow.type === 'regular' && (arrowHitPlatforms || arrowHitrightWall || arrowHitleftWall)) {
+      if (arrow && arrow.type === 'regular' && (arrowHitPlatforms || arrowHitSpikes)) {
         arrow.body.velocity.x = 0
         arrow.body.velocity.y = 0
         arrow.body.acceleration = 0
@@ -216,9 +217,9 @@ export default function updateFunc() {
             d.player1.numArrows += 2
             console.log('player1 numArrows is', d.player1.numArrows)
         } else if (d.treasure.payload === 'wings') {
+            createWings(d, 'player1')
             d.player1.wings = true
             d.player1.wingStart = d.game.time.now
-            console.log('time of wings start', d.player1.wingStart)
             console.log('d.treasure.payload is wings')
         } else if (d.treasure.payload === 'invisibility') {
             d.player1.invisibility = true
@@ -236,6 +237,7 @@ export default function updateFunc() {
     if (treasureHitPlayer2) {
         if (d.treasure.payload === 'extraArrows') {
             d.player2.numArrows += 2
+            console.log('player2 numArrows is', d.player2.numArrows)
         } else if (d.treasure.payload === 'wings') {
             d.player2.wings = true
             d.player2.wingStart = d.game.time.now
@@ -253,20 +255,24 @@ export default function updateFunc() {
         d.treasure.kill()
     }
 
-    if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 10000) {
+    if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 5000) {
         d.player1.wings = false
+        d.player1.wingLeft.kill()
+        d.player1.wingRight.kill()
     }
 
-    if (d.player2.wings === true && d.game.time.now - d.player2.wingStart > 10000) {
+    if (d.player2.wings === true && d.game.time.now - d.player2.wingStart > 5000) {
         d.player2.wings = false
+        d.player2.wingLeft.kill()
+        d.player2.wingRight.kill()
     }
 
-    if (d.player1.invisibility === true && d.game.time.now - d.player1.invisibleStart > 10000) {
+    if (d.player1.invisibility === true && d.game.time.now - d.player1.invisibleStart > 5000) {
         d.player1.invisibility = false
         d.player1.alpha = 1
     }
 
-    if (d.player2.invisibility === true && d.game.time.now - d.player2.invisibleStart > 10000) {
+    if (d.player2.invisibility === true && d.game.time.now - d.player2.invisibleStart > 5000) {
         d.player2.invisibility = false
         d.player2.alpha = 1
     }
