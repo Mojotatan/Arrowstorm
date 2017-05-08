@@ -29,7 +29,7 @@ const gameFunc = function() {
       d.game.load.image('stone', 'sprites/stone.png')
       d.game.load.image('wood', 'sprites/wood.png')
       d.game.load.image('cobble', 'sprites/cobblestone.png')
-      d.game.load.image('space', 'sprites/space-crop.png')
+      // d.game.load.image('space', 'sprites/space-crop.png')
       d.game.load.spritesheet('shieldWall', 'sprites/shieldwall.png')
       d.game.load.image('spikes', 'sprites/spikes.png')
       d.game.load.image('start', 'sprites/start-btn.png')
@@ -75,6 +75,9 @@ const gameFunc = function() {
   let runGame = {
     preload: function () {
       d.game.load.text('map', 'maps/default.json')
+      // d.map = JSON.parse(d.game.cache.getText('map'))
+      // d.game.load.image('background', d.map.background.file)
+      d.game.load.image('night', 'sprites/night.png')
     },
     create: function () {createFunc(d)},
     update: function () {updateFunc(d)}
