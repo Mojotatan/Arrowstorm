@@ -88,7 +88,7 @@ export default function createFunc() {
 
   //create treasures
   //d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
-  d.treasuresArray = ['bouncyArrow']
+  d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
   createTreasureChest(d.game.world.centerX, 0)
   d.player1.nextArrowType = 'regular'
   d.player2.nextArrowType = 'regular'
