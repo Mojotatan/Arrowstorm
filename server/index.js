@@ -25,28 +25,52 @@ let allPlayersObj = {
 	player2: null,
 }
 
+let allGames = []
+let count = 0
+
 io.on('connection', function(socket){
 	console.log('connected new user!', socket.id)
 	socket.on('newPlayer', function(){
-		let socketsArr = Object.keys(io.sockets.connected)
+		//io.sockets.connected[]
 		// assiging players their number (i.e. player1, player2) as soon as they come online
 		if (allPlayersObj.player1 === null) {
 			allPlayersObj.player1 = socket.id
-			io.sockets.connected[socket.id].emit('assignedPlayer1', {player: socket.id})
+			socket.emit('assignedPlayer1', {player: socket.id})
 		}
 		else if (allPlayersObj.player2 === null) {
 			allPlayersObj.player2 = socket.id
-			io.sockets.connected[socket.id].emit('assignedPlayer2', {player: socket.id})
+			socket.emit('assignedPlayer2', {player: socket.id})
 		}
 		console.log('the players obj on connection', allPlayersObj)
 		//socket.emit('allPlayers', getAllPlayers())
 
-		socket.emit('newPlayer', socket.player)
+		// socket.emit('newPlayer', socket.player)
 	})
 
+	// logic for creating and joining games via lobby
 	socket.on('newGame', function(data) {
 		console.log('new game bby')
-		socket.broadcast.emit('newGame', data)
+		allGames.push({id: count, player1: socket.id, player2: null})
+		socket.join(`game ${count}`)
+		socket.emit('assignedPlayer1', allGames[count])
+		socket.broadcast.emit('newGame', allGames[count].id)
+		count++
+	})
+	socket.on('joinGame', function(id) {
+		if (!allGames[id].player1) {
+			allGames[id].player1 = socket.id
+			socket.emit('assignedPlayer1', allGames[id])
+			socket.join(`game ${id}`)
+		} else if (!allGames[id].player2) {
+			allGames[id].player2 = socket.id
+			socket.emit('assignedPlayer2', allGames[id])
+			socket.join(`game ${id}`)
+		}
+		io.in(`game ${id}`).emit('playerJoined', allGames[id])
+	})
+	socket.on('start', function(id) {
+		console.log('let the games begin')
+		io.in(`game ${id}`).emit('start')
 	})
 
 	socket.on('disconnect', function(){
@@ -57,11 +81,11 @@ io.on('connection', function(socket){
 	})
 
 	socket.on('playerHasMoved', function(newPos){
-		socket.broadcast.emit('opponentHasMoved', newPos)
+		socket.broadcast.to(`game ${newPos.id}`).emit('opponentHasMoved', newPos)
 	})
 
-	socket.on('playerHasShot', function(){
-		socket.broadcast.emit('opponentHasShot', {})
+	socket.on('playerHasShot', function(data){
+		socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', {})
 	})
 
 })

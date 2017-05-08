@@ -31,7 +31,7 @@ export default function fireArrow(d, opponentBool, opponentName) {
 
         if (d[currPlayer].numArrows > 0) {
               let playerWhoShot = currPlayer
-              arrowShot(playerWhoShot)
+              arrowShot(d.myGame.id, playerWhoShot)
               createArrow(d, d[currPlayer], d[currPlayer].nextArrowType)
         }
 
