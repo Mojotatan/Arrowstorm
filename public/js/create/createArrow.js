@@ -2,9 +2,6 @@ export default function createArrow(d, player, arrowType) {
 
   // Create each arrow if player.numArrows > 0
 
-  console.log('players nextArrowType in createArrow is', player.nextArrowType)
-  console.log('arrowType passed into createArrow is', arrowType)
-
   if (arrowType === 'regular') {
     let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
 
@@ -47,7 +44,5 @@ export default function createArrow(d, player, arrowType) {
 
     d.arrow = arrow
   }
-
-  console.log('d.arrow.type from createArrow is', d.arrow.type)
 
 }
