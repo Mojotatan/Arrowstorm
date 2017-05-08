@@ -34,9 +34,11 @@ export default function fireArrow(d, opponentBool, opponentName) {
               arrowShot(playerWhoShot)
               createArrow(d, d[currPlayer], d[currPlayer].nextArrowType)
         }
-      
+
         // If there aren't any arrows available then don't shoot
-        if (!d.arrow || d[currPlayer].numArrows <= 0) return
+        // if (!d.arrow || d[currPlayer].numArrows <= 0) return
+
+        if (d[currPlayer].numArrows <= 0) return
 
     }
 
