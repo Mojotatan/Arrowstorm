@@ -1,22 +1,48 @@
-export default function createArrow(d, player) {
+export default function createArrow(d, player, arrowType) {
 
   // Create each arrow if player.numArrows > 0
 
-  let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
+  if (arrowType === 'regular') {
+    let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
 
-  arrow.scale.set(2, 2)
+    arrow.scale.set(2, 2)
 
-  // Set its pivot point to the center of the arrow
-  arrow.anchor.setTo(0.5, 0.5)
+    // Set its pivot point to the center of the arrow
+    arrow.anchor.setTo(0.5, 0.5)
 
-  // Enable physics on the arrow
-  d.game.physics.arcade.enable(arrow)
-  arrow.body.gravity.y = 1500
+    // Enable physics on the arrow
+    d.game.physics.arcade.enable(arrow)
+    arrow.body.gravity.y = 1500
 
-  arrow.checkWorldBounds = true
+    arrow.checkWorldBounds = true
 
-  d.arrowsArray.push(arrow);
+    arrow.type = 'regular'
 
-  d.arrow = arrow
+    d.arrowsArray.push(arrow);
+
+    d.arrow = arrow
+  } else {
+    let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
+
+    arrow.scale.set(2, 2)
+
+    // Set its pivot point to the center of the arrow
+    arrow.anchor.setTo(0.5, 0.5)
+
+    // Enable physics on the arrow
+    d.game.physics.arcade.enable(arrow)
+
+    arrow.checkWorldBounds = true
+
+    arrow.body.bounce.set(1)
+
+    arrow.type = 'bouncyArrow'
+
+    arrow.lifespan = 5000
+
+    d.arrowsArray.push(arrow);
+
+    d.arrow = arrow
+  }
 
 }
