@@ -1,6 +1,7 @@
 import createArrow from '../create/createArrow'
 import { arrowShot } from '../client'
 
+
 export default function fireArrow(d, opponent) {
 
     let currPlayer
@@ -8,13 +9,15 @@ export default function fireArrow(d, opponent) {
     if (d.currentPlayer) {
         currPlayer = d.currentPlayer
     }
-    
+
+    console.log('players nextArrowType in fireArrow is', d[currPlayer].nextArrowType)
+
     if (opponent === true) {
         if (d[currPlayer] === 'player1') {
-            createArrow(d, d['player2'])
+            createArrow(d, d['player2'], d[currPlayer].nextArrowType)
         }
         else {
-            createArrow(d, d['player1'])
+            createArrow(d, d['player1'], d[currPlayer].nextArrowType)
         }
     }
 
@@ -33,13 +36,14 @@ export default function fireArrow(d, opponent) {
         lastArrowShotAt = d.game.time.now
 
         if (d[currPlayer].numArrows > 0) {
-                arrowShot()
-                createArrow(d, d[currPlayer])
+            arrowShot()
+            createArrow(d, d[currPlayer], d[currPlayer].nextArrowType)
         }
 
+        console.log('players nextArrowType in fireArrow after calling createArrow is', d[currPlayer].nextArrowType)
         // If there aren't any arrows available then don't shoot
         if (!d.arrow || d[currPlayer].numArrows <= 0) return
-        
+
     }
 
     if (d.aimUp.isDown) {
@@ -90,6 +94,7 @@ export default function fireArrow(d, opponent) {
 
     if (opponent === false) {
         d[currPlayer].numArrows--
+        d[currPlayer].nextArrowType = 'regular'
     }
 
 }

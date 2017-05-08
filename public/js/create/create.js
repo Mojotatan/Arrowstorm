@@ -2,6 +2,7 @@ import Client from '../client'
 import createPlayer from './player'
 import fireArrow from '../update/fireArrow'
 import d from '../game'
+import createTreasureChest from './createTreasureChest'
 
 export default function createFunc() {
   // Obj for all players
@@ -82,8 +83,12 @@ export default function createFunc() {
 
   d.arrowsArray = []
 
-  //create treasures array
-  d.treasuresArray = []
+  //create treasures
+  //d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
+  d.treasuresArray = ['bouncyArrow']
+  createTreasureChest(d.game.world.centerX, 0)
+  d.player1.nextArrowType = 'regular'
+  d.player2.nextArrowType = 'regular'
 
   // Checks for new player - keep this at the end of this function
   Client.askNewPlayer();
