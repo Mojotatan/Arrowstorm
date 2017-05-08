@@ -54,8 +54,8 @@ io.on('connection', function(socket){
 			socket.broadcast.emit('opponentHasMoved', newPos)
 		})
 
-		socket.on('playerHasShot', function(){
-			socket.broadcast.emit('opponentHasShot', {})
+		socket.on('playerHasShot', function(player){
+			socket.broadcast.emit('opponentHasShot', {player})
 		})
 	})
 })

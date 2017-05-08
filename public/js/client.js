@@ -36,17 +36,17 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 	opponentPos(newOpponentPos)
 })
 
-Client.socket.on('opponentHasShot', function(){
+Client.socket.on('opponentHasShot', function(opponentName){
 	console.log('the opponent has shot!!')
-	fireArrow(d, true)
+	fireArrow(d, true, opponentName)
 })
 
 export function playerMoved(player, x, y, frame, scale) {
 	Client.socket.emit('playerHasMoved', {x, y, frame, scale})
 }
 
-export function arrowShot() {
-	Client.socket.emit('playerHasShot', {})
+export function arrowShot(playerName) {
+	Client.socket.emit('playerHasShot', {player: playerName})
 }
 
 export default Client
