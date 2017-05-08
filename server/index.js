@@ -58,8 +58,6 @@ io.on('connection', function(socket){
 	socket.on('disconnect', function(){
 		// io.emit('remove', socket.player.id)
 		console.log('the disconnected user', socket.id)
-		removeSocketPlayer(socket.id)
-		console.log('the playersObj on disconnect', allPlayersObj)
 	})
 
 	socket.on('playerHasMoved', function(newPos){

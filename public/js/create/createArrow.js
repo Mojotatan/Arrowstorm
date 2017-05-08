@@ -37,11 +37,11 @@ export default function createArrow(d, player, arrowType) {
 
     arrow.checkWorldBounds = true
 
-    arrow.body.bounce.set(1)
+    arrow.body.bounce.set(1.2)
 
     arrow.type = 'bouncyArrow'
 
-    arrow.lifespan = 5000
+    arrow.lifespan = 2000
 
     d.arrowsArray.push(arrow);
 

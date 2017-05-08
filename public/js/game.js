@@ -30,11 +30,12 @@ const gameFunc = function() {
       d.game.load.image('stone', 'sprites/stone.png')
       d.game.load.image('wood', 'sprites/wood.png')
       d.game.load.image('cobble', 'sprites/cobblestone.png')
-      // d.game.load.image('space', 'sprites/space-crop.png')
+       d.game.load.image('space', 'sprites/space-crop.png')
       d.game.load.spritesheet('shieldWall', 'sprites/shieldwall.png')
       d.game.load.image('spikes', 'sprites/spikes.png')
       d.game.load.image('start', 'sprites/start-btn.png')
       d.game.load.image('treasure', 'sprites/treasure-chest.png')
+      d.game.load.image('wing', 'sprites/wing.png')
     },
     create: function() {
       d.game.state.start('menu')
@@ -46,7 +47,7 @@ const gameFunc = function() {
     create: function () {
       d.startBtn = d.game.add.button(0, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
-      
+
       d.mapBtn = d.game.add.button(768, 0, 'start', this.startMap, this)
       d.mapBtn.scale.set(4, 4)
 
