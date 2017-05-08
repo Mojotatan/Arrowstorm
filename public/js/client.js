@@ -17,6 +17,8 @@ Client.askNewPlayer = function(){
 // })
 
 // assigning player 1 to first player that logs on
+// It seems weird to me that we need separate events for assigning players 1 and 2.
+// Why isn't there some sort of assignPlayer event that handles everything?
 Client.socket.on('assignedPlayer1', function(data){
 	console.log('assigned to player1')
 	d.currentPlayer = "player1"
@@ -32,6 +34,7 @@ Client.socket.on('assignedPlayer2', function(data){
 
 Client.socket.on('newGame', function(data) {
 	if (d.game.state.current === 'menu') {
+		// This is going to get messy REALLY fast. Where else can we offload UI logic?
 		let newGame = new Phaser.Button(d.game, 0, 256, 'start', function() {
 			Client.socket.emit('joinGame', this.id)
 			d.game.state.start('newGameOptions')
@@ -43,7 +46,7 @@ Client.socket.on('newGame', function(data) {
 
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
-	if (d.game.state.current === 'newGameOptions') { 
+	if (d.game.state.current === 'newGameOptions') {
 		if (d.myGame.player1) d.lobbyP1.text = `Player 1: ${d.myGame.player1}`
 		if (d.myGame.player2) d.lobbyP2.text = `Player 2: ${d.myGame.player2}`
 		if (data.player1 && data.player2) d.gameReady.text = 'ready!'
@@ -55,6 +58,7 @@ Client.socket.on('start', function() {
 	d.game.state.start('runGame')
 })
 
+// Maybe don't commit things you know don't work?
 Client.letsGo = function(id) {
 	// this is supposed to remove games that launch but it isn't working rn so whatevs
 	// d.lobbyGames.children.forEach((child, index) => {

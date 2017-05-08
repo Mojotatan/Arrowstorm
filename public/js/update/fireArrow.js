@@ -41,7 +41,7 @@ export default function fireArrow(d, opponentBool, opponentName) {
         if (d[currPlayer].numArrows <= 0) return
 
     }
-
+// magic numbers everywhere
     if (d.aimUp.isDown) {
         if (d.aimLeft.isDown) {
             d.arrow.rotation = -0.785

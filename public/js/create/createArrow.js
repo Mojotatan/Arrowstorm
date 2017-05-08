@@ -4,6 +4,7 @@ export default function createArrow(d, player, arrowType) {
   console.log('the current player in createArrow', d[player].bow.world)
   let currPlayer = d.currentPlayer
 
+//inheritance?
   if (arrowType === 'regular') {
     //let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
     let arrow  = d.game.add.sprite(d[player].bow.world.x, d[player].bow.world.y, 'arrow')

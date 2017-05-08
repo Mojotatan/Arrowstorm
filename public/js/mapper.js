@@ -39,4 +39,6 @@ obj.background = {
   scale: 10
 }
 
+// Now that we have one map in JSON, we should really write a function to convert that map to
+// the objet representation we see here. This code can be automated
 mapToJson(obj, 'default.json')
