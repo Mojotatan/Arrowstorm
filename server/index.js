@@ -65,7 +65,7 @@ io.on('connection', function(socket){
 	})
 
 	socket.on('playerHasShot', function(data){
-		socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', {})
+		socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data.player)
 
 // 	socket.on('playerAimIsRight', function(aimRight){
 // 		socket.broadcast.emit('opponentAimRight', {aimRight})

@@ -288,14 +288,14 @@ export default function updateFunc() {
       playerMoved(d.myGame.id, d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x, d.player1.bow.position, d.player1.bow.rotation) //just sending the scale.x not the entire obj
     }
     else if (d.currentPlayer === 'player2') {
-      playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)>>>>>>> dev
+      playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)
     }
   }
 
 }
 
 export function opponentPos(positionObj) {
-    console.log('rotation is ',positionObj.rotation)
+    // console.log('rotation is ',positionObj.rotation)
   if (d.currentPlayer === 'player1') {
     d.player2.x = positionObj.x
     d.player2.y = positionObj.y

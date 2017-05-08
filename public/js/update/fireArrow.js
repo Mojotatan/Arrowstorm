@@ -10,7 +10,8 @@ export default function fireArrow(d, opponentBool, opponentName) {
     }
 
     if (opponentBool === true) {
-        let opponent = opponentName.player.player
+        let opponent = opponentName
+        console.log('my name is', opponentName)
         createArrow(d, opponent, d[currPlayer].nextArrowType)
     }
 
