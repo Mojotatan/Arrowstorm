@@ -31,12 +31,14 @@ export default function fireArrow(d, opponentBool, opponentName) {
         if (d[currPlayer].numArrows > 0) {
               let playerWhoShot = currPlayer
               console.log('player shot in fireArrow', d, d.aimLeft)
-              arrowShot(playerWhoShot)
+              arrowShot(d.myGame.id, playerWhoShot)
               createArrow(d, currPlayer, d[currPlayer].nextArrowType)
         }
-      
+
         // If there aren't any arrows available then don't shoot
-        if (!d.arrow || d[currPlayer].numArrows <= 0) return
+        // if (!d.arrow || d[currPlayer].numArrows <= 0) return
+
+        if (d[currPlayer].numArrows <= 0) return
 
     }
 

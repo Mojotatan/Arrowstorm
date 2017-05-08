@@ -40,6 +40,18 @@ export default function updateFunc() {
       d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
     }
 
+    // Treasure chest collisions
+    let treasureHitPlatforms = d.game.physics.arcade.collide(d.treasure, d.platforms)
+    let treasureHitPlayer1 = d.game.physics.arcade.collide(d.treasure, d.player1)
+    let treasureHitPlayer2 = d.game.physics.arcade.collide(d.treasure, d.player2)
+
+    if (treasureHitPlatforms) {
+      d.treasure.body.velocity.x = 0
+      d.treasure.body.velocity.y = 0
+      d.treasure.body.acceleration = 0
+      d.treasure.body.gravity.y = 0
+      d.treasure.body.immovable = true
+    }
 
     // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
@@ -101,9 +113,9 @@ export default function updateFunc() {
     }
 
     if (cursors.up.isDown && d[currPlayer].body.touching.down && hitPlatform) {
+      //console.log('jumping??')
       d[currPlayer].body.velocity.y = -600
     }
-
     else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && hitPlatform) {
       d[currPlayer].body.velocity.y = -600
       let dir = d[currPlayer].body.touching.right ? -1 : 1
@@ -111,6 +123,11 @@ export default function updateFunc() {
       d[currPlayer].scale.x *= -1
       d[currPlayer].forceJump = true
       d[currPlayer].jump = d[currPlayer].body.touching.right ? 'left' : 'right'
+    }
+
+    // flying with wings
+    if (cursors.up.isDown && d.treasure.payload === 'wings' && d[currPlayer].wings === true) {
+      d[currPlayer].body.velocity.y = -300
     }
 
     // you can turn your player by either moving in a direction or by aiming in a direction
@@ -160,24 +177,23 @@ export default function updateFunc() {
     let arrowHitrightWall = d.game.physics.arcade.collide(d.arrow, d.rightWall)
     let arrowHitPlatforms = d.game.physics.arcade.collide(d.arrow, d.platforms)
 
-    if (d.arrow) {
-      if (d.arrow.body.velocity.x > 0) {
-        d.arrow.angle += 1
-      }
-      if (d.arrow.body.velocity.x < 0) {
-        d.arrow.angle -= 1
-      }
-    }
-
-    if (d.arrow && d.arrow.type === 'regular' && (arrowHitPlatforms || arrowHitrightWall || arrowHitleftWall)) {
-      d.arrow.body.velocity.x = 0
-      d.arrow.body.velocity.y = 0
-      d.arrow.body.acceleration = 0
-      d.arrow.body.gravity.y = 0
-      d.arrow.body.immovable = true
-    }
-
     d.arrowsArray.forEach(arrow => {
+
+      if (arrow.body.velocity.x > 0) {
+        arrow.angle += 1
+      }
+      if (arrow.body.velocity.x < 0) {
+        arrow.angle -= 1
+      }
+
+      if (arrow && arrow.type === 'regular' && (arrowHitPlatforms || arrowHitrightWall || arrowHitleftWall)) {
+        arrow.body.velocity.x = 0
+        arrow.body.velocity.y = 0
+        arrow.body.acceleration = 0
+        arrow.body.gravity.y = 0
+        arrow.body.immovable = true
+      }
+
       if (d.game.physics.arcade.collide(arrow, d.player1)) {
         console.log('arrow in collision with player', arrow)
         if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
@@ -201,34 +217,24 @@ export default function updateFunc() {
       }
     })
 
-    // Treasure chest collisions
-    let treasureHitPlatforms = d.game.physics.arcade.collide(d.treasure, d.platforms)
-    let treasureHitPlayer1 = d.game.physics.arcade.collide(d.treasure, d.player1)
-    let treasureHitPlayer2 = d.game.physics.arcade.collide(d.treasure, d.player2)
-
-    if (treasureHitPlatforms) {
-      d.treasure.body.velocity.x = 0
-      d.treasure.body.velocity.y = 0
-      d.treasure.body.acceleration = 0
-      d.treasure.body.gravity.y = 0
-      d.treasure.body.immovable = true
-    }
-
-    //d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
-
+    // player / treasure collisions
     if (treasureHitPlayer1) {
         if (d.treasure.payload === 'extraArrows') {
             d.player1.numArrows += 2
             console.log('player1 numArrows is', d.player1.numArrows)
         } else if (d.treasure.payload === 'wings') {
+            d.player1.wings = true
+            d.player1.wingStart = d.game.time.now
+            console.log('time of wings start', d.player1.wingStart)
             console.log('d.treasure.payload is wings')
         } else if (d.treasure.payload === 'invisibility') {
-            d.player1.visible = false
+            d.player1.invisibility = true
+            d.player1.alpha = 0.1
+            d.player1.invisibleStart = d.game.time.now
             console.log('d.treasure.payload is invisibility')
         } else if (d.treasure.payload === 'bouncyArrow') {
             d.player1.nextArrowType = 'bouncyArrow'
             console.log('d.treasure.payload is bouncyArrow')
-            console.log('d.player1.nextArrowType is', d.player1.nextArrowType)
         }
 
         d.treasure.kill()
@@ -238,9 +244,13 @@ export default function updateFunc() {
         if (d.treasure.payload === 'extraArrows') {
             d.player2.numArrows += 2
         } else if (d.treasure.payload === 'wings') {
+            d.player2.wings = true
+            d.player2.wingStart = d.game.time.now
             console.log('d.treasure.payload is wings')
         } else if (d.treasure.payload === 'invisibility') {
-            d.player2.visible = false
+            d.player2.invisibility = true
+            d.player2.alpha = 0.1
+            d.player2.invisibleStart = d.game.time.now
             console.log('d.treasure.payload is invisibility')
         } else if (d.treasure.payload === 'bouncyArrow') {
             d.player2.nextArrowType = 'bouncyArrow'
@@ -249,12 +259,30 @@ export default function updateFunc() {
 
         d.treasure.kill()
     }
+
+    if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 10000) {
+        d.player1.wings = false
+    }
+
+    if (d.player2.wings === true && d.game.time.now - d.player2.wingStart > 10000) {
+        d.player2.wings = false
+    }
+
+    if (d.player1.invisibility === true && d.game.time.now - d.player1.invisibleStart > 10000) {
+        d.player1.invisibility = false
+        d.player1.alpha = 1
+    }
+
+    if (d.player2.invisibility === true && d.game.time.now - d.player2.invisibleStart > 10000) {
+        d.player2.invisibility = false
+        d.player2.alpha = 1
+    }
     //console.log('the bow rotation', d[currPlayer].bow.position, d[currPlayer].bow.rotation)
     if (d.currentPlayer === 'player1') {
-      playerMoved(d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x, d.player1.bow.position, d.player1.bow.rotation) //just sending the scale.x not the entire obj
+      playerMoved(d.myGame.id, d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x, d.player1.bow.position, d.player1.bow.rotation) //just sending the scale.x not the entire obj
     }
     else if (d.currentPlayer === 'player2') {
-      playerMoved(d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)
+      playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)>>>>>>> dev
     }
   }
 

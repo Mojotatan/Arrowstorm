@@ -34,5 +34,9 @@ for (let i = 0; i < 20; i++) {
     obj.spikes.push({x: 192 + 32 * i + 16, y: 288 + 16, rotation: -1.57})
   }
 }
+obj.background = {
+  file: 'night', //for space use scale .3333
+  scale: 10
+}
 
 mapToJson(obj, 'default.json')

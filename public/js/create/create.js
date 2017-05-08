@@ -8,9 +8,12 @@ export default function createFunc() {
   // Obj for all players
   d.playerMap = {}
 
+  //parse map data
+  let map = JSON.parse(d.game.cache.getText('map'))
+
   //add background
-  d.background = d.game.add.image(0, 0, 'space')
-  d.background.scale.set(.3333, .3333)
+  d.background = d.game.add.image(192, 0, map.background.file)
+  d.background.scale.set(map.background.scale, map.background.scale)
 
   //  We're going to be using physics, so enable the Arcade Physics system
   d.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -31,9 +34,7 @@ export default function createFunc() {
   d.spikes.enableBody = true
   d.spikes.physicsBodyType = Phaser.Physics.ARCADE
 
-  //parse map data
-  let map = JSON.parse(d.game.cache.getText('map'))
-
+  // add blocks
   console.log(map)
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
@@ -41,12 +42,14 @@ export default function createFunc() {
     newBlock.body.immovable = true
   })
 
+  // add shields to map (NOT IMPLEMENTED)
   map.shields.forEach(shield => {
     let newShield = d.shields.create(shield.x, shield.y, 'shieldWall')
     newShield.body.immovable = true
     newShield.rotation = shield.rotation
   })
 
+  // add spikes to map
   map.spikes.forEach(spike => {
     let newSpike = d.spikes.create(spike.x, spike.y, 'spikes')
     newSpike.body.immovable = true
@@ -86,11 +89,11 @@ export default function createFunc() {
 
   //create treasures
   //d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
-  d.treasuresArray = ['bouncyArrow']
+  d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
   createTreasureChest(d.game.world.centerX, 0)
   d.player1.nextArrowType = 'regular'
   d.player2.nextArrowType = 'regular'
 
   // Checks for new player - keep this at the end of this function
-  Client.askNewPlayer();
+  // Client.askNewPlayer();
 }

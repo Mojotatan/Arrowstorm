@@ -30,7 +30,7 @@ const gameFunc = function() {
       d.game.load.image('stone', 'sprites/stone.png')
       d.game.load.image('wood', 'sprites/wood.png')
       d.game.load.image('cobble', 'sprites/cobblestone.png')
-      d.game.load.image('space', 'sprites/space-crop.png')
+      // d.game.load.image('space', 'sprites/space-crop.png')
       d.game.load.spritesheet('shieldWall', 'sprites/shieldwall.png')
       d.game.load.image('spikes', 'sprites/spikes.png')
       d.game.load.image('start', 'sprites/start-btn.png')
@@ -49,6 +49,8 @@ const gameFunc = function() {
       
       d.mapBtn = d.game.add.button(768, 0, 'start', this.startMap, this)
       d.mapBtn.scale.set(4, 4)
+
+      d.lobbyGames = d.game.add.group()
     },
     startGame: function () {
       Client.socket.emit('newGame', {})
@@ -65,15 +67,34 @@ const gameFunc = function() {
     create: function() {
       d.startBtn = d.game.add.button(384, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
+
+      let p1 = (d.myGame) ? d.myGame.player1 : 'BLAR'
+      let p2 = (d.myGame) ? d.myGame.player2 : 'BLAR'
+      d.gameReady = d.game.add.text(384, 128, '', {fill: '#FFFFFF'})
+      d.lobbyP1 = d.game.add.text(0, 0, `Player 1: ${p1}`, {fill: '#FFFFFF'})
+      d.lobbyP2 = d.game.add.text(0, 32, `Player 2: ${p2}`, {fill: '#FFFFFF'})
+
+      d.leaveBtn = d.game.add.button(896, 0, 'start', this.leaveGame, this)
+      d.leaveBtn.scale.set(2, 2)
+      Client.askNewPlayer()
     },
     startGame: function () {
-      d.game.state.start('runGame')
+      // d.game.state.start('runGame')
+      // if (d.gameReady.text === 'ready!') {
+        Client.letsGo(d.myGame.id)
+      // }
+    },
+    leaveGame: function() {
+      d.game.state.start('menu')
     }
   }
 
   let runGame = {
     preload: function () {
       d.game.load.text('map', 'maps/default.json')
+      // d.map = JSON.parse(d.game.cache.getText('map'))
+      // d.game.load.image('background', d.map.background.file)
+      d.game.load.image('night', 'sprites/night.png')
     },
     create: function () {createFunc(d)},
     update: function () {updateFunc(d)}
