@@ -2,6 +2,7 @@ export default function createArrow(d, player, arrowType) {
 
   // Create each arrow if player.numArrows > 0
 
+//inheritance?
   if (arrowType === 'regular') {
     let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
 

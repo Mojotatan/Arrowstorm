@@ -1,5 +1,8 @@
 import d from '../game'
+// Why is d not passed in like everywhere else?
 
+//But better yet, why not just return something we attach to d elsewhere?
+//Why do your create fucntions need to know about d?
 export default function createTreasureChest(posX, posY) {
 
   d.treasure  = d.game.add.sprite(posX, posY, 'treasure')

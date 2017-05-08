@@ -15,6 +15,9 @@ export default function createFunc() {
   d.background = d.game.add.image(192, 0, map.background.file)
   d.background.scale.set(map.background.scale, map.background.scale)
 
+  // Can we split platforms, shields, and spikes into their own objects with constructors?
+
+
   //  We're going to be using physics, so enable the Arcade Physics system
   d.game.physics.startSystem(Phaser.Physics.ARCADE);
   //set platforms
@@ -34,6 +37,9 @@ export default function createFunc() {
   d.spikes.enableBody = true
   d.spikes.physicsBodyType = Phaser.Physics.ARCADE
 
+
+  // This stuff seems like it belongs in a different function than the above
+  // Maybe each object prototype would have a render function of sorts?
   // add blocks
   console.log(map)
   map.blocks.forEach(block => {
@@ -62,6 +68,7 @@ export default function createFunc() {
   createPlayer(d, 'fatKid', 'player2', map.p2Start)
 
     // Creating left brick wall
+    // How is this all not data driven? aren't these blocks too?
     d.leftWall = d.game.add.group()
 
     for (let i = 0; i < 5; i++) {

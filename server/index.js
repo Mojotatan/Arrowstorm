@@ -5,12 +5,13 @@ const path = require('path')
 const socketio = require('socket.io')
 
 const app = express();
-const server = app.listen(3000, () => {console.log('Listening on port 3000...')})
+const server = app.listen(3000, () => {console.log('Listening on port 3000...')})  //no console log!
 //console.log('the server', server)
 const io = socketio(server)
 
 app.use(morgan('tiny'))
 
+// Do you need body parser?
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 
@@ -23,13 +24,17 @@ app.get('*', (req, res) => {
 let allGames = []
 let count = 0
 
+//How about we move your socket logic to another file.
+// You can run io.connection here and then require
+// the callback to connection
+
 io.on('connection', function(socket){
 	console.log('connected new user!', socket.id)
 
 	// logic for creating and joining games via lobby
-	socket.on('newGame', function(data) {
+	socket.on('newGame', function(data) {  //data not used
 		console.log('new game bby')
-		allGames.push({id: count, player1: socket.id, player2: null})
+		allGames.push({id: count, player1: socket.id, player2: null})  //Don't expose random IDs or null to the user.
 		socket.join(`game ${count}`)
 		console.log('Gaimes', allGames)
 		console.log('joining channel', `game ${count}`)
@@ -59,7 +64,7 @@ io.on('connection', function(socket){
 		// io.emit('remove', socket.player.id)
 		console.log('the disconnected user', socket.id)
 		removeSocketPlayer(socket.id)
-		console.log('the playersObj on disconnect', allPlayersObj)
+		console.log('the playersObj on disconnect', allPlayersObj)  //undefined variable
 	})
 
 	socket.on('playerHasMoved', function(newPos){
