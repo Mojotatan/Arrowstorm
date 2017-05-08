@@ -3,6 +3,7 @@ import fireArrow from './fireArrow'
 import {playerMoved} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
+import createTreasureChest from '../create/createTreasureChest'
 
 //import Client from '../client'
 console.log('before update', d)
@@ -10,13 +11,12 @@ console.log('before update', d)
 export default function updateFunc() {
   if (d.currentPlayer) {
     let currPlayer = d.currentPlayer
-    
 
     //console.log('the d in update is', d[currPlayer], currPlayer)
     //World wrap
     wrap(d.player1)
     wrap(d.player2)
-    
+
     if (d.arrow) wrap(d.arrow)
 
     //Define collisions
@@ -162,7 +162,7 @@ export default function updateFunc() {
       }
     }
 
-    if (arrowHitPlatforms || arrowHitrightWall || arrowHitleftWall) {
+    if (d.arrow && d.arrow.type === 'regular' && (arrowHitPlatforms || arrowHitrightWall || arrowHitleftWall)) {
       d.arrow.body.velocity.x = 0
       d.arrow.body.velocity.y = 0
       d.arrow.body.acceleration = 0
@@ -172,27 +172,76 @@ export default function updateFunc() {
 
     d.arrowsArray.forEach(arrow => {
       if (d.game.physics.arcade.collide(arrow, d.player1)) {
-        if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
+        console.log('arrow in collision with player', arrow)
+        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
+          d.player1.kill()
+          d.player1.numArrows = 0
+        } else {
           arrow.kill()
           d.arrowsArray.push(arrow)
           d.player1.numArrows++
-        } else {
-          d.player1.kill()
-          d.player1.numArrows = 0
         }
       }
 
       if (d.game.physics.arcade.collide(arrow, d.player2)) {
-        if (arrow.body.velocity.x === 0 && arrow.body.velocity.y === 0) {
-          arrow.kill()
-          d.arrowsArray.push(arrow)
-          d.player2.numArrows++
-        } else {
+        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
           d.player2.kill()
           d.player2.numArrows = 0
+        } else {
+          arrow.kill()
+          d.arrowsArray.push(arrow)
         }
       }
     })
+
+    // Treasure chest collisions
+    let treasureHitPlatforms = d.game.physics.arcade.collide(d.treasure, d.platforms)
+    let treasureHitPlayer1 = d.game.physics.arcade.collide(d.treasure, d.player1)
+    let treasureHitPlayer2 = d.game.physics.arcade.collide(d.treasure, d.player2)
+
+    if (treasureHitPlatforms) {
+      d.treasure.body.velocity.x = 0
+      d.treasure.body.velocity.y = 0
+      d.treasure.body.acceleration = 0
+      d.treasure.body.gravity.y = 0
+      d.treasure.body.immovable = true
+    }
+
+    //d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
+
+    if (treasureHitPlayer1) {
+        if (d.treasure.payload === 'extraArrows') {
+            d.player1.numArrows += 2
+            console.log('player1 numArrows is', d.player1.numArrows)
+        } else if (d.treasure.payload === 'wings') {
+            console.log('d.treasure.payload is wings')
+        } else if (d.treasure.payload === 'invisibility') {
+            d.player1.visible = false
+            console.log('d.treasure.payload is invisibility')
+        } else if (d.treasure.payload === 'bouncyArrow') {
+            d.player1.nextArrowType = 'bouncyArrow'
+            console.log('d.treasure.payload is bouncyArrow')
+            console.log('d.player1.nextArrowType is', d.player1.nextArrowType)
+        }
+
+        d.treasure.kill()
+    }
+
+    if (treasureHitPlayer2) {
+        if (d.treasure.payload === 'extraArrows') {
+            d.player2.numArrows += 2
+        } else if (d.treasure.payload === 'wings') {
+            console.log('d.treasure.payload is wings')
+        } else if (d.treasure.payload === 'invisibility') {
+            d.player2.visible = false
+            console.log('d.treasure.payload is invisibility')
+        } else if (d.treasure.payload === 'bouncyArrow') {
+            d.player2.nextArrowType = 'bouncyArrow'
+            console.log('d.treasure.payload is bouncyArrow')
+        }
+
+        d.treasure.kill()
+    }
 
     if (d.currentPlayer === 'player1') {
       playerMoved(d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x) //just sending the scale.x not the entire obj
