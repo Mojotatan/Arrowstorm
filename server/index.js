@@ -42,7 +42,6 @@ io.on('connection', function(socket){
 		//socket.emit('allPlayers', getAllPlayers())
 
 		socket.emit('newPlayer', socket.player)
-
 	})
 
 	socket.on('newGame', function(data) {
