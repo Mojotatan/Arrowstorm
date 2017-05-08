@@ -20,32 +20,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../', 'public', 'index.html'))
 })
 
-// let allPlayersObj = {
-// 	player1: null,
-// 	player2: null,
-// }
-
 let allGames = []
 let count = 0
 
 io.on('connection', function(socket){
 	console.log('connected new user!', socket.id)
-	// socket.on('newPlayer', function(){
-	// 	//io.sockets.connected[]
-	// 	// assiging players their number (i.e. player1, player2) as soon as they come online
-	// 	if (allPlayersObj.player1 === null) {
-	// 		allPlayersObj.player1 = socket.id
-	// 		socket.emit('assignedPlayer1', {player: socket.id})
-	// 	}
-	// 	else if (allPlayersObj.player2 === null) {
-	// 		allPlayersObj.player2 = socket.id
-	// 		socket.emit('assignedPlayer2', {player: socket.id})
-	// 	}
-	// 	console.log('the players obj on connection', allPlayersObj)
-	// 	//socket.emit('allPlayers', getAllPlayers())
-
-	// 	// socket.emit('newPlayer', socket.player)
-	// })
 
 	// logic for creating and joining games via lobby
 	socket.on('newGame', function(data) {
@@ -92,21 +71,3 @@ io.on('connection', function(socket){
 	})
 
 })
-
-// function removeSocketPlayer(socketID){
-// 	for (var key in allPlayersObj){
-// 		if (allPlayersObj[key] === socketID) {
-// 			allPlayersObj[key] = null
-// 		}
-// 	}
-// }
-
-// function getAllPlayers(){
-// 	var players = []
-// 	Object.keys(io.sockets.connected).forEach(function(socketID){
-// 		var player = io.sockets.connected[socketID].player
-// 		if(player) players.push(player)
-// 	})
-// 	console.log('the players are *******', players)
-// 	return players
-// }
