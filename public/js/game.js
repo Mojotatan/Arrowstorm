@@ -58,7 +58,7 @@ const gameFunc = function() {
       d.game.state.start('newGameOptions')
     },
     startMap: function() {
-      console.log('nah man')
+
       console.log(d.game.state)
       // this.game.state.start('mapEditor')
     }

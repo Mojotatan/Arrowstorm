@@ -1,7 +1,7 @@
 import createArrow from '../create/createArrow'
 import { arrowShot } from '../client'
 
-export default function fireArrow(d, opponentBool, opponentName) {
+export default function fireArrow(d, opponentBool, opponentName, shotDirection) {
 
     let currPlayer
 
@@ -11,8 +11,58 @@ export default function fireArrow(d, opponentBool, opponentName) {
 
     if (opponentBool === true) {
         let opponent = opponentName
-        console.log('my name is', opponentName)
         createArrow(d, opponent, d[currPlayer].nextArrowType)
+   
+        if (shotDirection.up) {
+            if (shotDirection.left) {
+                d.arrow.rotation = -0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (shotDirection.right) {
+                d.arrow.rotation = 0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 0
+                d.arrow.body.velocity.y = -1414
+                d.arrow.body.acceleration.y = 1000
+            }
+        } else if (shotDirection.down) {
+            if (shotDirection.left) {
+                d.arrow.rotation = -2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (shotDirection.right) {
+                d.arrow.rotation = 2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 3.14
+                d.arrow.body.velocity.y = 1414
+                d.arrow.body.acceleration.y = -1000
+            }
+        } else if (shotDirection.right || d[opponent].scale.x < 0) {
+            d.arrow.rotation = 1.57
+            d.arrow.body.velocity.x = 1414
+            d.arrow.body.acceleration.x = -1000
+        } else {
+            d.arrow.rotation = -1.57
+            d.arrow.body.velocity.x = -1414
+            d.arrow.body.acceleration.x = 1000
+        }
+
+        if (d.arrow.type === 'bouncyArrow') {
+            d.arrow.rotation = 0
+            d.arrow.body.acceleration.set(0, 0)
+        }
     }
 
     else {
@@ -31,8 +81,7 @@ export default function fireArrow(d, opponentBool, opponentName) {
 
         if (d[currPlayer].numArrows > 0) {
               let playerWhoShot = currPlayer
-              console.log('player shot in fireArrow', d, d.aimLeft)
-              arrowShot(d.myGame.id, playerWhoShot)
+              arrowShot(d.myGame.id, playerWhoShot, d[currPlayer].shotDirection)
               createArrow(d, currPlayer, d[currPlayer].nextArrowType)
         }
 
@@ -41,63 +90,63 @@ export default function fireArrow(d, opponentBool, opponentName) {
 
         if (d[currPlayer].numArrows <= 0) return
 
-    }
 
-    if (d.aimUp.isDown) {
-        if (d.aimLeft.isDown) {
-            console.log('player in up left fireArrow is', d[currPlayer])
-            d.arrow.rotation = -0.785
-            d.arrow.body.velocity.y = -1000
-            d.arrow.body.velocity.x = -1000
-            d.arrow.body.acceleration.y = 1000
-            d.arrow.body.acceleration.x = 1000
-        } else if (d.aimRight.isDown) {
-            d.arrow.rotation = 0.785
-            d.arrow.body.velocity.y = -1000
-            d.arrow.body.velocity.x = 1000
-            d.arrow.body.acceleration.y = 1000
+        if (d.aimUp.isDown) {
+            if (d.aimLeft.isDown) {
+                d.arrow.rotation = -0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (d.aimRight.isDown) {
+                d.arrow.rotation = 0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 0
+                d.arrow.body.velocity.y = -1414
+                d.arrow.body.acceleration.y = 1000
+            }
+        } else if (d.aimDown.isDown) {
+            if (d.aimLeft.isDown) {
+                d.arrow.rotation = -2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (d.aimRight.isDown) {
+                d.arrow.rotation = 2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 3.14
+                d.arrow.body.velocity.y = 1414
+                d.arrow.body.acceleration.y = -1000
+            }
+        } else if (d.aimRight.isDown || d[currPlayer].scale.x < 0) {
+            d.arrow.rotation = 1.57
+            d.arrow.body.velocity.x = 1414
             d.arrow.body.acceleration.x = -1000
         } else {
+            d.arrow.rotation = -1.57
+            d.arrow.body.velocity.x = -1414
+            d.arrow.body.acceleration.x = 1000
+        }
+
+        if (d.arrow.type === 'bouncyArrow') {
             d.arrow.rotation = 0
-            d.arrow.body.velocity.y = -1414
-            d.arrow.body.acceleration.y = 1000
+            d.arrow.body.acceleration.set(0, 0)
         }
-    } else if (d.aimDown.isDown) {
-        if (d.aimLeft.isDown) {
-            d.arrow.rotation = -2.355
-            d.arrow.body.velocity.y = 1000
-            d.arrow.body.velocity.x = -1000
-            d.arrow.body.acceleration.y = -1000
-            d.arrow.body.acceleration.x = 1000
-        } else if (d.aimRight.isDown) {
-            d.arrow.rotation = 2.355
-            d.arrow.body.velocity.y = 1000
-            d.arrow.body.velocity.x = 1000
-            d.arrow.body.acceleration.y = -1000
-            d.arrow.body.acceleration.x = -1000
-        } else {
-            d.arrow.rotation = 3.14
-            d.arrow.body.velocity.y = 1414
-            d.arrow.body.acceleration.y = -1000
+
+        if (opponentBool === false) {
+            d[currPlayer].numArrows--
+            d[currPlayer].nextArrowType = 'regular'
         }
-    } else if (d.aimRight.isDown || d[currPlayer].scale.x < 0) {
-        d.arrow.rotation = 1.57
-        d.arrow.body.velocity.x = 1414
-        d.arrow.body.acceleration.x = -1000
-    } else {
-        d.arrow.rotation = -1.57
-        d.arrow.body.velocity.x = -1414
-        d.arrow.body.acceleration.x = 1000
-    }
 
-    if (d.arrow.type === 'bouncyArrow') {
-        d.arrow.rotation = 0
-        d.arrow.body.acceleration.set(0, 0)
-    }
-
-    if (opponentBool === false) {
-        d[currPlayer].numArrows--
-        d[currPlayer].nextArrowType = 'regular'
     }
 
 }

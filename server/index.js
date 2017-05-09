@@ -65,22 +65,18 @@ io.on('connection', function(socket){
 	})
 
 	socket.on('playerHasShot', function(data){
-		socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data.player)
-
-// 	socket.on('playerAimIsRight', function(aimRight){
-// 		socket.broadcast.emit('opponentAimRight', {aimRight})
-// 	})
-
-// 	socket.on('playerAimIsUp', function(aimUp){
-// 		socket.broadcast.emit('opponentAimUp', {aimUp})
-// 	})
-
-// 	socket.on('playerAimIsLeft', function(aimLeft){
-// 		socket.broadcast.emit('opponentAimLeft', {aimLeft})
-// 	})
-
-// 	socket.on('playerAimIsDown', function(aimDown){
-// 		socket.broadcast.emit('opponentAimDown', {aimDown})
+		socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data)
 	})
 
+	socket.on('playerHasDied', function(data){
+		socket.broadcast.to(`game ${data.id}`).emit('opponentHasDied', data.player)
+	})
+
+	socket.on('arrowPickedUp', function(data){
+		socket.broadcast.to(`game ${data.id}`).emit('opponentPickedArrow', data.idx)
+	})
+
+	socket.on('playerHitTC', function(data){
+		socket.broadcast.to(`game ${data.id}`).emit('opponentHitTC', data)
+	})
 })
