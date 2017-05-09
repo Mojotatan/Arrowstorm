@@ -6,8 +6,8 @@ export default function createArrow(d, player, arrowType) {
 
   if (arrowType === 'regular') {
     //let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
-    let arrow  = d.game.add.sprite(d[player].bow.world.x, d[player].bow.world.y, 'arrow')
-
+    let arrow  = d.game.add.sprite(d[player].x, d[player].y, 'arrow')
+    console.log('the arrow x,y ', d[player].x, d[player].y)
     arrow.scale.set(2, 2)
 
     // Set its pivot point to the center of the arrow
@@ -25,7 +25,7 @@ export default function createArrow(d, player, arrowType) {
 
     d.arrow = arrow
   } else {
-    let arrow  = d.game.add.sprite(d[player].bow.world.x, d[player].bow.world.y, 'arrow')
+    let arrow  = d.game.add.sprite(d[player].x, d[player].y, 'arrow')
 
     arrow.scale.set(2, 2)
 
