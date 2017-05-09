@@ -7,6 +7,8 @@ const mapToJson = function(obj, name) {
 }
 
 let obj = {}
+obj.name = 'default'
+obj.creator = 'mojo'
 obj.p1Start = {x: 244, y: 0}
 obj.p2Start = {x: 780, y: 0}
 obj.blocks = []
@@ -46,12 +48,18 @@ const Map = require('../../server/db').Map
 
 Map.sync()
 .then(() => {
-  return Map.create({
+for (let i = 0; i < 50; i++) {
+
+// Map.sync()
+// .then(() => {
+  Map.create({
     name: 'default',
     creator: 'mojo',
     json: JSON.stringify(obj)
   })
+}
 })
 .then(() => {
   console.log('sweet')
 })
+// }
