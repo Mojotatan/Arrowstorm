@@ -44,7 +44,7 @@ Client.socket.on('newGame', function(data) {
 
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
-	if (d.game.state.current === 'newGameOptions') { 
+	if (d.game.state.current === 'newGameOptions') {
 		if (d.myGame.player1) d.lobbyP1.text = `Player 1: ${d.myGame.player1}`
 		if (d.myGame.player2) d.lobbyP2.text = `Player 2: ${d.myGame.player2}`
 		if (data.player1 && data.player2) d.gameReady.text = 'ready!'
@@ -96,12 +96,12 @@ Client.socket.on('opponentHitTC', function(data){
 	let treasure = data.treasure
 	let opponent = data.player
 	d[opponent].treasure = {}
-	console.log('the opponents d & treasure', d)
 	d[opponent].treasure.payload = treasure
-	console.log('after assigning treasure', d)
+	console.log(' current player in client after assigning treasure', d[d.currentPlayer])
+	console.log(' opponent player in client after assigning treasure', d[opponent])
+
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
-	treasureChest()
 
 })
 

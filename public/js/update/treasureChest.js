@@ -21,11 +21,11 @@ export default function treasureChest(treasureHitPlayer1, treasureHitPlayer2){
             console.log('d.treasure.payload is bouncyArrow')
         }
 
-        // hitTC(d.myGame.id, d.player1.treasure.payload, d.currentPlayer)
         d.treasure.kill()
     }
 
     if (treasureHitPlayer2) {
+        console.log('d.player2 in treasureChest', d.player2)
         if (d.player2.treasure.payload === 'extraArrows') {
             d.player2.numArrows += 2
             console.log('player2 numArrows is', d.player2.numArrows)
@@ -44,29 +44,7 @@ export default function treasureChest(treasureHitPlayer1, treasureHitPlayer2){
             console.log('d.treasure.payload is bouncyArrow')
         }
 
-        // hitTC(d.myGame.id, d.player2.treasure.payload, d.currentPlayer)
         d.treasure.kill()
     }
 
-    // if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 5000) {
-    //     d.player1.wings = false
-    //     d.player1.wingLeft.kill()
-    //     d.player1.wingRight.kill()
-    // }
-
-    // if (d.player2.wings === true && d.game.time.now - d.player2.wingStart > 5000) {
-    //     d.player2.wings = false
-    //     d.player2.wingLeft.kill()
-    //     d.player2.wingRight.kill()
-    // }
-
-    // if (d.player1.invisibility === true && d.game.time.now - d.player1.invisibleStart > 5000) {
-    //     d.player1.invisibility = false
-    //     d.player1.alpha = 1
-    // }
-
-    // if (d.player2.invisibility === true && d.game.time.now - d.player2.invisibleStart > 5000) {
-    //     d.player2.invisibility = false
-    //     d.player2.alpha = 1
-    // }
 }

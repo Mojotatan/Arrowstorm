@@ -8,8 +8,6 @@ export default function createTreasureChest(posX, posY) {
         currPlayer = d.currentPlayer
     }
 
-  d[currPlayer].treasure = {}
-
   d.treasure  = d.game.add.sprite(posX, posY, 'treasure')
 
   d.treasure.scale.set(0.1, 0.1)
