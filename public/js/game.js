@@ -37,6 +37,7 @@ const gameFunc = function() {
       d.game.load.image('start', 'sprites/start-btn.png')
       d.game.load.image('treasure', 'sprites/treasure-chest.png')
       d.game.load.image('night', 'sprites/night.png')
+      d.game.load.image('sunset', 'sprites/sunset.png')
       d.game.load.image('sel', 'sprites/sel.png')
       d.game.load.image('wing', 'sprites/wing.png')
     },
