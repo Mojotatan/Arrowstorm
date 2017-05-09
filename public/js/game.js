@@ -20,6 +20,7 @@ const gameFunc = function() {
       d.game.load.spritesheet('fatKid', 'sprites/fat-kid.png', 20, 32)
       d.game.load.spritesheet('blackMage', 'sprites/black-mage.png', 20, 32)
       d.game.load.image('arrow', 'sprites/Arrow.png')
+      d.game.load.image('arrowSide', 'sprites/Arrow copy.png')
       d.game.load.image('bow', 'sprites/bow-crop.png')
       d.game.load.image('ground', 'sprites/platform.png')
       d.game.load.image('brick', 'sprites/brick.png')
@@ -37,6 +38,7 @@ const gameFunc = function() {
       d.game.load.image('treasure', 'sprites/treasure-chest.png')
       d.game.load.image('night', 'sprites/night.png')
       d.game.load.image('sel', 'sprites/sel.png')
+      d.game.load.image('wing', 'sprites/wing.png')
     },
     create: function() {
       axios.get('/maps')
@@ -53,7 +55,7 @@ const gameFunc = function() {
     create: function () {
       d.startBtn = d.game.add.button(0, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
-      
+
       d.mapBtn = d.game.add.button(768, 0, 'start', this.startMap, this)
       d.mapBtn.scale.set(4, 4)
 

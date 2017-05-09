@@ -84,17 +84,51 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 })
 
 Client.socket.on('opponentHasShot', function(opponentName){
-	console.log('the opponent has shot!!')
+	//console.log('the opponent has shot!!', opponentName)
 	fireArrow(d, true, opponentName)
 })
 
-export function playerMoved(id, player, x, y, frame, scale) {
-	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale})
+// Client.socket.on('opponentAimRight', function(aimRight){
+// 	d.aimRight.isDown = true
+// })
+
+// Client.socket.on('opponentAimUp', function(aimUp){
+// 	d.aimUp.isDown = true
+// })
+
+// Client.socket.on('opponentAimLeft', function(aimLeft){
+// 	d.aimLeft.isDown = true
+// })
+
+// Client.socket.on('opponentAimDown', function(aimDown){
+// 	d.aimDown.isDown = true
+// })
+
+export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
+	//console.log('the bow in', position)
+	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale, position, rotation})
 }
 
 export function arrowShot(id, playerName) {
 	Client.socket.emit('playerHasShot', {id, player: playerName})
 }
+
+export function onAimRight(aimRight) {
+	Client.socket.emit('playerAimIsRight', {aimRight})
+}
+
+export function onAimUp(aimUp) {
+	Client.socket.emit('playerAimIsUp', {aimUp})
+}
+
+export function onAimLeft(aimLeft) {
+	Client.socket.emit('playerAimIsLeft', {aimLeft})
+}
+
+export function onAimDown(aimDown) {
+	Client.socket.emit('playerAimIsDown', {aimDown})
+}
+
 
 export default Client
 

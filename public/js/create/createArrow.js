@@ -1,9 +1,12 @@
 export default function createArrow(d, player, arrowType) {
 
   // Create each arrow if player.numArrows > 0
+  console.log('the current player in createArrow', d[player].bow.world)
+  let currPlayer = d.currentPlayer
 
   if (arrowType === 'regular') {
-    let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
+    //let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
+    let arrow  = d.game.add.sprite(d[player].bow.world.x, d[player].bow.world.y, 'arrow')
 
     arrow.scale.set(2, 2)
 
@@ -22,7 +25,7 @@ export default function createArrow(d, player, arrowType) {
 
     d.arrow = arrow
   } else {
-    let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
+    let arrow  = d.game.add.sprite(d[player].bow.world.x, d[player].bow.world.y, 'arrow')
 
     arrow.scale.set(2, 2)
 
@@ -34,11 +37,11 @@ export default function createArrow(d, player, arrowType) {
 
     arrow.checkWorldBounds = true
 
-    arrow.body.bounce.set(1)
+    arrow.body.bounce.set(1.2)
 
     arrow.type = 'bouncyArrow'
 
-    arrow.lifespan = 5000
+    arrow.lifespan = 2000
 
     d.arrowsArray.push(arrow);
 

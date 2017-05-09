@@ -1,9 +1,10 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
-import {playerMoved} from '../client'
+import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
+import createWings from '../create/createWings'
 
 //import Client from '../client'
 
@@ -55,9 +56,16 @@ export default function updateFunc() {
     // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
     d.aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
+    d.aimLeft.onDown.add(() => onAimLeft(d.aimLeft.isDown))
+
     d.aimUp = d.game.input.keyboard.addKey(Phaser.Keyboard.W)
+    d.aimUp.onDown.add(() => onAimUp(d.aimUp.isDown))
+
     d.aimRight = d.game.input.keyboard.addKey(Phaser.Keyboard.D)
+    d.aimRight.onDown.add(() => onAimRight(d.aimRight.isDown))
+
     d.aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
+    d.aimDown.onDown.add(() => onAimDown(d.aimDown.isDown))
 
 
     // reset various parameters
@@ -75,8 +83,8 @@ export default function updateFunc() {
     // max downward velocity
     if (d[currPlayer].body.velocity.y > 1000) d[currPlayer].body.velocity.y = 1000
 
-    d.bow.rotation = 0
-    d.bow.position.set(2, 16)
+    d[currPlayer].bow.rotation = 0
+    d[currPlayer].bow.position.set(2, 16)
 
     // d[currPlayer].body.velocity.y = (d[currPlayer].body.touching.left || d[currPlayer].body.touching.right) && d[currPlayer].body.velocity.y > 0 ? 6 : d[currPlayer].body.velocity.y
     d[currPlayer].body.gravity.y = (d[currPlayer].body.touching.left || d[currPlayer].body.touching.right) && d[currPlayer].body.velocity.y > 0 ? 50 : 1200
@@ -137,39 +145,39 @@ export default function updateFunc() {
 
     if (d.aimDown.isDown) {
       if (d.aimDown.isDown && d.aimLeft.isDown) {
-        d.bow.rotation = -.785
-        d.bow.position.set(10 - distanceFromCenter, 16 + distanceFromCenter)
+        d[currPlayer].bow.rotation = -.785
+        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 + distanceFromCenter)
       }
       else if (d.aimDown.isDown && d.aimRight.isDown) {
-        d.bow.rotation = -.785
-        d.bow.position.set(10 - distanceFromCenter, 16 + distanceFromCenter)
+        d[currPlayer].bow.rotation = -.785
+        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 + distanceFromCenter)
       }
       else {
-        d.bow.rotation = -1.57
-        d.bow.position.set(10, 24)
+        d[currPlayer].bow.rotation = -1.57
+        d[currPlayer].bow.position.set(10, 24)
       }
     }
     if (d.aimUp.isDown) {
       if (d.aimUp.isDown && d.aimLeft.isDown) {
-        d.bow.rotation = .785
-        d.bow.position.set(10 - distanceFromCenter, 16 - distanceFromCenter)
+        d[currPlayer].bow.rotation = .785
+        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 - distanceFromCenter)
       }
       else if (d.aimUp.isDown && d.aimRight.isDown) {
-        d.bow.rotation = .785
-        d.bow.position.set(10 - distanceFromCenter, 16 - distanceFromCenter)
+        d[currPlayer].bow.rotation = .785
+        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 - distanceFromCenter)
       }
       else {
-        d.bow.rotation = 1.57
-        d.bow.position.set(10, 8)
+        d[currPlayer].bow.rotation = 1.57
+        d[currPlayer].bow.position.set(10, 8)
       }
     }
 
     // arrow collisions
-    let arrowHitleftWall = d.game.physics.arcade.collide(d.arrow, d.leftWall)
-    let arrowHitrightWall = d.game.physics.arcade.collide(d.arrow, d.rightWall)
-    let arrowHitPlatforms = d.game.physics.arcade.collide(d.arrow, d.platforms)
 
     d.arrowsArray.forEach(arrow => {
+
+      let arrowHitPlatforms = d.game.physics.arcade.collide(arrow, d.platforms)
+      let arrowHitSpikes = d.game.physics.arcade.collide(arrow, d.spikes)
 
       if (arrow.body.velocity.x > 0) {
         arrow.angle += 1
@@ -178,7 +186,7 @@ export default function updateFunc() {
         arrow.angle -= 1
       }
 
-      if (arrow && arrow.type === 'regular' && (arrowHitPlatforms || arrowHitrightWall || arrowHitleftWall)) {
+      if (arrow && arrow.type === 'regular' && (arrowHitPlatforms || arrowHitSpikes)) {
         arrow.body.velocity.x = 0
         arrow.body.velocity.y = 0
         arrow.body.acceleration = 0
@@ -215,9 +223,9 @@ export default function updateFunc() {
             d.player1.numArrows += 2
             console.log('player1 numArrows is', d.player1.numArrows)
         } else if (d.treasure.payload === 'wings') {
+            createWings(d, 'player1')
             d.player1.wings = true
             d.player1.wingStart = d.game.time.now
-            console.log('time of wings start', d.player1.wingStart)
             console.log('d.treasure.payload is wings')
         } else if (d.treasure.payload === 'invisibility') {
             d.player1.invisibility = true
@@ -235,6 +243,7 @@ export default function updateFunc() {
     if (treasureHitPlayer2) {
         if (d.treasure.payload === 'extraArrows') {
             d.player2.numArrows += 2
+            console.log('player2 numArrows is', d.player2.numArrows)
         } else if (d.treasure.payload === 'wings') {
             d.player2.wings = true
             d.player2.wingStart = d.game.time.now
@@ -252,47 +261,57 @@ export default function updateFunc() {
         d.treasure.kill()
     }
 
-    if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 10000) {
+    if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 5000) {
         d.player1.wings = false
+        d.player1.wingLeft.kill()
+        d.player1.wingRight.kill()
     }
 
-    if (d.player2.wings === true && d.game.time.now - d.player2.wingStart > 10000) {
+    if (d.player2.wings === true && d.game.time.now - d.player2.wingStart > 5000) {
         d.player2.wings = false
+        d.player2.wingLeft.kill()
+        d.player2.wingRight.kill()
     }
 
-    if (d.player1.invisibility === true && d.game.time.now - d.player1.invisibleStart > 10000) {
+    if (d.player1.invisibility === true && d.game.time.now - d.player1.invisibleStart > 5000) {
         d.player1.invisibility = false
         d.player1.alpha = 1
     }
 
-    if (d.player2.invisibility === true && d.game.time.now - d.player2.invisibleStart > 10000) {
+    if (d.player2.invisibility === true && d.game.time.now - d.player2.invisibleStart > 5000) {
         d.player2.invisibility = false
         d.player2.alpha = 1
     }
-
+    //console.log('the bow rotation', d[currPlayer].bow.position, d[currPlayer].bow.rotation)
     if (d.currentPlayer === 'player1') {
-      playerMoved(d.myGame.id, d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x) //just sending the scale.x not the entire obj
+      playerMoved(d.myGame.id, d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x, d.player1.bow.position, d.player1.bow.rotation) //just sending the scale.x not the entire obj
     }
     else if (d.currentPlayer === 'player2') {
-      playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x)
+      playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)
     }
   }
 
 }
 
 export function opponentPos(positionObj) {
-
+    // console.log('rotation is ',positionObj.rotation)
   if (d.currentPlayer === 'player1') {
     d.player2.x = positionObj.x
     d.player2.y = positionObj.y
     d.player2.frame = positionObj.frame
     d.player2.scale.x = positionObj.scale
+    d.player2.bow.position.x = positionObj.position.x
+    d.player2.bow.position.y = positionObj.position.y
+    d.player2.bow.rotation = positionObj.rotation
   }
   else if (d.currentPlayer === 'player2') {
     d.player1.x = positionObj.x
     d.player1.y = positionObj.y
     d.player1.frame = positionObj.frame
     d.player1.scale.x = positionObj.scale // positionObj.scale is the scale.x value
+    d.player1.bow.position.x = positionObj.position.x
+    d.player1.bow.position.y = positionObj.position.y
+    d.player1.bow.rotation = positionObj.rotation
   }
 }
 

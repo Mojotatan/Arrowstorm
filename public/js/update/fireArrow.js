@@ -10,9 +10,9 @@ export default function fireArrow(d, opponentBool, opponentName) {
     }
 
     if (opponentBool === true) {
-        console.log('the opponent is', opponentName, d[opponentName])
-        let opponent = opponentName.player.player
-        createArrow(d, d[opponent], d[currPlayer].nextArrowType)
+        let opponent = opponentName
+        console.log('my name is', opponentName)
+        createArrow(d, opponent, d[currPlayer].nextArrowType)
     }
 
     else {
@@ -31,8 +31,9 @@ export default function fireArrow(d, opponentBool, opponentName) {
 
         if (d[currPlayer].numArrows > 0) {
               let playerWhoShot = currPlayer
+              console.log('player shot in fireArrow', d, d.aimLeft)
               arrowShot(d.myGame.id, playerWhoShot)
-              createArrow(d, d[currPlayer], d[currPlayer].nextArrowType)
+              createArrow(d, currPlayer, d[currPlayer].nextArrowType)
         }
 
         // If there aren't any arrows available then don't shoot
@@ -44,6 +45,7 @@ export default function fireArrow(d, opponentBool, opponentName) {
 
     if (d.aimUp.isDown) {
         if (d.aimLeft.isDown) {
+            console.log('player in up left fireArrow is', d[currPlayer])
             d.arrow.rotation = -0.785
             d.arrow.body.velocity.y = -1000
             d.arrow.body.velocity.x = -1000
@@ -87,6 +89,11 @@ export default function fireArrow(d, opponentBool, opponentName) {
         d.arrow.body.velocity.x = -1414
         d.arrow.body.acceleration.x = 1000
     }
+
+    // if (d.arrow.type === 'bouncyArrow') {
+    //     d.arrow.rotation = 0
+    //     d.arrow.body.acceleration.set(0, 0)
+    // }
 
     if (opponentBool === false) {
         d[currPlayer].numArrows--
