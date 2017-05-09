@@ -294,7 +294,8 @@ export default function updateFunc() {
 }
 
 export function opponentPos(positionObj) {
-    // console.log('rotation is ',positionObj.rotation)
+console.log('positionObj is ',positionObj)
+console.log('player2 is ', d.player2.x)
   if (d.currentPlayer === 'player1') {
     d.player2.x = positionObj.x
     d.player2.y = positionObj.y
