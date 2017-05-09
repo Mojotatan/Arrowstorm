@@ -1,3 +1,4 @@
+import axios from 'axios'
 import updateFunc from './update/update'
 import createFunc from './create/create'
 //import Phaser from '../phaser/phaser'
@@ -30,15 +31,22 @@ const gameFunc = function() {
       d.game.load.image('stone', 'sprites/stone.png')
       d.game.load.image('wood', 'sprites/wood.png')
       d.game.load.image('cobble', 'sprites/cobblestone.png')
-       d.game.load.image('space', 'sprites/space-crop.png')
+      d.game.load.image('space', 'sprites/space-crop.png')
       d.game.load.spritesheet('shieldWall', 'sprites/shieldwall.png')
       d.game.load.image('spikes', 'sprites/spikes.png')
       d.game.load.image('start', 'sprites/start-btn.png')
       d.game.load.image('treasure', 'sprites/treasure-chest.png')
+      d.game.load.image('night', 'sprites/night.png')
+      d.game.load.image('sel', 'sprites/sel.png')
       d.game.load.image('wing', 'sprites/wing.png')
     },
     create: function() {
-      d.game.state.start('menu')
+      axios.get('/maps')
+      .then(maps => {
+        // console.log(maps)
+        d.maps = maps.data.map(map => JSON.parse(map))
+        d.game.state.start('menu')
+      })
     }
   }
 
@@ -77,9 +85,55 @@ const gameFunc = function() {
 
       d.leaveBtn = d.game.add.button(896, 0, 'start', this.leaveGame, this)
       d.leaveBtn.scale.set(2, 2)
+
+      //player options
+      let avatar = function(char) {
+        return function() {
+          Client.chooseChar({char, id: d.myGame.id})
+        }
+      }
+      d.chooseRoboraj = d.game.add.button(0, 256, 'roboraj', avatar('roboraj'))
+      d.chooseFatKid = d.game.add.button(32, 256, 'fatKid', avatar('fatKid'))
+      d.chooseBlackMage = d.game.add.button(64, 256, 'blackMage', avatar('blackMage'))
+
+      let x = 384
+      let y = 192
+      d.mapSel = d.game.add.image(x, y, 'sel')
+      // d.mapSel.scale.set(2, 2)
+
+      // console.log(JSON.parse(d.maps[0]).name)
+      d.maps.forEach(map => {
+        d.game.add.text(x, y, map.name, {fontSize: 12, fill: '#FFFFFF', wordWrap: true, boundsAlignH: 'center', boundsAlignV: 'middle'})
+        x += 64
+        if (x >= 1024) {
+          x = 384
+          y += 64
+        }
+      })
+
+      let cursors = d.game.input.keyboard.createCursorKeys()
+      cursors.right.onDown.add(() => {
+        if (d.mapSel.position.x < 960) d.mapSel.position.x += 64
+      })
+      cursors.left.onDown.add(() => {
+        if (d.mapSel.position.x > 384) d.mapSel.position.x -= 64
+      })
+      cursors.up.onDown.add(() => {
+        if (d.mapSel.position.y > 192) d.mapSel.position.y -= 64
+      })
+      cursors.down.onDown.add(() => {
+        if (d.mapSel.position.y < 576) d.mapSel.position.y += 64
+      })
+
       Client.askNewPlayer()
     },
     startGame: function () {
+      function getMap() {
+        let x = (d.mapSel.x - 384) / 64
+        let y = (d.mapSel.y - 192) / 64
+        return (y * 10 + x)
+      }
+      d.map = d.maps[getMap()]
       // d.game.state.start('runGame')
       // if (d.gameReady.text === 'ready!') {
         Client.letsGo(d.myGame.id)
@@ -91,12 +145,7 @@ const gameFunc = function() {
   }
 
   let runGame = {
-    preload: function () {
-      d.game.load.text('map', 'maps/default.json')
-      // d.map = JSON.parse(d.game.cache.getText('map'))
-      // d.game.load.image('background', d.map.background.file)
-      d.game.load.image('night', 'sprites/night.png')
-    },
+    preload: function () {},
     create: function () {createFunc(d)},
     update: function () {updateFunc(d)}
   }

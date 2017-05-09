@@ -9,7 +9,8 @@ export default function createFunc() {
   d.playerMap = {}
 
   //parse map data
-  let map = JSON.parse(d.game.cache.getText('map'))
+  // let map = JSON.parse(d.game.cache.getText('map'))
+  let map = d.map
 
   //add background
   d.background = d.game.add.image(192, 0, map.background.file)
@@ -58,8 +59,8 @@ export default function createFunc() {
   })
 
   // create players
-  createPlayer(d, 'blackMage', 'player1', map.p1Start)
-  createPlayer(d, 'fatKid', 'player2', map.p2Start)
+  createPlayer(d, d.myGame.chars[1], 'player1', map.p1Start)
+  createPlayer(d, d.myGame.chars[2], 'player2', map.p2Start)
 
     // Creating left brick wall
     d.leftWall = d.game.add.group()

@@ -7,7 +7,6 @@ import createTreasureChest from '../create/createTreasureChest'
 import createWings from '../create/createWings'
 
 //import Client from '../client'
-console.log('before update', d)
 
 export default function updateFunc() {
   if (d.currentPlayer) {

@@ -1,4 +1,5 @@
 const fs = require('fs')
+const axios = require('axios')
 
 const mapToJson = function(obj, name) {
   let json = JSON.stringify(obj)
@@ -6,6 +7,8 @@ const mapToJson = function(obj, name) {
 }
 
 let obj = {}
+obj.name = 'default'
+obj.creator = 'mojo'
 obj.p1Start = {x: 244, y: 0}
 obj.p2Start = {x: 780, y: 0}
 obj.blocks = []
@@ -35,8 +38,28 @@ for (let i = 0; i < 20; i++) {
   }
 }
 obj.background = {
-  file: 'night', //for space use scale .3333
-  scale: 10
+  file: 'space',
+  scale: .3333
 }
 
 mapToJson(obj, 'default.json')
+
+const Map = require('../../server/db').Map
+
+Map.sync()
+.then(() => {
+for (let i = 0; i < 50; i++) {
+
+// Map.sync()
+// .then(() => {
+  Map.create({
+    name: 'default',
+    creator: 'mojo',
+    json: JSON.stringify(obj)
+  })
+}
+})
+.then(() => {
+  console.log('sweet')
+})
+// }
