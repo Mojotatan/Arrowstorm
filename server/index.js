@@ -113,4 +113,5 @@ db.sync()
 	socket.on('playerHitTC', function(data){
 		socket.broadcast.to(`game ${data.id}`).emit('opponentHitTC', data)
 	})
+	})
 })
