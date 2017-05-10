@@ -71,10 +71,12 @@ db.sync()
 				socket.emit('assignedPlayer2', allGames[id])
 				socket.join(`game ${id}`)
 			}
+			console.log('Gaimes', allGames)
 			io.in(`game ${id}`).emit('playerJoined', allGames[id])
 		})
 		socket.on('start', function(id) {
 			console.log('let the games begin')
+			console.log('Gaimes', allGames)
 			console.log('starting game', `game ${id}`)
 			io.in(`game ${id}`).emit('start')
 		})
