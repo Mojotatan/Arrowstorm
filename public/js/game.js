@@ -132,7 +132,8 @@ const gameFunc = function() {
       function getMap() {
         let x = (d.mapSel.x - 384) / 64
         let y = (d.mapSel.y - 192) / 64
-        return (y * 10 + x)
+        let select = y * 10 + x
+        return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
       }
       d.map = d.maps[getMap()]
       // d.game.state.start('runGame')
