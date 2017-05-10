@@ -145,8 +145,8 @@ const gameFunc = function() {
 
   let runGame = {
     preload: function () {},
-    create: function () {createFunc(d)},
-    update: function () {updateFunc(d)}
+    create: function () {createFunc()},
+    update: function () {updateFunc()}
   }
 
   let mapEditor = {
@@ -156,19 +156,25 @@ const gameFunc = function() {
     update: function() {}
   }
 
-  // function gameOver() {
-  //   //TO DO
-  // }
-  // gameOver.prototype = {
-  //   update: function() {}
-  // }
+  let gameOver = {
+    create: function() {
+      d.countdown = 180
+      let text = d.game.add.text(192, 128, 'yay', {fill: '#FFFFFF'})
+    },
+    update: function() {
+      d.countdown--
+      if (d.countdown < 0) {
+        Client.letsGo(d.myGame.id) // this will probably cause some issues
+      }
+    }
+  }
 
   d.game.state.add('loadAssets', loadAssets)
   d.game.state.add('menu', menu)
   d.game.state.add('newGameOptions', newGameOptions)
   d.game.state.add('runGame', runGame)
   d.game.state.add('mapEditor', mapEditor) // TODO
-  // d.game.state.add('gameOver', gameOver)
+  d.game.state.add('gameOver', gameOver)
   d.game.state.start('loadAssets')
 
   return {}

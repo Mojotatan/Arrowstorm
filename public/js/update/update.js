@@ -220,6 +220,13 @@ export default function updateFunc() {
     }
   }
 
+  if (!(d.player1.alive && d.player2.alive)) {
+    console.log('death!')
+    if (d.player1.alive) d.myGame.score[1]++
+    else if (d.player2.alive) d.myGame.score[2]++
+    d.game.state.start('gameOver')
+  }
+
 }
 
 export function opponentPos(positionObj) {
