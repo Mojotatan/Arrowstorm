@@ -22,6 +22,8 @@ export default function updateFunc() {
 
     if (d.arrow) wrap(d.arrow)
 
+    wrap(d.treasure)
+
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
     let hitPlatformP2 = d.game.physics.arcade.collide(d.platforms, d.player2)
@@ -107,10 +109,11 @@ export default function updateFunc() {
       d[currPlayer].frame = 2
     }
 
-    if (cursors.up.isDown && d[currPlayer].body.touching.down && hitPlatform) {
+    let amIGrounded = (currPlayer === 'player1') ? hitPlatform : hitPlatformP2
+    if (cursors.up.isDown && d[currPlayer].body.touching.down && amIGrounded) {
       d[currPlayer].body.velocity.y = -600
     }
-    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && hitPlatform) {
+    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && amIGrounded) {
       d[currPlayer].body.velocity.y = -600
       let dir = d[currPlayer].body.touching.right ? -1 : 1
       d[currPlayer].body.velocity.x = 300 * dir
