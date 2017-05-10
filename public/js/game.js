@@ -37,6 +37,7 @@ const gameFunc = function() {
       d.game.load.image('start', 'sprites/start-btn.png')
       d.game.load.image('treasure', 'sprites/treasure-chest.png')
       d.game.load.image('night', 'sprites/night.png')
+      d.game.load.image('sunset', 'sprites/sunset.png')
       d.game.load.image('sel', 'sprites/sel.png')
       d.game.load.image('wing', 'sprites/wing.png')
     },
@@ -131,7 +132,8 @@ const gameFunc = function() {
       function getMap() {
         let x = (d.mapSel.x - 384) / 64
         let y = (d.mapSel.y - 192) / 64
-        return (y * 10 + x)
+        let select = y * 10 + x
+        return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
       }
       d.map = d.maps[getMap()]
       // d.game.state.start('runGame')
