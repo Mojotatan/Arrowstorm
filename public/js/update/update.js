@@ -10,7 +10,6 @@ import treasureChest from './treasureChest'
 import { hitTC } from '../client'
 
 //import Client from '../client'
-console.log('before update', d)
 
 export default function updateFunc() {
   if (d.currentPlayer) {

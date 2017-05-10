@@ -56,6 +56,10 @@ Client.socket.on('start', function() {
 	d.game.state.start('runGame')
 })
 
+Client.socket.on('optionsUpdate', function(data) {
+	d.myGame = data
+})
+
 Client.letsGo = function(id) {
 	// this is supposed to remove games that launch but it isn't working rn so whatevs
 	// d.lobbyGames.children.forEach((child, index) => {
@@ -64,6 +68,10 @@ Client.letsGo = function(id) {
 	// 	}
 	// })
 	Client.socket.emit('start', id)
+}
+
+Client.chooseChar = function(data) {
+	Client.socket.emit('charSwap', data)
 }
 
 // Client.socket.on('remove', function(id){
