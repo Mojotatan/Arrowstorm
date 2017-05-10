@@ -1,13 +1,12 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
-import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead} from '../client'
+import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, hitTC, point} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
 import playerAim from './playerAim'
 import arrowPhysics from './arrowPhysics'
 import treasureChest from './treasureChest'
-import { hitTC } from '../client'
 
 //import Client from '../client'
 
@@ -224,7 +223,7 @@ export default function updateFunc() {
     console.log('death!')
     if (d.player1.alive) d.myGame.score[1]++
     else if (d.player2.alive) d.myGame.score[2]++
-    d.game.state.start('gameOver')
+    point(d.myGame.id, d.myGame.round, d.myGame.score)
   }
 
 }

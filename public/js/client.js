@@ -80,9 +80,10 @@ Client.mapSel = function(data) {
 	Client.socket.emit('mapSel', data)
 }
 
-Client.point = function(id, score, point) {
-	Client.socket.emit('point', {id, score, point})
-}
+Client.socket.on('score', function(data) {
+	d.game.state.start('gameOver')
+	d.myGame = data
+})
 
 Client.socket.on('opponentHasMoved', function(newOpponentPos){
 	opponentPos(newOpponentPos)
@@ -115,6 +116,10 @@ Client.socket.on('opponentHitTC', function(data){
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
 })
+
+export function point(id, round, score) {
+	Client.socket.emit('point', {id, round, score})
+}
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
 	//console.log('the bow in', position)

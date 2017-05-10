@@ -52,7 +52,7 @@ db.sync()
 
 		// logic for creating and joining games via lobby
 		socket.on('newGame', function(data) {
-			allGames.push({id: count, player1: socket.id, player2: null, chars: {1: 'blackMage', 2: 'fatKid'}, map: {x: 384, y: 192}, score: {1: 0, 2: 0}})
+			allGames.push({id: count, player1: socket.id, player2: null, chars: {1: 'blackMage', 2: 'fatKid'}, map: {x: 384, y: 192}, score: {1: 0, 2: 0}, round: 0})
 			socket.join(`game ${count}`)
 			console.log('joining channel', `game ${count}`)
 			socket.emit('assignedPlayer1', allGames[count])
@@ -74,6 +74,15 @@ db.sync()
 		socket.on('start', function(id) {
 			console.log('starting game', allGames[id])
 			io.in(`game ${id}`).emit('start')
+		})
+
+		socket.on('point', function(data) {
+			if (allGames[data.id].round === data.round) {
+				console.log('point received and accepted')
+				allGames[data.id].round++
+				allGames[data.id].score = data.score
+				io.in(`game ${data.id}`).emit('score', allGames[data.id])
+			}
 		})
 
 		socket.on('charSwap', function(data) {
