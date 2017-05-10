@@ -159,12 +159,18 @@ const gameFunc = function() {
   let gameOver = {
     create: function() {
       d.countdown = 180
-      let text = d.game.add.text(192, 128, 'yay', {fill: '#FFFFFF'})
+      d.tex = d.game.add.text(192, 128, '', {fill: '#FFFFFF'})
+      let score = d.game.add.text(192, 256, `${d.myGame.score[1]} - ${d.myGame.score[2]}`, {fill: '#FFFFFF', fontSize: 36})
     },
     update: function() {
-      d.countdown--
-      if (d.countdown < 0) {
-        Client.letsGo(d.myGame.id) // this will probably cause some issues
+      if (d.myGame.score[1] < 5 && d.myGame.score[2] < 5) {
+        d.countdown--
+        if (d.countdown < 0) {
+          Client.letsGo(d.myGame.id) // this will probably cause some issues
+        }
+      } else {
+        d.tex.text = (d.myGame.score[1] > d.myGame.score[2]) ? 'Player One wins' : 'Player Two wins'
+        d.game.add.button(192, 384, 'start', function() {d.game.state.start('menu')})
       }
     }
   }

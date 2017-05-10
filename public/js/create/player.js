@@ -3,7 +3,7 @@ export default function createPlayer (d, spriteName, player, position) {
   console.log()
 
   d[player] = d.game.add.sprite(position.x, position.y, spriteName)
-  d[player].scale.set(2, 2)
+  d[player].scale.set(1.5, 1.5) // (2, 2) looks better but is a bit big for the map
   d[player].pivot.set(10, 0)
   d[player].numArrows = 5
   d.game.physics.arcade.enable(d[player])
