@@ -53,7 +53,7 @@ db.sync()
 		// logic for creating and joining games via lobby
 		socket.on('newGame', function(data) {
 			console.log('new game bby')
-			allGames.push({id: count, player1: socket.id, player2: null, chars: {1: 'blackMage', 2: 'fatKid'}, map: 'default.json'})
+			allGames.push({id: count, player1: socket.id, player2: null, chars: {1: 'blackMage', 2: 'fatKid'}, map: {x: 384, y: 192}})
 			socket.join(`game ${count}`)
 			console.log('Gaimes', allGames)
 			console.log('joining channel', `game ${count}`)
@@ -89,29 +89,34 @@ db.sync()
 			}
 		})
 
+		socket.on('mapSel', function(data) {
+			allGames[data.id].map = data.map
+			io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
+		})
+
 		socket.on('disconnect', function(){
 			// io.emit('remove', socket.player.id)
 			console.log('the disconnected user', socket.id)
 		})
 
-			socket.on('playerHasMoved', function(newPos){
-				socket.broadcast.to(`game ${newPos.id}`).emit('opponentHasMoved', newPos)
-			})
+		socket.on('playerHasMoved', function(newPos){
+			socket.broadcast.to(`game ${newPos.id}`).emit('opponentHasMoved', newPos)
+		})
 
-			socket.on('playerHasShot', function(data){
-				socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data)
-			})
+		socket.on('playerHasShot', function(data){
+			socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data)
+		})
 
-			socket.on('playerHasDied', function(data){
-				socket.broadcast.to(`game ${data.id}`).emit('opponentHasDied', data.player)
-			})
+		socket.on('playerHasDied', function(data){
+			socket.broadcast.to(`game ${data.id}`).emit('opponentHasDied', data.player)
+		})
 
-			socket.on('arrowPickedUp', function(data){
-				socket.broadcast.to(`game ${data.id}`).emit('opponentPickedArrow', data.idx)
-			})
+		socket.on('arrowPickedUp', function(data){
+			socket.broadcast.to(`game ${data.id}`).emit('opponentPickedArrow', data.idx)
+		})
 
-	socket.on('playerHitTC', function(data){
-		socket.broadcast.to(`game ${data.id}`).emit('opponentHitTC', data)
-	})
+		socket.on('playerHitTC', function(data){
+			socket.broadcast.to(`game ${data.id}`).emit('opponentHitTC', data)
+		})
 	})
 })

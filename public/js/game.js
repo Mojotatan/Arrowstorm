@@ -115,27 +115,24 @@ const gameFunc = function() {
       let cursors = d.game.input.keyboard.createCursorKeys()
       cursors.right.onDown.add(() => {
         if (d.mapSel.position.x < 960) d.mapSel.position.x += 64
+        Client.mapSel({id: d.myGame.id, map: d.mapSel.position})
       })
       cursors.left.onDown.add(() => {
         if (d.mapSel.position.x > 384) d.mapSel.position.x -= 64
+        Client.mapSel({id: d.myGame.id, map: d.mapSel.position})
       })
       cursors.up.onDown.add(() => {
         if (d.mapSel.position.y > 192) d.mapSel.position.y -= 64
+        Client.mapSel({id: d.myGame.id, map: d.mapSel.position})
       })
       cursors.down.onDown.add(() => {
         if (d.mapSel.position.y < 576) d.mapSel.position.y += 64
+        Client.mapSel({id: d.myGame.id, map: d.mapSel.position})
       })
 
       Client.askNewPlayer()
     },
     startGame: function () {
-      function getMap() {
-        let x = (d.mapSel.x - 384) / 64
-        let y = (d.mapSel.y - 192) / 64
-        let select = y * 10 + x
-        return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
-      }
-      d.map = d.maps[getMap()]
       // d.game.state.start('runGame')
       // if (d.gameReady.text === 'ready!') {
         Client.letsGo(d.myGame.id)

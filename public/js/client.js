@@ -53,11 +53,19 @@ Client.socket.on('playerJoined', function(data) {
 
 Client.socket.on('start', function() {
 	console.log('let the games begin')
+	function getMap() {
+		let x = (d.mapSel.x - 384) / 64
+		let y = (d.mapSel.y - 192) / 64
+		let select = y * 10 + x
+		return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
+	}
+	d.map = d.maps[getMap()]
 	d.game.state.start('runGame')
 })
 
 Client.socket.on('optionsUpdate', function(data) {
 	d.myGame = data
+	d.mapSel.position.set(data.map.x, data.map.y)
 })
 
 Client.letsGo = function(id) {
@@ -74,6 +82,10 @@ Client.chooseChar = function(data) {
 	Client.socket.emit('charSwap', data)
 }
 
+Client.mapSel = function(data) {
+	Client.socket.emit('mapSel', data)
+}
+
 // Client.socket.on('remove', function(id){
 // 	d.playerMap[id].destroy()
 // 	delete d.playerMap[id]
@@ -81,7 +93,8 @@ Client.chooseChar = function(data) {
 // })
 
 Client.socket.on('opponentHasMoved', function(newOpponentPos){
-	opponentPos(newOpponentPos)
+	if (d.game.state === 'runGame'){
+		opponentPos(newOpponentPos)}
 })
 
 Client.socket.on('opponentHasShot', function(data){
@@ -110,7 +123,6 @@ Client.socket.on('opponentHitTC', function(data){
 
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
-
 })
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
