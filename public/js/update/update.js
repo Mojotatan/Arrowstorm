@@ -1,10 +1,13 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
-import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown} from '../client'
+import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
-import createWings from '../create/createWings'
+import playerAim from './playerAim'
+import arrowPhysics from './arrowPhysics'
+import treasureChest from './treasureChest'
+import { hitTC } from '../client'
 
 //import Client from '../client'
 
@@ -29,10 +32,12 @@ export default function updateFunc() {
     if (hitSpikes) {
       d.player1.kill()
       d.player1.numArrows = 0
+      playerDead(d.myGame.id, currPlayer)
     }
     if (hitSpikesP2) {
       d.player2.kill()
       d.player2.numArrows = 0
+      playerDead(d.myGame.id, currPlayer)
     }
 
     // define collisions for new players
@@ -55,17 +60,7 @@ export default function updateFunc() {
 
     // initializing cursor
     let cursors = d.game.input.keyboard.createCursorKeys();
-    d.aimLeft = d.game.input.keyboard.addKey(Phaser.Keyboard.A)
-    d.aimLeft.onDown.add(() => onAimLeft(d.aimLeft.isDown))
-
-    d.aimUp = d.game.input.keyboard.addKey(Phaser.Keyboard.W)
-    d.aimUp.onDown.add(() => onAimUp(d.aimUp.isDown))
-
-    d.aimRight = d.game.input.keyboard.addKey(Phaser.Keyboard.D)
-    d.aimRight.onDown.add(() => onAimRight(d.aimRight.isDown))
-
-    d.aimDown = d.game.input.keyboard.addKey(Phaser.Keyboard.S)
-    d.aimDown.onDown.add(() => onAimDown(d.aimDown.isDown))
+    playerAim(currPlayer)
 
 
     // reset various parameters
@@ -113,7 +108,6 @@ export default function updateFunc() {
     }
 
     if (cursors.up.isDown && d[currPlayer].body.touching.down && hitPlatform) {
-      //console.log('jumping??')
       d[currPlayer].body.velocity.y = -600
     }
     else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && hitPlatform) {
@@ -126,7 +120,7 @@ export default function updateFunc() {
     }
 
     // flying with wings
-    if (cursors.up.isDown && d.treasure.payload === 'wings' && d[currPlayer].wings === true) {
+    if (cursors.up.isDown && d[currPlayer].treasure.payload === 'wings' && d[currPlayer].wings === true) {
       d[currPlayer].body.velocity.y = -300
     }
 
@@ -173,92 +167,24 @@ export default function updateFunc() {
     }
 
     // arrow collisions
+    arrowPhysics()
 
-    d.arrowsArray.forEach(arrow => {
+    // treasureChest details and logic
+    if (treasureHitPlayer1 || treasureHitPlayer2) {
+        console.log('treasureHitPlayer1 in update is', treasureHitPlayer1)
+        console.log('treasureHitPlayer2 in update is', treasureHitPlayer2)
+        console.log('current player in update', d)
 
-      let arrowHitPlatforms = d.game.physics.arcade.collide(arrow, d.platforms)
-      let arrowHitSpikes = d.game.physics.arcade.collide(arrow, d.spikes)
+        treasureChest(treasureHitPlayer1, treasureHitPlayer2)
 
-      if (arrow.body.velocity.x > 0) {
-        arrow.angle += 1
-      }
-      if (arrow.body.velocity.x < 0) {
-        arrow.angle -= 1
-      }
-
-      if (arrow && arrow.type === 'regular' && (arrowHitPlatforms || arrowHitSpikes)) {
-        arrow.body.velocity.x = 0
-        arrow.body.velocity.y = 0
-        arrow.body.acceleration = 0
-        arrow.body.gravity.y = 0
-        arrow.body.immovable = true
-      }
-
-      if (d.game.physics.arcade.collide(arrow, d.player1)) {
-        console.log('arrow in collision with player', arrow)
-        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
-          d.player1.kill()
-          d.player1.numArrows = 0
-        } else {
-          arrow.kill()
-          d.arrowsArray.push(arrow)
-          d.player1.numArrows++
+        if (treasureHitPlayer1 && d.currentPlayer === 'player1') {
+            console.log('player 1 treasure payload in update', d.player1.treasure.payload)
+            hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
         }
-      }
-
-      if (d.game.physics.arcade.collide(arrow, d.player2)) {
-        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
-          d.player2.kill()
-          d.player2.numArrows = 0
-        } else {
-          arrow.kill()
-          d.arrowsArray.push(arrow)
+        else if (treasureHitPlayer2 && d.currentPlayer === 'player2') {
+            console.log('player 2 treasure payload in update', d.player2.treasure.payload)
+            hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
         }
-      }
-    })
-
-    // player / treasure collisions
-    if (treasureHitPlayer1) {
-        if (d.treasure.payload === 'extraArrows') {
-            d.player1.numArrows += 2
-            console.log('player1 numArrows is', d.player1.numArrows)
-        } else if (d.treasure.payload === 'wings') {
-            createWings(d, 'player1')
-            d.player1.wings = true
-            d.player1.wingStart = d.game.time.now
-            console.log('d.treasure.payload is wings')
-        } else if (d.treasure.payload === 'invisibility') {
-            d.player1.invisibility = true
-            d.player1.alpha = 0.1
-            d.player1.invisibleStart = d.game.time.now
-            console.log('d.treasure.payload is invisibility')
-        } else if (d.treasure.payload === 'bouncyArrow') {
-            d.player1.nextArrowType = 'bouncyArrow'
-            console.log('d.treasure.payload is bouncyArrow')
-        }
-
-        d.treasure.kill()
-    }
-
-    if (treasureHitPlayer2) {
-        if (d.treasure.payload === 'extraArrows') {
-            d.player2.numArrows += 2
-            console.log('player2 numArrows is', d.player2.numArrows)
-        } else if (d.treasure.payload === 'wings') {
-            d.player2.wings = true
-            d.player2.wingStart = d.game.time.now
-            console.log('d.treasure.payload is wings')
-        } else if (d.treasure.payload === 'invisibility') {
-            d.player2.invisibility = true
-            d.player2.alpha = 0.1
-            d.player2.invisibleStart = d.game.time.now
-            console.log('d.treasure.payload is invisibility')
-        } else if (d.treasure.payload === 'bouncyArrow') {
-            d.player2.nextArrowType = 'bouncyArrow'
-            console.log('d.treasure.payload is bouncyArrow')
-        }
-
-        d.treasure.kill()
     }
 
     if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 5000) {
@@ -282,7 +208,7 @@ export default function updateFunc() {
         d.player2.invisibility = false
         d.player2.alpha = 1
     }
-    //console.log('the bow rotation', d[currPlayer].bow.position, d[currPlayer].bow.rotation)
+
     if (d.currentPlayer === 'player1') {
       playerMoved(d.myGame.id, d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x, d.player1.bow.position, d.player1.bow.rotation) //just sending the scale.x not the entire obj
     }
@@ -294,8 +220,8 @@ export default function updateFunc() {
 }
 
 export function opponentPos(positionObj) {
-console.log('positionObj is ',positionObj)
-console.log('player2 is ', d.player2.x)
+//console.log('positionObj is ',positionObj)
+//console.log('player2 is ', d.player2.x)
   if (d.currentPlayer === 'player1') {
     d.player2.x = positionObj.x
     d.player2.y = positionObj.y

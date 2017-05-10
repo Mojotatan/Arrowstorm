@@ -2,6 +2,12 @@ import d from '../game'
 
 export default function createTreasureChest(posX, posY) {
 
+  let currPlayer
+
+  if (d.currentPlayer) {
+        currPlayer = d.currentPlayer
+    }
+
   d.treasure  = d.game.add.sprite(posX, posY, 'treasure')
 
   d.treasure.scale.set(0.1, 0.1)
@@ -13,7 +19,7 @@ export default function createTreasureChest(posX, posY) {
 
   d.treasure.checkWorldBounds = true
 
-  d.treasure.payload = d.treasuresArray[Math.floor(Math.random() * d.treasuresArray.length)]
-  console.log('d.treasure.payload is', d.treasure.payload)
+  d[currPlayer].treasure.payload = d.treasuresArray[Math.floor(Math.random() * d.treasuresArray.length)]
+  console.log('d.treasure.payload is', d[currPlayer].treasure.payload)
 
 }

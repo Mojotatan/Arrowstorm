@@ -4,6 +4,7 @@ import d, { localState } from './game'
 import { opponentPos } from './update/update'
 import createPlayer from './create/player'
 import fireArrow from './update/fireArrow'
+import treasureChest from './update/treasureChest'
 
 var Client = {}
 Client.socket = io.connect()
@@ -43,7 +44,7 @@ Client.socket.on('newGame', function(data) {
 
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
-	if (d.game.state.current === 'newGameOptions') { 
+	if (d.game.state.current === 'newGameOptions') {
 		if (d.myGame.player1) d.lobbyP1.text = `Player 1: ${d.myGame.player1}`
 		if (d.myGame.player2) d.lobbyP2.text = `Player 2: ${d.myGame.player2}`
 		if (data.player1 && data.player2) d.gameReady.text = 'ready!'
@@ -83,52 +84,55 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 	opponentPos(newOpponentPos)
 })
 
-Client.socket.on('opponentHasShot', function(opponentName){
+Client.socket.on('opponentHasShot', function(data){
 	//console.log('the opponent has shot!!', opponentName)
-	fireArrow(d, true, opponentName)
+	let opponentName = data.player
+	let opponentShotDir = data.shotDirection
+	fireArrow(d, true, opponentName, opponentShotDir)
 })
 
-// Client.socket.on('opponentAimRight', function(aimRight){
-// 	d.aimRight.isDown = true
-// })
+Client.socket.on('opponentHasDied', function(opponent){
+	d[opponent].kill()
+})
 
-// Client.socket.on('opponentAimUp', function(aimUp){
-// 	d.aimUp.isDown = true
-// })
+Client.socket.on('opponentPickedArrow', function(arrowIdx){
+	console.log('the d in pickedarrow', d.arrowsArray)
+	d.arrowsArray[arrowIdx].kill()
+})
 
-// Client.socket.on('opponentAimLeft', function(aimLeft){
-// 	d.aimLeft.isDown = true
-// })
+Client.socket.on('opponentHitTC', function(data){
+	let treasure = data.treasure
+	let opponent = data.player
+	d[opponent].treasure = {}
+	d[opponent].treasure.payload = treasure
+	console.log(' current player in client after assigning treasure', d[d.currentPlayer])
+	console.log(' opponent player in client after assigning treasure', d[opponent])
 
-// Client.socket.on('opponentAimDown', function(aimDown){
-// 	d.aimDown.isDown = true
-// })
+	if (opponent === 'player1') {treasureChest(true, false)}
+	else if (opponent === 'player2') {treasureChest(false, true)}
+
+})
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
 	//console.log('the bow in', position)
 	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale, position, rotation})
 }
 
-export function arrowShot(id, playerName) {
-	Client.socket.emit('playerHasShot', {id, player: playerName})
+export function arrowShot(id, playerName, shotDirection) {
+	Client.socket.emit('playerHasShot', {id, player: playerName, shotDirection})
 }
 
-export function onAimRight(aimRight) {
-	Client.socket.emit('playerAimIsRight', {aimRight})
+export function playerDead(id, player) {
+	Client.socket.emit('playerHasDied', {id, player})
 }
 
-export function onAimUp(aimUp) {
-	Client.socket.emit('playerAimIsUp', {aimUp})
+export function arrowIsDead(id, idx) {
+	Client.socket.emit('arrowPickedUp', {id, idx})
 }
 
-export function onAimLeft(aimLeft) {
-	Client.socket.emit('playerAimIsLeft', {aimLeft})
+export function hitTC(id, treasure, player) {
+	Client.socket.emit('playerHitTC', {id, treasure, player})
 }
-
-export function onAimDown(aimDown) {
-	Client.socket.emit('playerAimIsDown', {aimDown})
-}
-
 
 export default Client
 

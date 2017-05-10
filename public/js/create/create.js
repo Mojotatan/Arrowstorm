@@ -7,6 +7,12 @@ import createTreasureChest from './createTreasureChest'
 export default function createFunc() {
   // Obj for all players
   d.playerMap = {}
+  let currPlayer
+
+  //checking for current player
+  if (d.currentPlayer) {
+        currPlayer = d.currentPlayer
+    }
 
   //parse map data
   // let map = JSON.parse(d.game.cache.getText('map'))
@@ -36,7 +42,6 @@ export default function createFunc() {
   d.spikes.physicsBodyType = Phaser.Physics.ARCADE
 
   // add blocks
-  console.log(map)
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
     newBlock.scale.set(.25, .25)
@@ -80,17 +85,20 @@ export default function createFunc() {
     rightBlockStack.scale.setTo(4, 4)
   }
 
+  d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-  d.spaceBar.onDown.add(() => fireArrow(d, false))
-  console.log('the arrow in create is', d.arrow)
+  d.spaceBar.onDown.add(() => fireArrow(d, false, null, d[currPlayer].shotDirection))
 
   d.arrowsArray = []
 
   //create treasures
   //d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
-  d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'bouncyArrow']
+  d.treasuresArray = ['bouncyArrow']
+
+  d.player1.treasure = {}
+  d.player2.treasure = {}
   createTreasureChest(d.game.world.centerX, 0)
   d.player1.nextArrowType = 'regular'
   d.player2.nextArrowType = 'regular'

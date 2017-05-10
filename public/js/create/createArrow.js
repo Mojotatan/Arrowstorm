@@ -1,13 +1,11 @@
 export default function createArrow(d, player, arrowType) {
 
   // Create each arrow if player.numArrows > 0
-  console.log('the current player in createArrow', d[player].bow.world)
   let currPlayer = d.currentPlayer
 
   if (arrowType === 'regular') {
     //let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
     let arrow  = d.game.add.sprite(d[player].x, d[player].y, 'arrow')
-    console.log('the arrow x,y ', d[player].x, d[player].y)
     arrow.scale.set(2, 2)
 
     // Set its pivot point to the center of the arrow
