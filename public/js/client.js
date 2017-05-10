@@ -93,8 +93,7 @@ Client.mapSel = function(data) {
 // })
 
 Client.socket.on('opponentHasMoved', function(newOpponentPos){
-	if (d.game.state === 'runGame'){
-		opponentPos(newOpponentPos)}
+	opponentPos(newOpponentPos)
 })
 
 Client.socket.on('opponentHasShot', function(data){
