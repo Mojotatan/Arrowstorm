@@ -32,11 +32,27 @@ export default function updateFunc() {
     //Spike collisions
     if (hitSpikes) {
       d.player1.kill()
+      //d.blood.animations.add('death', [0, 5], 10, false)
+      // bloodanimation
+      d.blood = d.game.add.sprite(d.player1.x, d.player1.y, 'blood')
+      d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
+      d.blood.scale.set(2, 2)
+      d.blood.animations.play('death')
+      d.blood.animations.currentAnim.killOnComplete = true
+      console.log('the blood is', d.blood)
       d.player1.numArrows = 0
       playerDead(d.myGame.id, currPlayer)
     }
     if (hitSpikesP2) {
       d.player2.kill()
+      //d.blood.animations.add('death', [0, 5], 1, false)
+      // bloodanimation
+      d.blood = d.game.add.sprite(d.player2.x, d.player2.y, 'blood')
+      d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
+      d.blood.scale.set(2, 2)
+      d.blood.animations.play('death')
+      d.blood.animations.currentAnim.killOnComplete = true
+      console.log('the blood is', d.blood)
       d.player2.numArrows = 0
       playerDead(d.myGame.id, currPlayer)
     }
@@ -223,7 +239,7 @@ export default function updateFunc() {
     console.log('death!')
     if (d.player1.alive) d.myGame.score[1]++
     else if (d.player2.alive) d.myGame.score[2]++
-    point(d.myGame.id, d.myGame.round, d.myGame.score)
+    //point(d.myGame.id, d.myGame.round, d.myGame.score)
   }
 
 }
