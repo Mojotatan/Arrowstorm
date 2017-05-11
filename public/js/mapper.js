@@ -11,12 +11,13 @@ obj.name = 'default'
 obj.creator = 'mojo'
 obj.p1Start = {x: 244, y: 0}
 obj.p2Start = {x: 780, y: 0}
+obj.treasureSpawn = {x: 320 + 192, y: 0}
 obj.blocks = []
 obj.shields = []
 obj.spikes = []
 obj.background = {
   file: 'space',
-  scale: .3333
+  scale: 1
 }
 for (let i = 0; i < 20; i++) {
   if (i < 8 || i > 11) {
@@ -47,6 +48,7 @@ nobj.name = 'spike\npalace'
 nobj.creator = 'mojo'
 nobj.p1Start = {x: 244 + 32 * 2, y: 32 * 4}
 nobj.p2Start = {x: 780 - 32 * 2, y: 32 * 4}
+nobj.treasureSpawn = {x: 320 + 192, y: 0}
 nobj.blocks = []
 nobj.shields = []
 nobj.spikes = []
@@ -85,6 +87,7 @@ pobj.name = 'tunnel\nvision'
 pobj.creator = 'mojo'
 pobj.p1Start = {x: 700, y: 17 * 32}
 pobj.p2Start = {x: 700, y: 11 * 32}
+pobj.treasureSpawn = {x: 132 + 192, y: 132}
 pobj.blocks = []
 pobj.shields = []
 pobj.spikes = []
@@ -131,6 +134,7 @@ qobj.name = 'free\nfall'
 qobj.creator = 'mojo'
 qobj.p1Start = {x: 244, y: 32 * 8}
 qobj.p2Start = {x: 780, y: 32 * 8}
+qobj.treasureSpawn = {x: 320 + 192, y: 0}
 qobj.blocks = []
 qobj.shields = []
 qobj.spikes = []

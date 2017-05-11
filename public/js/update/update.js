@@ -1,13 +1,12 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
-import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead} from '../client'
+import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, hitTC, point} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
 import playerAim from './playerAim'
 import arrowPhysics from './arrowPhysics'
 import treasureChest from './treasureChest'
-import { hitTC } from '../client'
 
 //import Client from '../client'
 
@@ -45,17 +44,39 @@ export default function updateFunc() {
       d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
     }
 
-    // Treasure chest collisions
-    let treasureHitPlatforms = d.game.physics.arcade.collide(d.treasure, d.platforms)
-    let treasureHitPlayer1 = d.game.physics.arcade.collide(d.treasure, d.player1)
-    let treasureHitPlayer2 = d.game.physics.arcade.collide(d.treasure, d.player2)
+    if (d.treasure) {
+      wrap(d.treasure)
+      // Treasure chest collisions
+      let treasureHitPlatforms = d.game.physics.arcade.collide(d.treasure, d.platforms)
+      let treasureHitPlayer1 = d.game.physics.arcade.collide(d.treasure, d.player1)
+      let treasureHitPlayer2 = d.game.physics.arcade.collide(d.treasure, d.player2)
 
-    if (treasureHitPlatforms) {
-      d.treasure.body.velocity.x = 0
-      d.treasure.body.velocity.y = 0
-      d.treasure.body.acceleration = 0
-      d.treasure.body.gravity.y = 0
-      d.treasure.body.immovable = true
+      if (treasureHitPlatforms) {
+        d.treasure.body.velocity.x = 0
+        d.treasure.body.velocity.y = 0
+        d.treasure.body.acceleration = 0
+        d.treasure.body.gravity.y = 0
+        d.treasure.body.immovable = true
+      }
+      if (d.treasure.body.velocity.y > 1000) d.treasure.body.velocity.y = 1000
+
+      // treasureChest details and logic
+      if (treasureHitPlayer1 || treasureHitPlayer2) {
+          console.log('treasureHitPlayer1 in update is', treasureHitPlayer1)
+          console.log('treasureHitPlayer2 in update is', treasureHitPlayer2)
+          console.log('current player in update', d)
+
+          treasureChest(treasureHitPlayer1, treasureHitPlayer2)
+
+          if (treasureHitPlayer1 && d.currentPlayer === 'player1') {
+              console.log('player 1 treasure payload in update', d.player1.treasure.payload)
+              hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
+          }
+          else if (treasureHitPlayer2 && d.currentPlayer === 'player2') {
+              console.log('player 2 treasure payload in update', d.player2.treasure.payload)
+              hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
+          }
+        }
     }
 
     // initializing cursor
@@ -107,10 +128,11 @@ export default function updateFunc() {
       d[currPlayer].frame = 2
     }
 
-    if (cursors.up.isDown && d[currPlayer].body.touching.down && hitPlatform) {
+    let amIGrounded = (currPlayer === 'player1') ? hitPlatform : hitPlatformP2
+    if (cursors.up.isDown && d[currPlayer].body.touching.down && amIGrounded) {
       d[currPlayer].body.velocity.y = -600
     }
-    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && hitPlatform) {
+    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && amIGrounded) {
       d[currPlayer].body.velocity.y = -600
       let dir = d[currPlayer].body.touching.right ? -1 : 1
       d[currPlayer].body.velocity.x = 300 * dir
@@ -169,23 +191,23 @@ export default function updateFunc() {
     // arrow collisions
     arrowPhysics()
 
-    // treasureChest details and logic
-    if (treasureHitPlayer1 || treasureHitPlayer2) {
-        console.log('treasureHitPlayer1 in update is', treasureHitPlayer1)
-        console.log('treasureHitPlayer2 in update is', treasureHitPlayer2)
-        console.log('current player in update', d)
+    // // treasureChest details and logic
+    // if (treasureHitPlayer1 || treasureHitPlayer2) {
+    //     console.log('treasureHitPlayer1 in update is', treasureHitPlayer1)
+    //     console.log('treasureHitPlayer2 in update is', treasureHitPlayer2)
+    //     console.log('current player in update', d)
 
-        treasureChest(treasureHitPlayer1, treasureHitPlayer2)
+    //     treasureChest(treasureHitPlayer1, treasureHitPlayer2)
 
-        if (treasureHitPlayer1 && d.currentPlayer === 'player1') {
-            console.log('player 1 treasure payload in update', d.player1.treasure.payload)
-            hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
-        }
-        else if (treasureHitPlayer2 && d.currentPlayer === 'player2') {
-            console.log('player 2 treasure payload in update', d.player2.treasure.payload)
-            hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
-        }
-    }
+    //     if (treasureHitPlayer1 && d.currentPlayer === 'player1') {
+    //         console.log('player 1 treasure payload in update', d.player1.treasure.payload)
+    //         hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
+    //     }
+    //     else if (treasureHitPlayer2 && d.currentPlayer === 'player2') {
+    //         console.log('player 2 treasure payload in update', d.player2.treasure.payload)
+    //         hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
+    //     }
+    // }
 
     if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 5000) {
         d.player1.wings = false
@@ -214,6 +236,15 @@ export default function updateFunc() {
     }
     else if (d.currentPlayer === 'player2') {
       playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)
+    }
+  }
+
+  if (!(d.player1.alive && d.player2.alive)) {
+    if (d.go) {
+      if (d.player1.alive) d.myGame.score[1]++
+      else if (d.player2.alive) d.myGame.score[2]++
+      point(d.myGame.id, d.myGame.round, d.myGame.score)
+      d.go = false
     }
   }
 

@@ -33,7 +33,7 @@ Client.socket.on('assignedPlayer2', function(data){
 
 Client.socket.on('newGame', function(data) {
 	if (d.game.state.current === 'menu') {
-		let newGame = new Phaser.Button(d.game, 0, 256, 'start', function() {
+		let newGame = new Phaser.Button(d.game, 16, 256, 'join', function() {
 			Client.socket.emit('joinGame', this.id)
 			d.game.state.start('newGameOptions')
 		})
@@ -66,15 +66,15 @@ Client.socket.on('start', function() {
 Client.socket.on('optionsUpdate', function(data) {
 	d.myGame = data
 	d.mapSel.position.set(data.map.x, data.map.y)
+	d.previewChar1.kill()
+	d.previewChar2.kill()
+	d.previewChar1 = d.game.add.image(16, 80, data.chars[1])
+	d.previewChar1.scale.set(4, 4)
+	d.previewChar2 = d.game.add.image(144, 80, data.chars[2])
+	d.previewChar2.scale.set(4, 4)
 })
 
 Client.letsGo = function(id) {
-	// this is supposed to remove games that launch but it isn't working rn so whatevs
-	// d.lobbyGames.children.forEach((child, index) => {
-	// 	if (child.id === id) {
-	// 		d.lobbyGames.removeChild(index)
-	// 	}
-	// })
 	Client.socket.emit('start', id)
 }
 
@@ -86,11 +86,17 @@ Client.mapSel = function(data) {
 	Client.socket.emit('mapSel', data)
 }
 
-// Client.socket.on('remove', function(id){
-// 	d.playerMap[id].destroy()
-// 	delete d.playerMap[id]
-// 	console.log('the playerMap in remove', d.playerMap)
-// })
+Client.socket.on('score', function(data) {
+	// d.game.state.start('gameOver')
+	d.history = data.history
+	d.game.time.events.add(1000, function() {
+		d.game.lockRender = true
+	})
+	d.game.time.events.add(2000, function() {
+		d.game.state.start('killCam')
+	})
+	d.myGame = data.myGame
+})
 
 Client.socket.on('opponentHasMoved', function(newOpponentPos){
 	opponentPos(newOpponentPos)
@@ -123,6 +129,10 @@ Client.socket.on('opponentHitTC', function(data){
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
 })
+
+export function point(id, round, score) {
+	Client.socket.emit('point', {id, round, score})
+}
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
 	//console.log('the bow in', position)

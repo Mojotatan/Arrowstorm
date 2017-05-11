@@ -5,6 +5,9 @@ import d from '../game'
 import createTreasureChest from './createTreasureChest'
 
 export default function createFunc() {
+  // important for the kill cam
+  d.go = true
+
   // Obj for all players
   d.playerMap = {}
   let currPlayer
@@ -13,6 +16,8 @@ export default function createFunc() {
   if (d.currentPlayer) {
         currPlayer = d.currentPlayer
     }
+
+  d.game.input.recordPointerHistory = true
 
   //parse map data
   // let map = JSON.parse(d.game.cache.getText('map'))
@@ -94,12 +99,14 @@ export default function createFunc() {
   d.arrowsArray = []
 
   //create treasures
-  //d.treasuresArray = ['extraArrows', 'wings', 'invisibility']
   d.treasuresArray = ['extraArrows', 'wings', 'invisibility']
 
   d.player1.treasure = {}
   d.player2.treasure = {}
-  createTreasureChest(d.game.world.centerX, 0)
+
+  d.treasure = null
+  d.game.time.events.add(4000, function() {createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)})
+  // createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)
   d.player1.nextArrowType = 'regular'
   d.player2.nextArrowType = 'regular'
 
