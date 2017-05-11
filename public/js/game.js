@@ -21,6 +21,7 @@ const gameFunc = function() {
       d.game.load.spritesheet('roboraj', 'sprites/roboraj.png', 20, 32)
       d.game.load.spritesheet('fatKid', 'sprites/fat-kid.png', 20, 32)
       d.game.load.spritesheet('blackMage', 'sprites/black-mage.png', 20, 32)
+      d.game.load.spritesheet('gale', 'sprites/gale.png', 20, 32)
       d.game.load.image('arrow', 'sprites/Arrow.png')
       d.game.load.image('arrowSide', 'sprites/Arrow copy.png')
       d.game.load.image('bow', 'sprites/bow-crop.png')
@@ -122,6 +123,8 @@ const gameFunc = function() {
       d.chooseFatKid.scale.set(1.5, 1.5)
       d.chooseBlackMage = d.game.add.button(112, 256, 'blackMage', avatar('blackMage'))
       d.chooseBlackMage.scale.set(1.5, 1.5)
+      d.chooseGale = d.game.add.button(160, 256, 'gale', avatar('gale'))
+      d.chooseGale.scale.set(1.5, 1.5)
 
       let x = 384
       let y = 192
