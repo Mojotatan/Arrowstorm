@@ -223,7 +223,6 @@ const gameFunc = function() {
 
   let gameOver = {
     create: function() {
-      d.game.time.slowMotion = 1
       d.countdown = 180
       d.countdownText = d.game.add.text(448, 480, '', {fill: '#FFFFFF', fontSize: 36})
       d.tex = d.game.add.text(192, 128, '', {fill: '#FFFFFF'})
@@ -246,10 +245,9 @@ const gameFunc = function() {
   let killCam = {
     create: function() {
       d.game.lockRender = false
-      d.game.time.slowMotion = 2
-      d.history = d.history.slice(-90)
+      d.history = d.history.slice(-120)
       createFunc()
-      d.slowmo = d.game.add.text(320, 128, 'SLO MO REPLAY', {fontSize: 48, fill: '#FFFFFF'})
+      d.slowmo = d.game.add.text(384, 128, 'FATALITY', {fontSize: 48, fill: '#FFFFFF'})
       // d.treasure.kill()
     },
     update: function() {scrubdateFunc()}
