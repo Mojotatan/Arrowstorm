@@ -25,8 +25,6 @@ export default function scrubdateFunc() {
 
   if (d.arrow) wrap(d.arrow)
 
-  wrap(d.treasure)
-
   //Define collisions
   let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
   let hitPlatformP2 = d.game.physics.arcade.collide(d.platforms, d.player2)

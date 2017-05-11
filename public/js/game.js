@@ -225,12 +225,14 @@ const gameFunc = function() {
     create: function() {
       d.game.time.slowMotion = 1
       d.countdown = 180
+      d.countdownText = d.game.add.text(448, 532, '', {fill: '#FFFFFF', fontSize: 36})
       d.tex = d.game.add.text(192, 128, '', {fill: '#FFFFFF'})
       let score = d.game.add.text(192, 256, `${d.myGame.score[1]} - ${d.myGame.score[2]}`, {fill: '#FFFFFF', fontSize: 36})
     },
     update: function() {
       if (d.myGame.score[1] < 5 && d.myGame.score[2] < 5) {
         d.countdown--
+        d.countdownText.text = `${d.countdown}`
         if (d.countdown < 0) {
           Client.letsGo(d.myGame.id) // this will probably cause some issues
         }
@@ -248,7 +250,7 @@ const gameFunc = function() {
       d.history = d.history.slice(-90)
       createFunc()
       d.slowmo = d.game.add.text(320, 128, 'SLO MO REPLAY', {fontSize: 48, fill: '#FFFFFF'})
-      d.treasure.kill()
+      // d.treasure.kill()
     },
     update: function() {scrubdateFunc()}
   }
