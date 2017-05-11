@@ -103,7 +103,7 @@ export default function createFunc() {
 
   d.player1.treasure = {}
   d.player2.treasure = {}
-  
+
   d.treasure = null
   d.game.time.events.add(4000, function() {createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)})
   // createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)

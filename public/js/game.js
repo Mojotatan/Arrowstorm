@@ -5,6 +5,7 @@ import scrubdateFunc from './update/scrubdate'
 import preview from './update/preview'
 //import Phaser from '../phaser/phaser'
 import Client from './client'
+import createTilemap from './create/createTilemap'
 
 let d = {}
 export default d
@@ -43,6 +44,8 @@ const gameFunc = function() {
       d.game.load.image('sunset', 'sprites/sunset.png')
       d.game.load.image('sel', 'sprites/sel.png')
       d.game.load.image('wing', 'sprites/wing.png')
+      d.game.load.image('tree', 'sprites/tree.png')
+      d.game.load.image('boulder', 'sprites/boulder.png')
     },
     create: function() {
       axios.get('/maps')
@@ -81,7 +84,7 @@ const gameFunc = function() {
     startMap: function() {
 
       console.log(d.game.state)
-      // this.game.state.start('mapEditor')
+      this.game.state.start('mapEditor')
     },
     startHowTo: function() {
       this.game.state.start('howTo')
@@ -215,8 +218,12 @@ const gameFunc = function() {
   }
 
   let mapEditor = {
+    preload: function () {
+      d.game.load.image('brick', 'sprites/brick.png')
+    },
+
     create: function() {
-      console.log('nah man')
+      createTilemap()
     },
     update: function() {}
   }
