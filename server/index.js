@@ -45,6 +45,7 @@ db.sync()
 	})
 
 	let allGames = []
+	let history = {}
 	let count = 0
 
 	io.on('connection', function(socket){
@@ -53,6 +54,7 @@ db.sync()
 		// logic for creating and joining games via lobby
 		socket.on('newGame', function(data) {
 			allGames.push({id: count, player1: socket.id, player2: null, chars: {1: 'blackMage', 2: 'fatKid'}, map: {x: 384, y: 192}, score: {1: 0, 2: 0}, round: 0})
+			history[count] = []
 			socket.join(`game ${count}`)
 			console.log('joining channel', `game ${count}`)
 			socket.emit('assignedPlayer1', allGames[count])
@@ -81,7 +83,7 @@ db.sync()
 				console.log('point received and accepted')
 				allGames[data.id].round++
 				allGames[data.id].score = data.score
-				io.in(`game ${data.id}`).emit('score', allGames[data.id])
+				io.in(`game ${data.id}`).emit('score', {myGame: allGames[data.id], history: history[data.id]})
 			}
 		})
 
@@ -105,12 +107,34 @@ db.sync()
 			console.log('the disconnected user', socket.id)
 		})
 
-		socket.on('playerHasMoved', function(newPos){
-			socket.broadcast.to(`game ${newPos.id}`).emit('opponentHasMoved', newPos)
+		socket.on('playerHasMoved', function(data){
+			socket.broadcast.to(`game ${data.id}`).emit('opponentHasMoved', data)
+			let log = Object.assign({}, data, {action: 'move'})
+			log.player = allGames[data.id].player1 === socket.id ? 'player1' : 'player2'
+
+			// push data to history
+			// if the last history action is from the other player, it combines the two action states
+			// to keep the replay fast
+			let eot = history[data.id][history[data.id].length - 1] || []
+			if (eot.length === 1 && eot[0].player !== log.player) {
+				eot.push(log)
+			} else {
+				history[data.id].push([log])
+			}
 		})
 
 		socket.on('playerHasShot', function(data){
 			socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data)
+			let log = Object.assign({}, data, {action: 'shot'})
+			log.player = allGames[data.id].player1 === socket.id ? 'player1' : 'player2'
+			
+			// push data to history
+			let eot = history[data.id][history[data.id].length - 1] || []
+			if (eot.length === 1 && eot[0].player !== log.player) {
+				eot.push(log)
+			} else {
+				history[data.id].push([log])
+			}
 		})
 
 		socket.on('playerHasDied', function(data){

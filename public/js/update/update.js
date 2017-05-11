@@ -221,9 +221,12 @@ export default function updateFunc() {
 
   if (!(d.player1.alive && d.player2.alive)) {
     console.log('death!')
+    // console.log(d.game.input)
     if (d.player1.alive) d.myGame.score[1]++
     else if (d.player2.alive) d.myGame.score[2]++
     point(d.myGame.id, d.myGame.round, d.myGame.score)
+    // d.game.lockRender = true
+    // console.log('WHAT HAPPENS???')
   }
 
 }

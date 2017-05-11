@@ -14,6 +14,8 @@ export default function createFunc() {
         currPlayer = d.currentPlayer
     }
 
+  d.game.input.recordPointerHistory = true
+
   //parse map data
   // let map = JSON.parse(d.game.cache.getText('map'))
   let map = d.map
