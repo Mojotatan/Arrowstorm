@@ -49,7 +49,7 @@ export default function createFunc() {
   // add blocks
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
-    newBlock.scale.set(.25, .25)
+    // newBlock.scale.set(.25, .25)
     newBlock.body.immovable = true
   })
 
