@@ -9,7 +9,6 @@ const app = express();
 db.sync()
 .then(() => {
 	const server = app.listen(3000, () => {console.log('Listening on port 3000...')})
-	//console.log('the server', server)
 	const io = socketio(server)
 
 	app.use(morgan('tiny'))

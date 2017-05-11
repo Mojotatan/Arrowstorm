@@ -1,5 +1,6 @@
 import d from '../game'
 import { arrowIsDead } from '../client'
+import {appendArrowDisplay} from './arrowDisplay'
 
 export default function arrowPhysics() {
 	d.arrowsArray.forEach((arrow, idx) => {
@@ -31,6 +32,7 @@ export default function arrowPhysics() {
           arrowIsDead(d.myGame.id, idx)
           d.arrowsArray.push(arrow)
           d.player1.numArrows++
+          appendArrowDisplay('player1', d.player1.numArrows)
         }
       }
 
@@ -43,6 +45,7 @@ export default function arrowPhysics() {
           arrowIsDead(d.myGame.id, idx)
           d.arrowsArray.push(arrow)
           d.player2.numArrows++
+          appendArrowDisplay('player2', d.player2.numArrows)
         }
       }
     })

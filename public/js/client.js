@@ -5,6 +5,7 @@ import { opponentPos } from './update/update'
 import createPlayer from './create/player'
 import fireArrow from './update/fireArrow'
 import treasureChest from './update/treasureChest'
+import {removeArrowDisplay} from './update/arrowDisplay'
 
 var Client = {}
 Client.socket = io.connect()
@@ -105,6 +106,7 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 Client.socket.on('opponentHasShot', function(data){
 	//console.log('the opponent has shot!!', opponentName)
 	let opponentName = data.player
+	removeArrowDisplay(opponentName)
 	let opponentShotDir = data.shotDirection
 	fireArrow(d, true, opponentName, opponentShotDir)
 })
@@ -114,7 +116,6 @@ Client.socket.on('opponentHasDied', function(opponent){
 })
 
 Client.socket.on('opponentPickedArrow', function(arrowIdx){
-	console.log('the d in pickedarrow', d.arrowsArray)
 	d.arrowsArray[arrowIdx].kill()
 })
 
@@ -123,8 +124,6 @@ Client.socket.on('opponentHitTC', function(data){
 	let opponent = data.player
 	d[opponent].treasure = {}
 	d[opponent].treasure.payload = treasure
-	console.log(' current player in client after assigning treasure', d[d.currentPlayer])
-	console.log(' opponent player in client after assigning treasure', d[opponent])
 
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
@@ -135,7 +134,6 @@ export function point(id, round, score) {
 }
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
-	//console.log('the bow in', position)
 	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale, position, rotation})
 }
 
@@ -156,13 +154,3 @@ export function hitTC(id, treasure, player) {
 }
 
 export default Client
-
-
-// Client.socket.on('allPlayers', function(data){
-// 	console.log('all players in client', data)
-// 	for (let i = 0; i < data.length; i++){
-// 		//d.playerMap.data = d.game.add.sprite(data[i].x, data[i].y, 'roboraj')
-// 		addNewPlayer(d, data[i].id, data[i].x, data[i].y)
-// 		//createPlayer(d, 'fatKid', 'player2', {x: 328, y: 0})
-// 	}
-// })

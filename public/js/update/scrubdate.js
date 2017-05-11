@@ -11,7 +11,11 @@ import treasureChest from './treasureChest'
 //import Client from '../client'
 
 export default function scrubdateFunc() {
-  d.slowmo.visible = !d.slowmo.visible
+  d.interval++
+  if (d.interval === 2) {
+    d.slowmo.visible = !d.slowmo.visible
+    d.interval = 0
+  }
 
   let moment = d.history[0]
 

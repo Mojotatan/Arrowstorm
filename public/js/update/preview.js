@@ -9,7 +9,7 @@ export default function(map) {
     let y = block.y / 2
     y += 320
     let newBlock = d.preview.create(x, y, block.tile)
-    newBlock.scale.set(.125, .125)
+    newBlock.scale.set(.5, .5)
   })
 
 }
