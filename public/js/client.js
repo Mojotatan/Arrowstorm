@@ -89,7 +89,12 @@ Client.mapSel = function(data) {
 Client.socket.on('score', function(data) {
 	// d.game.state.start('gameOver')
 	d.history = data.history
-	d.game.state.start('killCam')
+	d.game.time.events.add(1000, function() {
+		d.game.lockRender = true
+	})
+	d.game.time.events.add(2000, function() {
+		d.game.state.start('killCam')
+	})
 	d.myGame = data.myGame
 })
 

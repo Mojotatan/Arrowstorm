@@ -5,6 +5,9 @@ import d from '../game'
 import createTreasureChest from './createTreasureChest'
 
 export default function createFunc() {
+  // important for the kill cam
+  d.go = true
+
   // Obj for all players
   d.playerMap = {}
   let currPlayer

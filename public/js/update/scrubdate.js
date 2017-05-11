@@ -11,6 +11,8 @@ import treasureChest from './treasureChest'
 //import Client from '../client'
 
 export default function scrubdateFunc() {
+  d.slowmo.visible = !d.slowmo.visible
+
   let moment = d.history[0]
 
   //Turn down player physics to avoid unwanted movement
@@ -46,21 +48,9 @@ export default function scrubdateFunc() {
     d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
   }
 
-  // Treasure chest collisions
-  let treasureHitPlatforms = d.game.physics.arcade.collide(d.treasure, d.platforms)
-  let treasureHitPlayer1 = d.game.physics.arcade.collide(d.treasure, d.player1)
-  let treasureHitPlayer2 = d.game.physics.arcade.collide(d.treasure, d.player2)
-
-  if (treasureHitPlatforms) {
-    d.treasure.body.velocity.x = 0
-    d.treasure.body.velocity.y = 0
-    d.treasure.body.acceleration = 0
-    d.treasure.body.gravity.y = 0
-    d.treasure.body.immovable = true
-  }
+  // note: not loading or dealing with treasure at all here
 
   // MOVE EM ROUND
-  // if (snapshot.length > 1) console.log(snapshot)
   moment.forEach(snapshot => {
     if (snapshot.action === 'move') {
       d[snapshot.player].position.set(snapshot.x, snapshot.y)
@@ -73,9 +63,15 @@ export default function scrubdateFunc() {
     }
   })
 
-
-  // arrow collisions
-  // arrowPhysics()
-
-  d.history.shift()
+  // end the kill cam on the kill
+  if (d.history.length > 1) {
+    d.history.shift()
+  } else if (d.go) {
+    d.game.lockRender = true
+    d.game.time.events.add(1500, function() {
+      d.game.state.start('gameOver')
+      d.game.lockRender = false
+    })
+    d.go = false
+  }
 }
