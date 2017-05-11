@@ -69,12 +69,6 @@ Client.socket.on('optionsUpdate', function(data) {
 })
 
 Client.letsGo = function(id) {
-	// this is supposed to remove games that launch but it isn't working rn so whatevs
-	// d.lobbyGames.children.forEach((child, index) => {
-	// 	if (child.id === id) {
-	// 		d.lobbyGames.removeChild(index)
-	// 	}
-	// })
 	Client.socket.emit('start', id)
 }
 
@@ -86,11 +80,10 @@ Client.mapSel = function(data) {
 	Client.socket.emit('mapSel', data)
 }
 
-// Client.socket.on('remove', function(id){
-// 	d.playerMap[id].destroy()
-// 	delete d.playerMap[id]
-// 	console.log('the playerMap in remove', d.playerMap)
-// })
+Client.socket.on('score', function(data) {
+	d.game.state.start('gameOver')
+	d.myGame = data
+})
 
 Client.socket.on('opponentHasMoved', function(newOpponentPos){
 	opponentPos(newOpponentPos)
@@ -123,6 +116,10 @@ Client.socket.on('opponentHitTC', function(data){
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
 })
+
+export function point(id, round, score) {
+	Client.socket.emit('point', {id, round, score})
+}
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
 	//console.log('the bow in', position)

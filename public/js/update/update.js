@@ -1,13 +1,12 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
-import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead} from '../client'
+import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, hitTC, point} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
 import playerAim from './playerAim'
 import arrowPhysics from './arrowPhysics'
 import treasureChest from './treasureChest'
-import { hitTC } from '../client'
 
 //import Client from '../client'
 
@@ -21,6 +20,8 @@ export default function updateFunc() {
     wrap(d.player2)
 
     if (d.arrow) wrap(d.arrow)
+
+    wrap(d.treasure)
 
     //Define collisions
     let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
@@ -107,10 +108,11 @@ export default function updateFunc() {
       d[currPlayer].frame = 2
     }
 
-    if (cursors.up.isDown && d[currPlayer].body.touching.down && hitPlatform) {
+    let amIGrounded = (currPlayer === 'player1') ? hitPlatform : hitPlatformP2
+    if (cursors.up.isDown && d[currPlayer].body.touching.down && amIGrounded) {
       d[currPlayer].body.velocity.y = -600
     }
-    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && hitPlatform) {
+    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && amIGrounded) {
       d[currPlayer].body.velocity.y = -600
       let dir = d[currPlayer].body.touching.right ? -1 : 1
       d[currPlayer].body.velocity.x = 300 * dir
@@ -215,6 +217,13 @@ export default function updateFunc() {
     else if (d.currentPlayer === 'player2') {
       playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)
     }
+  }
+
+  if (!(d.player1.alive && d.player2.alive)) {
+    console.log('death!')
+    if (d.player1.alive) d.myGame.score[1]++
+    else if (d.player2.alive) d.myGame.score[2]++
+    point(d.myGame.id, d.myGame.round, d.myGame.score)
   }
 
 }
