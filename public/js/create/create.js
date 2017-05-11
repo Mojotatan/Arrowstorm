@@ -49,7 +49,7 @@ export default function createFunc() {
   // add blocks
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
-    newBlock.scale.set(.25, .25)
+    // newBlock.scale.set(.25, .25)
     newBlock.body.immovable = true
   })
 
@@ -103,7 +103,7 @@ export default function createFunc() {
 
   d.player1.treasure = {}
   d.player2.treasure = {}
-  
+
   d.treasure = null
   d.game.time.events.add(4000, function() {createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)})
   // createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)
