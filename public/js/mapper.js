@@ -17,7 +17,7 @@ obj.shields = []
 obj.spikes = []
 obj.background = {
   file: 'space',
-  scale: .3333
+  scale: 1
 }
 for (let i = 0; i < 20; i++) {
   if (i < 8 || i > 11) {

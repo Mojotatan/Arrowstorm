@@ -127,7 +127,7 @@ db.sync()
 			socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data)
 			let log = Object.assign({}, data, {action: 'shot'})
 			log.player = allGames[data.id].player1 === socket.id ? 'player1' : 'player2'
-			
+
 			// push data to history
 			let eot = history[data.id][history[data.id].length - 1] || []
 			if (eot.length === 1 && eot[0].player !== log.player) {

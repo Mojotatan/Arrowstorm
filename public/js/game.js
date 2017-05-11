@@ -225,7 +225,7 @@ const gameFunc = function() {
     create: function() {
       d.game.time.slowMotion = 1
       d.countdown = 180
-      d.countdownText = d.game.add.text(448, 532, '', {fill: '#FFFFFF', fontSize: 36})
+      d.countdownText = d.game.add.text(448, 480, '', {fill: '#FFFFFF', fontSize: 36})
       d.tex = d.game.add.text(192, 128, '', {fill: '#FFFFFF'})
       let score = d.game.add.text(192, 256, `${d.myGame.score[1]} - ${d.myGame.score[2]}`, {fill: '#FFFFFF', fontSize: 36})
     },
