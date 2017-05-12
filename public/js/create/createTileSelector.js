@@ -25,6 +25,9 @@ export default function createTileSelector() {
   createTile(672, 288, 'spikes-left')
   createTile(672, 320, 'spikes-down')
   createTile(672, 352, 'spikes-right')
+  createTile(672, 384, 'tc-editor')
+  createTile(672, 416, 'p1')
+  createTile(672, 448, 'p2')
 
   me.marker = d.game.add.graphics()
   me.marker.lineStyle(2, 0xffffff, 1)

@@ -43,5 +43,8 @@
     "sequelize": "^3.30.4",
     "socket.io": "^1.7.3",
     "webpack": "^2.4.1"
+  },
+  "devDependencies": {
+    "@orange-games/phaser-input": "^2.0.4"
   }
 }
