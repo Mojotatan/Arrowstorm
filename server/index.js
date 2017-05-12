@@ -58,7 +58,6 @@ db.sync()
 			}
 			return (game.player1 || game.player2)
 		})
-		console.log(allGames)
 	}
 
 	io.on('connection', function(socket){
@@ -80,6 +79,8 @@ db.sync()
 			socket.join(`game ${count}`)
 			console.log('joining channel', `game ${count}`)
 			socket.emit('assignedPlayer1', allGames[count])
+			// console.log('count', count)
+			// console.log(allGames)
 			socket.broadcast.emit('newGame', allGames[count].id)
 			count++
 		})

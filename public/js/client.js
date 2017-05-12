@@ -31,8 +31,6 @@ Client.socket.on('assignedPlayer2', function(data){
 })
 
 Client.socket.on('newGame', function(data) {
-	d.openGames = d.openGames || 0
-
 	function loadNewGames(data) {
 		let newGame = new Phaser.Button(d.game, 16, 256 + d.openGames * 48, 'join', function() {
 			Client.socket.emit('joinGame', this.id)
@@ -45,15 +43,11 @@ Client.socket.on('newGame', function(data) {
 
 	if (d.game.state.current === 'menu') {
 		loadNewGames(data)
-	} else if (d.game.state.current === 'loadAssets') {
-		d.gamesOnEnter = d.gamesOnEnter || []
-		d.gamesOnEnter.push(function(){loadNewGames(data)})
 	}
 })
 
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
-	console.log(data)
 	let p1 = data.player1 ? 'JOINED' : ''
 	let p2 = data.player2 ? 'JOINED' : ''
 	if (d.game.state.current === 'newGameOptions') {

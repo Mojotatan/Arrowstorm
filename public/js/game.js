@@ -61,6 +61,7 @@ const gameFunc = function() {
   let menu = {
     preload: function () {},
     create: function () {
+      d.openGames = 0
       getGames()
 
       d.startBtn = d.game.add.button(0, 0, 'start', this.startGame, this)
