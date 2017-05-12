@@ -29,18 +29,28 @@ let newGameOptions = {
     })
     d.leaveBtn.scale.set(2, 2)
 
-    d.youAre = d.game.add.text(384, 128 + 16, '', {fill: '#FFFFFF'})
+    d.message = d.game.add.text(384, 128 + 16, 'You are: ', {fill: '#FFFFFF'})
+    d.youAre = d.game.add.text(384 + 112, 128 + 16, '', {fill: '#FFFFFF'})
     if (d.currentPlayer) {
-      d.youAre.text = d.currentPlayer === 'player1' ? 'You are PLAYER 1' : 'You are PLAYER 2'
+      d.youAre.text = d.currentPlayer === 'player1' ? 'PLAYER 1' : 'PLAYER 2'
+      d.youAre.fill = d.currentPlayer === 'player1' ? '#0000FF' : '#FF0000'
     }
 
     // character select
     d.game.add.text(16, 0, 'Choose your character', {fill: '#FFFFFF'})
 
-    // defaults
-    d.previewChar1 = d.game.add.image(16, 48, 'blackMage')
+
+    // defaults to p1 as blackmage and p2 as fatkid
+    let previewShade1 = d.game.add.graphics(58, 46)
+    previewShade1.lineStyle(4, 0x0000ff)
+    previewShade1.drawRect(0, 0, 84, 132)
+    d.previewChar1 = d.game.add.image(60, 48, 'blackMage')
     d.previewChar1.scale.set(4, 4)
-    d.previewChar2 = d.game.add.image(144, 48, 'fatKid')
+
+    let previewShade2 = d.game.add.graphics(222, 46)
+    previewShade2.lineStyle(4, 0xff0000)
+    previewShade2.drawRect(0, 0, 84, 132)
+    d.previewChar2 = d.game.add.image(224, 48, 'fatKid')
     d.previewChar2.frame = 2
     d.previewChar2.scale.set(4, 4)
 

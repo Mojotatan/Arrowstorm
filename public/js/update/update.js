@@ -233,7 +233,7 @@ export default function updateFunc() {
     if (d.go) {
       if (d.player1.alive) d.myGame.score[1]++
       else if (d.player2.alive) d.myGame.score[2]++
-      point(d.myGame.id, d.myGame.round, d.myGame.score)
+      point(d.myGame.id, d.round, d.myGame.score)
       d.go = false
     }
   }

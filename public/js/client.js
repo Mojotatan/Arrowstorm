@@ -15,7 +15,11 @@ Client.socket.on('assignedPlayer1', function(data){
 	console.log('assigned to player1')
 	d.currentPlayer = "player1"
 	d.myGame = data
-	if (d.youAre) d.youAre.text = 'You are PLAYER 1'
+	if (d.youAre) {
+		d.message.text = 'You are: '
+		d.youAre.text = 'PLAYER 1'
+		d.youAre.fill = '#0000FF'
+	}
 })
 
 // assigning player 2 to second player that logs on
@@ -23,7 +27,11 @@ Client.socket.on('assignedPlayer2', function(data){
 	console.log('assigned to player2')
 	d.currentPlayer = "player2"
 	d.myGame = data
-	if (d.youAre) d.youAre.text = 'You are PLAYER 2'
+	if (d.youAre) {
+		d.message.text = 'You are: '
+		d.youAre.text = 'PLAYER 2'
+		d.youAre.fill = '#FF0000'
+	}
 })
 
 Client.socket.on('newGame', function(data) {
@@ -75,25 +83,13 @@ Client.socket.on('optionsUpdate', function(data) {
 	d.mapSel.position.set(data.map.x, data.map.y)
 	d.previewChar1.kill()
 	d.previewChar2.kill()
-	d.previewChar1 = d.game.add.image(16, 48, data.chars[1])
+	d.previewChar1 = d.game.add.image(60, 48, data.chars[1])
 	d.previewChar1.frame = 2
 	d.previewChar1.scale.set(4, 4)
-	d.previewChar2 = d.game.add.image(144, 48, data.chars[2])
+	d.previewChar2 = d.game.add.image(224, 48, data.chars[2])
 	d.previewChar2.frame = 2
 	d.previewChar2.scale.set(4, 4)
 })
-
-export function letsGo(id) {
-	Client.socket.emit('start', id)
-}
-
-export function chooseChar(data) {
-	Client.socket.emit('charSwap', data)
-}
-
-export function mapSel(data) {
-	Client.socket.emit('mapSel', data)
-}
 
 Client.socket.on('score', function(data) {
 	// d.game.state.start('gameOver')
@@ -135,6 +131,19 @@ Client.socket.on('opponentHitTC', function(data){
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
 })
+
+//utility functions that invoke client
+export function letsGo(id) {
+	Client.socket.emit('start', id)
+}
+
+export function chooseChar(data) {
+	Client.socket.emit('charSwap', data)
+}
+
+export function mapSel(data) {
+	Client.socket.emit('mapSel', data)
+}
 
 export function getGames() {
 	Client.socket.emit('requestAllGames')
