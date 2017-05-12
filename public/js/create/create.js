@@ -18,13 +18,31 @@ export default function createFunc() {
         currPlayer = d.currentPlayer
     }
 
-  d.game.input.recordPointerHistory = true
+  // draw style rectangles
+  let p1shade = d.game.add.graphics(0, 0)
+  p1shade.beginFill(0x000088)
+  p1shade.drawRect(0, 0, 192, 320)
+  p1shade.endFill()
+
+  let p2shade = d.game.add.graphics(832, 0)
+  p2shade.beginFill(0x880000)
+  p2shade.drawRect(0, 0, 192, 320)
+  p2shade.endFill()
+
+  let p3shade = d.game.add.graphics(0, 320)
+  p3shade.beginFill(0x373737) //0x008800
+  p3shade.drawRect(0, 0, 192, 320)
+  p3shade.endFill()
+
+  let p4shade = d.game.add.graphics(832, 320)
+  p4shade.beginFill(0x373737) //BBBB00
+  p4shade.drawRect(0, 0, 192, 320)
+  p4shade.endFill()
 
   //parse map data
-  // let map = JSON.parse(d.game.cache.getText('map'))
   let map = d.map
 
-  //add background
+  //add stage background
   d.background = d.game.add.image(192, 0, map.background.file)
   d.background.scale.set(map.background.scale, map.background.scale)
 

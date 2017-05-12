@@ -47,12 +47,35 @@ db.sync()
 	let history = {}
 	let count = 0
 
+	const clearGames = (id) => {
+		allGames = allGames.filter(game => {
+			if (game.player1 === id) {
+				game.player1 = null
+				io.in(`game ${game.id}`).emit('playerJoined', game)
+			} else if (game.player2 === id) {
+				game.player2 = null
+				io.in(`game ${game.id}`).emit('playerJoined', game)
+			}
+			return (game.player1 || game.player2)
+		})
+		console.log(allGames)
+	}
+
 	io.on('connection', function(socket){
 		console.log('connected new user!', socket.id)
 
 		// logic for creating and joining games via lobby
 		socket.on('newGame', function(data) {
-			allGames.push({id: count, player1: socket.id, player2: null, chars: {1: 'blackMage', 2: 'fatKid'}, map: {x: 384, y: 192}, score: {1: 0, 2: 0}, round: 0})
+			allGames.push({
+				id: count,
+				player1: socket.id,
+				player2: null,
+				chars: {1: 'blackMage', 2: 'fatKid'},
+				map: {x: 384, y: 192},
+				score: {1: 0, 2: 0},
+				round: 0,
+				started: false
+			})
 			history[count] = []
 			socket.join(`game ${count}`)
 			console.log('joining channel', `game ${count}`)
@@ -72,11 +95,21 @@ db.sync()
 			}
 			io.in(`game ${id}`).emit('playerJoined', allGames[id])
 		})
+		socket.on('requestAllGames', function() {
+			allGames.forEach(game => {
+				if (!game.started) socket.emit('newGame', game.id)
+			})
+		})
+		socket.on('leaveGame', function() {
+			clearGames(socket.id)
+		})
 		socket.on('start', function(id) {
 			console.log('starting game', allGames[id])
+			allGames[id].started = true
 			io.in(`game ${id}`).emit('start')
 		})
 
+		// a point is scored, a round ends
 		socket.on('point', function(data) {
 			if (allGames[data.id].round === data.round) {
 				console.log('point received and accepted')
@@ -86,6 +119,7 @@ db.sync()
 			}
 		})
 
+		// configuring/syncing options in a game lobby
 		socket.on('charSwap', function(data) {
 			if (allGames[data.id].player1 === socket.id) {
 				allGames[data.id].chars[1] = data.char
@@ -95,17 +129,12 @@ db.sync()
 				io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
 			}
 		})
-
 		socket.on('mapSel', function(data) {
 			allGames[data.id].map = data.map
 			io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
 		})
 
-		socket.on('disconnect', function(){
-			// io.emit('remove', socket.player.id)
-			console.log('the disconnected user', socket.id)
-		})
-
+		// syncing actions in game
 		socket.on('playerHasMoved', function(data){
 			socket.broadcast.to(`game ${data.id}`).emit('opponentHasMoved', data)
 			let log = Object.assign({}, data, {action: 'move'})
@@ -121,7 +150,6 @@ db.sync()
 				history[data.id].push([log])
 			}
 		})
-
 		socket.on('playerHasShot', function(data){
 			socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data)
 			let log = Object.assign({}, data, {action: 'shot'})
@@ -135,17 +163,19 @@ db.sync()
 				history[data.id].push([log])
 			}
 		})
-
 		socket.on('playerHasDied', function(data){
 			socket.broadcast.to(`game ${data.id}`).emit('opponentHasDied', data.player)
 		})
-
 		socket.on('arrowPickedUp', function(data){
 			socket.broadcast.to(`game ${data.id}`).emit('opponentPickedArrow', data.idx)
 		})
-
 		socket.on('playerHitTC', function(data){
 			socket.broadcast.to(`game ${data.id}`).emit('opponentHitTC', data)
+		})
+
+		socket.on('disconnect', function(){
+			console.log('the disconnected user', socket.id)
+			clearGames(socket.id)
 		})
 
 	})

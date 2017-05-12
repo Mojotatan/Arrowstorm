@@ -4,7 +4,7 @@ import createFunc from './create/create'
 import scrubdateFunc from './update/scrubdate'
 import preview from './update/preview'
 //import Phaser from '../phaser/phaser'
-import Client from './client'
+import Client, {leaveGame, getGames} from './client'
 import createTilemap from './create/createTilemap'
 
 let d = {}
@@ -14,7 +14,7 @@ const gameFunc = function() {
 
 
   // game play area is a box so walls of 192 width on each side
-  d.game = new Phaser.Game(1024, 640, Phaser.AUTO, '', null, false, false);
+  d.game = new Phaser.Game(1024, 640, Phaser.AUTO, 'app', null, false, false);
 
   let loadAssets = {
     preload: function() {
@@ -61,6 +61,8 @@ const gameFunc = function() {
   let menu = {
     preload: function () {},
     create: function () {
+      getGames()
+
       d.startBtn = d.game.add.button(0, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
 
@@ -74,9 +76,16 @@ const gameFunc = function() {
       d.lobbyGames = d.game.add.group()
       d.game.add.text(16, 208, 'join a game', {fill: '#FFFFFF'})
 
+      // load in any games if they exist
+      if (d.gamesOnEnter) {
+        d.gamesOnEnter.forEach(game => game())
+      }
+
       d.game.add.text(432, 240, 'How To Play', {fill: '#FFFFFF'})
       d.mapBtn = d.game.add.button(480, 288, 'go', this.startHowTo, this)
       d.mapBtn.scale.set(2, 2)
+
+      d.game.stage.setBackgroundColor('#008080')
     },
     startGame: function () {
       Client.socket.emit('newGame', {})
@@ -106,41 +115,63 @@ const gameFunc = function() {
         p2 = 'ERROR'
       }
       d.gameReady = d.game.add.text(648, 64, '', {fill: '#FFFFFF'})
-      d.lobbyP1 = d.game.add.text(0, 0, `Player 1: ${p1}`, {fill: '#FFFFFF'})
-      d.lobbyP2 = d.game.add.text(0, 32, `Player 2: ${p2}`, {fill: '#FFFFFF'})
+      d.lobbyP1 = d.game.add.text(648, 0, `Player 1: ${p1}`, {fill: '#0000FF'})
+      d.lobbyP2 = d.game.add.text(648, 32, `Player 2: ${p2}`, {fill: '#FF0000'})
 
-      d.leaveBtn = d.game.add.button(896, 0, 'back', this.leaveGame, this)
+      d.leaveBtn = d.game.add.button(896, 0, 'back', function(){
+        leaveGame()
+        d.game.state.start('menu')
+      })
       d.leaveBtn.scale.set(2, 2)
 
-      d.game.add.text(384, 144, 'Map Select: (change maps with arrow keys)', {fill: '#FFFFFF'})
+      d.youAre = d.game.add.text(384, 128 + 16, '', {fill: '#FFFFFF'})
+      if (d.currentPlayer) {
+        d.youAre.text = d.currentPlayer === 'player1' ? 'You are PLAYER 1' : 'You are PLAYER 2'
+      }
 
-      d.previewChar1 = d.game.add.image(16, 80, 'blackMage')
+      // character select
+      d.game.add.text(16, 0, 'Choose your character', {fill: '#FFFFFF'})
+
+      // defaults
+      d.previewChar1 = d.game.add.image(16, 48, 'blackMage')
       d.previewChar1.scale.set(4, 4)
-      d.previewChar2 = d.game.add.image(144, 80, 'fatKid')
+      d.previewChar2 = d.game.add.image(144, 48, 'fatKid')
       d.previewChar2.frame = 2
       d.previewChar2.scale.set(4, 4)
 
-      //player options
       let avatar = function(char) {
         return function() {
           Client.chooseChar({char, id: d.myGame.id})
         }
       }
 
-      d.chooseRoboraj = d.game.add.button(16, 256, 'roboraj', avatar('roboraj'))
+      let rosterShade = d.game.add.graphics(16, 192)
+      rosterShade.beginFill(0x9999ff)
+      rosterShade.drawRect(0, 0, 352, 80)
+      rosterShade.endFill()
+
+      d.chooseRoboraj = d.game.add.button(88 - 15 + 16 - 44, 208, 'roboraj', avatar('roboraj'))
       d.chooseRoboraj.frame = 2
       d.chooseRoboraj.scale.set(1.5, 1.5)
-      d.chooseFatKid = d.game.add.button(64, 256, 'fatKid', avatar('fatKid'))
+      d.chooseFatKid = d.game.add.button(88 * 2 - 15 + 16 - 44, 208, 'fatKid', avatar('fatKid'))
       d.chooseFatKid.frame = 2
       d.chooseFatKid.scale.set(1.5, 1.5)
-      d.chooseBlackMage = d.game.add.button(112, 256, 'blackMage', avatar('blackMage'))
+      d.chooseBlackMage = d.game.add.button(88 * 3 - 15 + 16 - 44, 208, 'blackMage', avatar('blackMage'))
       d.chooseBlackMage.scale.set(1.5, 1.5)
-      d.chooseGale = d.game.add.button(160, 256, 'gale', avatar('gale'))
+      d.chooseGale = d.game.add.button(88 * 4 - 15 + 16 - 44, 208, 'gale', avatar('gale'))
       d.chooseGale.frame = 2
       d.chooseGale.scale.set(1.5, 1.5)
 
+      // map select
+      let mapShade = d.game.add.graphics(368, 192)
+      mapShade.beginFill(0x999966)
+      mapShade.drawRect(0, 0, 640, 432)
+      mapShade.endFill()
+
+      d.game.add.text(384, 208, 'Map Select (change maps with arrow keys)', {fill: '#FFFFFF'})
+
       let x = 384
-      let y = 192
+      let y = 256
       d.mapSel = d.game.add.image(x, y, 'sel')
       d.mapSel.scale.set(1.5, 1.5)
 
@@ -153,10 +184,15 @@ const gameFunc = function() {
         }
       })
 
+      let previewShade = d.game.add.graphics(16, 272)
+      previewShade.beginFill(0x999966)
+      previewShade.drawRect(0, 0, 352, 352)
+      previewShade.endFill()
+
       function getPreview() {
         d.preview.callAll('kill')
         let x = (d.mapSel.x - 384) / 64
-        let y = (d.mapSel.y - 192) / 64
+        let y = (d.mapSel.y - 256) / 64
         let select = y * 10 + x
         if (select < d.maps.length) preview(d.maps[select])
       }
@@ -176,7 +212,7 @@ const gameFunc = function() {
         Client.mapSel({id: d.myGame.id, map: d.mapSel.position})
       })
       cursors.up.onDown.add(() => {
-        if (d.mapSel.position.y > 192) d.mapSel.position.y -= 64
+        if (d.mapSel.position.y > 256) d.mapSel.position.y -= 64
         getPreview()
         Client.mapSel({id: d.myGame.id, map: d.mapSel.position})
       })
@@ -196,9 +232,6 @@ const gameFunc = function() {
       // if (d.gameReady.text === 'ready!') {
         Client.letsGo(d.myGame.id)
       // }
-    },
-    leaveGame: function() {
-      d.game.state.start('menu')
     }
   }
 

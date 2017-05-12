@@ -19,6 +19,7 @@ Client.socket.on('assignedPlayer1', function(data){
 	console.log('assigned to player1')
 	d.currentPlayer = "player1"
 	d.myGame = data
+	if (d.youAre) d.youAre.text = 'You are PLAYER 1'
 })
 
 // assigning player 2 to second player that logs on
@@ -26,25 +27,39 @@ Client.socket.on('assignedPlayer2', function(data){
 	console.log('assigned to player2')
 	d.currentPlayer = "player2"
 	d.myGame = data
+	if (d.youAre) d.youAre.text = 'You are PLAYER 2'
 })
 
 Client.socket.on('newGame', function(data) {
-	if (d.game.state.current === 'menu') {
-		let newGame = new Phaser.Button(d.game, 16, 256, 'join', function() {
+	d.openGames = d.openGames || 0
+
+	function loadNewGames(data) {
+		let newGame = new Phaser.Button(d.game, 16, 256 + d.openGames * 48, 'join', function() {
 			Client.socket.emit('joinGame', this.id)
 			d.game.state.start('newGameOptions')
 		})
 		newGame.id = data
 		d.lobbyGames.addChild(newGame)
+		d.openGames++
+	}
+
+	if (d.game.state.current === 'menu') {
+		loadNewGames(data)
+	} else if (d.game.state.current === 'loadAssets') {
+		d.gamesOnEnter = d.gamesOnEnter || []
+		d.gamesOnEnter.push(function(){loadNewGames(data)})
 	}
 })
 
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
+	console.log(data)
+	let p1 = data.player1 ? 'JOINED' : ''
+	let p2 = data.player2 ? 'JOINED' : ''
 	if (d.game.state.current === 'newGameOptions') {
-		if (d.myGame.player1) d.lobbyP1.text = `Player 1: ${d.myGame.player1}`
-		if (d.myGame.player2) d.lobbyP2.text = `Player 2: ${d.myGame.player2}`
-		if (data.player1 && data.player2) d.gameReady.text = 'ready!'
+		d.lobbyP1.text = `Player 1: ${p1}`
+		d.lobbyP2.text = `Player 2: ${p2}`
+		d.gameReady.text = (data.player1 && data.player2) ? 'ready!' : ''
 	}
 })
 
@@ -52,7 +67,7 @@ Client.socket.on('start', function() {
 	console.log('let the games begin')
 	function getMap() {
 		let x = (d.mapSel.x - 384) / 64
-		let y = (d.mapSel.y - 192) / 64
+		let y = (d.mapSel.y - 256) / 64
 		let select = y * 10 + x
 		return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
 	}
@@ -65,10 +80,10 @@ Client.socket.on('optionsUpdate', function(data) {
 	d.mapSel.position.set(data.map.x, data.map.y)
 	d.previewChar1.kill()
 	d.previewChar2.kill()
-	d.previewChar1 = d.game.add.image(16, 80, data.chars[1])
+	d.previewChar1 = d.game.add.image(16, 48, data.chars[1])
 	d.previewChar1.frame = 2
 	d.previewChar1.scale.set(4, 4)
-	d.previewChar2 = d.game.add.image(144, 80, data.chars[2])
+	d.previewChar2 = d.game.add.image(144, 48, data.chars[2])
 	d.previewChar2.frame = 2
 	d.previewChar2.scale.set(4, 4)
 })
@@ -125,6 +140,14 @@ Client.socket.on('opponentHitTC', function(data){
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
 })
+
+export function getGames() {
+	Client.socket.emit('requestAllGames')
+}
+
+export function leaveGame() {
+	Client.socket.emit('leaveGame')
+}
 
 export function point(id, round, score) {
 	Client.socket.emit('point', {id, round, score})
