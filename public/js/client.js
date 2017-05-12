@@ -10,10 +10,6 @@ import {removeArrowDisplay} from './update/arrowDisplay'
 var Client = {}
 Client.socket = io.connect()
 
-Client.askNewPlayer = function(){
-	Client.socket.emit('newPlayer')
-}
-
 // assigning player 1 to first player that logs on
 Client.socket.on('assignedPlayer1', function(data){
 	console.log('assigned to player1')
@@ -87,15 +83,15 @@ Client.socket.on('optionsUpdate', function(data) {
 	d.previewChar2.scale.set(4, 4)
 })
 
-Client.letsGo = function(id) {
+export function letsGo(id) {
 	Client.socket.emit('start', id)
 }
 
-Client.chooseChar = function(data) {
+export function chooseChar(data) {
 	Client.socket.emit('charSwap', data)
 }
 
-Client.mapSel = function(data) {
+export function mapSel(data) {
 	Client.socket.emit('mapSel', data)
 }
 
@@ -142,6 +138,10 @@ Client.socket.on('opponentHitTC', function(data){
 
 export function getGames() {
 	Client.socket.emit('requestAllGames')
+}
+
+export function newGame() {
+	Client.socket.emit('newGame', {})
 }
 
 export function leaveGame() {

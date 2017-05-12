@@ -16,7 +16,7 @@ export default function createArrow(d, player, arrowType) {
     d.game.physics.arcade.enable(arrow)
     arrow.body.gravity.y = 1500
 
-    // arrows take ~1 frame to 'arm' so they collide with the shooter less often
+    // arrows take ~4 frames to 'arm' if you aim downwards so they collide with the shooter less often
     arrow.deploy = false
     d.game.time.events.add(offset * 2 + 3, function(){
       this.deploy = true
