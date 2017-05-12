@@ -32,12 +32,15 @@ Client.socket.on('assignedPlayer2', function(data){
 
 Client.socket.on('newGame', function(data) {
 	function loadNewGames(data) {
-		let newGame = new Phaser.Button(d.game, 16, 256 + d.openGames * 48, 'join', function() {
+		let newGame = new Phaser.Button(d.game, 144, 256 + d.openGames * 48, 'join', function() {
 			Client.socket.emit('joinGame', this.id)
 			d.game.state.start('newGameOptions')
 		})
+		newGame.scale.set(1.5, 1.5)
 		newGame.id = data
+		let newText = new Phaser.Text(d.game, 32, 256 + d.openGames * 48 - 2, `${data}`, {fontSize: 48})
 		d.lobbyGames.addChild(newGame)
+		d.lobbyGames.addChild(newText)
 		d.openGames++
 	}
 
@@ -50,9 +53,11 @@ Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
 	let p1 = data.player1 ? 'JOINED' : ''
 	let p2 = data.player2 ? 'JOINED' : ''
+	let id = data.id
 	if (d.game.state.current === 'newGameOptions') {
 		d.lobbyP1.text = `Player 1: ${p1}`
 		d.lobbyP2.text = `Player 2: ${p2}`
+		d.lobbyId.text = `Game ID: ${id}`
 		d.gameReady.text = (data.player1 && data.player2) ? 'ready!' : ''
 	}
 })

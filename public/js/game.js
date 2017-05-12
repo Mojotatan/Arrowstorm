@@ -74,8 +74,15 @@ const gameFunc = function() {
 
       d.game.add.text(688, 0, 'make\nnew\nmap', {fill: '#FFFFFF'})
 
+
+      // games to join
+      let joinShade = d.game.add.graphics(16, 192)
+      joinShade.beginFill(0xe6e6ff)
+      joinShade.drawRect(0, 0, 240, 432)
+      joinShade.endFill()
+
       d.lobbyGames = d.game.add.group()
-      d.game.add.text(16, 208, 'join a game', {fill: '#FFFFFF'})
+      d.game.add.text(32, 208, 'Open Games')
 
       // load in any games if they exist
       if (d.gamesOnEnter) {
@@ -107,17 +114,20 @@ const gameFunc = function() {
       d.startBtn = d.game.add.button(384, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
 
-      let p1, p2
+      let p1, p2, id
       if (d.myGame) {
         p1 = d.myGame.player1 ? 'JOINED' : ''
         p2 = d.myGame.player2 ? 'JOINED' : ''
+        id = d.myGame.id
       } else {
         p1 = 'ERROR'
         p2 = 'ERROR'
+        id = 'UNKNOWN'
       }
-      d.gameReady = d.game.add.text(648, 64, '', {fill: '#FFFFFF'})
-      d.lobbyP1 = d.game.add.text(648, 0, `Player 1: ${p1}`, {fill: '#0000FF'})
-      d.lobbyP2 = d.game.add.text(648, 32, `Player 2: ${p2}`, {fill: '#FF0000'})
+      d.lobbyId = d.game.add.text(648, 0, `Game ID: ${id}`, {fill: '#FFFFFF'})
+      d.lobbyP1 = d.game.add.text(648, 32, `Player 1: ${p1}`, {fill: '#0000FF'})
+      d.lobbyP2 = d.game.add.text(648, 64, `Player 2: ${p2}`, {fill: '#FF0000'})
+      d.gameReady = d.game.add.text(648, 96, '', {fill: '#FFFFFF'})
 
       d.leaveBtn = d.game.add.button(896, 0, 'back', function(){
         leaveGame()

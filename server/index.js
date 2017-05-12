@@ -43,20 +43,31 @@ db.sync()
 		res.sendFile(path.resolve(__dirname, '../', 'public', 'index.html'))
 	})
 
-	let allGames = []
+	let allGames = {}
 	let history = {}
-	let count = 0
+
+	const generateId = () => {
+		let alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		let a = alpha[Math.floor(Math.random() * 26)]
+		let b = alpha[Math.floor(Math.random() * 26)]
+		let c = alpha[Math.floor(Math.random() * 26)]
+		let abc = a + b + c
+		if (allGames[abc]) abc = generateId()
+		else return abc
+	}
 
 	const clearGames = (id) => {
-		allGames = allGames.filter(game => {
-			if (game.player1 === id) {
-				game.player1 = null
-				io.in(`game ${game.id}`).emit('playerJoined', game)
-			} else if (game.player2 === id) {
-				game.player2 = null
-				io.in(`game ${game.id}`).emit('playerJoined', game)
+		Object.keys(allGames).forEach(game => {
+			if (allGames[game].player1 === id) {
+				allGames[game].player1 = null
+				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
+			} else if (allGames[game].player2 === id) {
+				allGames[game].player2 = null
+				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
 			}
-			return (game.player1 || game.player2)
+			if (!allGames[game].player1 && !allGames[game].player2) {
+				delete allGames[game] // causes some issues when a game is deleted but one player in menu still sees it
+			}
 		})
 	}
 
@@ -65,8 +76,9 @@ db.sync()
 
 		// logic for creating and joining games via lobby
 		socket.on('newGame', function(data) {
-			allGames.push({
-				id: count,
+			let key = generateId()
+			allGames[key] = {
+				id: key,
 				player1: socket.id,
 				player2: null,
 				chars: {1: 'blackMage', 2: 'fatKid'},
@@ -74,15 +86,12 @@ db.sync()
 				score: {1: 0, 2: 0},
 				round: 0,
 				started: false
-			})
-			history[count] = []
-			socket.join(`game ${count}`)
-			console.log('joining channel', `game ${count}`)
-			socket.emit('assignedPlayer1', allGames[count])
-			// console.log('count', count)
-			// console.log(allGames)
-			socket.broadcast.emit('newGame', allGames[count].id)
-			count++
+			}
+			history[key] = []
+			socket.join(`game ${key}`)
+			console.log('joining channel', `game ${key}`)
+			socket.emit('assignedPlayer1', allGames[key])
+			socket.broadcast.emit('newGame', allGames[key].id)
 		})
 		socket.on('joinGame', function(id) {
 			if (!allGames[id].player1) {
@@ -97,8 +106,8 @@ db.sync()
 			io.in(`game ${id}`).emit('playerJoined', allGames[id])
 		})
 		socket.on('requestAllGames', function() {
-			allGames.forEach(game => {
-				if (!game.started) socket.emit('newGame', game.id)
+			Object.keys(allGames).forEach(game => {
+				if (!allGames[game].started) socket.emit('newGame', allGames[game].id)
 			})
 		})
 		socket.on('leaveGame', function() {
