@@ -1,4 +1,5 @@
 import d from '../game'
+import axios from 'axios'
 
 import createTileSelector from './createTileSelector'
 import convertToJSON from './convertToJSON'
@@ -29,10 +30,10 @@ export default function createTilemap() {
   nightImage.visible = false
   sunsetImage.visible = false
 
-  d.backgroundButton = d.game.add.button(736, 64, 'background-button', backgroundOnClick, this)
-  d.backgroundButton = d.game.add.button(864, 64, 'space-button', spaceOnClick, this)
-  d.backgroundButton = d.game.add.button(736, 192, 'night-button', nightOnClick, this)
-  d.backgroundButton = d.game.add.button(864, 192, 'sunset-button', sunsetOnClick, this)
+  d.backgroundButton = d.game.add.button(736, 96, 'background-button', backgroundOnClick, this)
+  d.backgroundButton = d.game.add.button(864, 96, 'space-button', spaceOnClick, this)
+  d.backgroundButton = d.game.add.button(736, 224, 'night-button', nightOnClick, this)
+  d.backgroundButton = d.game.add.button(864, 224, 'sunset-button', sunsetOnClick, this)
 
   function backgroundOnClick() {
     d.backgroundImage = backgroundImage
@@ -94,7 +95,7 @@ export default function createTilemap() {
 
   createTileSelector()
 
-  d.input = d.game.add.inputField(789, 0, {
+  d.input = d.game.add.inputField(770, 10, {
     font: '18px Arial',
     fill: '#212121',
     fontWeight: 'bold',
@@ -106,11 +107,44 @@ export default function createTilemap() {
     placeHolder: 'Enter map name',
   })
 
+  //adding text 
+  var style = { font: "18px Arial", wordWrap: false, align: "center" };
+  d.text = d.game.add.text(770, 60, "Select A Background", style)
+
+  // create map button
+  let createStyle = { font: "15px Arial", wordWrap: false, align: "center" };
+  d.game.add.button(812, 512, 'submitBtn', onClickCreate, this)
+  d.game.add.text(818, 520, "Create Map", createStyle)
 
   d.game.input.addMoveCallback(updateMarker, this)
 
 }
 
+function onClickCreate() {
+  let me = d.mapEditor
+  let finalJSON = {} 
+  let mapName = d.input.value
+  let creator = "NishAlex"
+
+  finalJSON.name = mapName
+  finalJSON.creator = creator
+  finalJSON.p1Start = me.p1.p1Start
+  finalJSON.p2Start = me.p2.p2Start
+  finalJSON.treasureSpawn = me.tc.treasureSpawn
+  finalJSON.blocks = me.blocks
+  finalJSON.spikes = me.spikes
+  finalJSON.sheilds = []
+
+  console.log('the json file is', finalJSON)
+
+  let finalString = JSON.stringify(finalJSON)
+
+  axios.post('/maps', {name: mapName, creator, json: finalString})
+  .then(function(){
+    console.log('map created!!!!!!!')
+  })
+
+}
 
 function updateMarker(){
   let me = d.mapEditor

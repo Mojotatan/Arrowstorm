@@ -51,6 +51,7 @@ const gameFunc = function() {
       d.game.load.image('wing', 'sprites/wing.png')
       d.game.load.image('tree', 'sprites/tree.png')
       d.game.load.image('boulder', 'sprites/boulder.png')
+      d.game.load.image('submit', 'sprites/submitBtn.png')
     },
     create: function() {
       axios.get('/maps')
@@ -287,6 +288,7 @@ const gameFunc = function() {
       d.game.load.image('night-button', 'sprites/night-button.png')
       d.game.load.image('sunset-button', 'sprites/sunset-button.png')
       d.game.load.image('night-for-editor', 'sprites/night-for-editor.png')
+      d.game.load.image('submitBtn', 'sprites/submitBtn.png')
     },
 
     create: function() {
