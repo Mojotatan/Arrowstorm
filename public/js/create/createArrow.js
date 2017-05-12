@@ -4,8 +4,8 @@ export default function createArrow(d, player, arrowType) {
   let currPlayer = d.currentPlayer
 
   if (arrowType === 'regular') {
-    //let arrow  = d.game.add.sprite(player.x, player.y, 'arrow')
-    let arrow  = d.game.add.sprite(d[player].x, d[player].y, 'arrow')
+    let offset = (d[currPlayer].bow.rotation === -1.57) ? 20 : 0
+    let arrow  = d.game.add.sprite(d[player].x, d[player].y + offset, 'arrow')
     arrow.scale.set(1.5, 1.5)
 
     // Set its pivot point to the center of the arrow
@@ -14,6 +14,12 @@ export default function createArrow(d, player, arrowType) {
     // Enable physics on the arrow
     d.game.physics.arcade.enable(arrow)
     arrow.body.gravity.y = 1500
+
+    // arrows take ~1 fram to 'arm' so they collide with the shooter less often
+    arrow.deploy = false
+    d.game.time.events.add(20, function(){
+      this.deploy = true
+    }, arrow)
 
     arrow.checkWorldBounds = true
 

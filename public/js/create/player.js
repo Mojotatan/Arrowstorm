@@ -1,3 +1,5 @@
+import {appendArrowDisplay} from '../update/arrowDisplay'
+
 export default function createPlayer (d, spriteName, player, position) {
   // character sprites are 20 by 32
   console.log()
@@ -6,6 +8,8 @@ export default function createPlayer (d, spriteName, player, position) {
   d[player].scale.set(1.5, 1.5) // (2, 2) looks better but is a bit big for the map
   d[player].pivot.set(10, 0)
   d[player].numArrows = 5
+  d[player].arrowDisplay = d.game.add.group()
+  for (let i = 1; i < 6; i++) appendArrowDisplay(player, i)
   d.game.physics.arcade.enable(d[player])
   d[player].body.gravity.y = 1200
   // d[player].body.bounce.y = 0.3

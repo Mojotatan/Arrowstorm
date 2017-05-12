@@ -3,6 +3,7 @@ import createPlayer from './player'
 import fireArrow from '../update/fireArrow'
 import d from '../game'
 import createTreasureChest from './createTreasureChest'
+import {removeArrowDisplay} from '../update/arrowDisplay'
 
 export default function createFunc() {
   // important for the kill cam
@@ -17,13 +18,31 @@ export default function createFunc() {
         currPlayer = d.currentPlayer
     }
 
-  d.game.input.recordPointerHistory = true
+  // draw style rectangles
+  let p1shade = d.game.add.graphics(0, 0)
+  p1shade.beginFill(0x000088)
+  p1shade.drawRect(0, 0, 192, 320)
+  p1shade.endFill()
+
+  let p2shade = d.game.add.graphics(832, 0)
+  p2shade.beginFill(0x880000)
+  p2shade.drawRect(0, 0, 192, 320)
+  p2shade.endFill()
+
+  let p3shade = d.game.add.graphics(0, 320)
+  p3shade.beginFill(0x373737) //0x008800
+  p3shade.drawRect(0, 0, 192, 320)
+  p3shade.endFill()
+
+  let p4shade = d.game.add.graphics(832, 320)
+  p4shade.beginFill(0x373737) //BBBB00
+  p4shade.drawRect(0, 0, 192, 320)
+  p4shade.endFill()
 
   //parse map data
-  // let map = JSON.parse(d.game.cache.getText('map'))
   let map = d.map
 
-  //add background
+  //add stage background
   d.background = d.game.add.image(192, 0, map.background.file)
   d.background.scale.set(map.background.scale, map.background.scale)
 
@@ -49,7 +68,6 @@ export default function createFunc() {
   // add blocks
   map.blocks.forEach(block => {
     let newBlock = d.platforms.create(block.x, block.y, block.tile)
-    // newBlock.scale.set(.25, .25)
     newBlock.body.immovable = true
   })
 
@@ -72,29 +90,28 @@ export default function createFunc() {
   createPlayer(d, d.myGame.chars[1], 'player1', map.p1Start)
   createPlayer(d, d.myGame.chars[2], 'player2', map.p2Start)
 
-    // Creating left brick wall
-    d.leftWall = d.game.add.group()
+  d.game.add.text(16, 0, 'Player One', {fill: '#FFFFFF'})
+  let avatar1 = d.game.add.image(6, 176, d.myGame.chars[1])
+  avatar1.frame = 2
+  avatar1.crop(new Phaser.Rectangle(0, 0, 20, 16))
+  avatar1.scale.set(9, 9)
+  d.game.add.text(80, 112, d.myGame.score[1], {fontSize: 48, fill: '#FFFFFF'})
 
-    for (let i = 0; i < 5; i++) {
-      var leftBlockStack = d.leftWall.create(64, i * 32 * 4, 'brick')
-
-      leftBlockStack.scale.setTo(4, 4)
-    }
-
-  //creating right wall
-  d.rightWall = d.game.add.group()
-
-  for (let j = 0; j < 5; j++) {
-    var rightBlockStack = d.leftWall.create(832, j * 32 * 4, 'brick')
-
-    rightBlockStack.scale.setTo(4, 4)
-  }
+  d.game.add.text(848, 0, 'Player Two', {fill: '#FFFFFF'})
+  let avatar2 = d.game.add.image(838, 176, d.myGame.chars[2])
+  avatar2.frame = 2
+  avatar2.crop(new Phaser.Rectangle(0, 0, 20, 16))
+  avatar2.scale.set(9, 9)
+  d.game.add.text(912, 112, d.myGame.score[2], {fontSize: 48, fill: '#FFFFFF'})
 
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
-  d.spaceBar.onDown.add(() => fireArrow(d, false, null, d[currPlayer].shotDirection))
+  d.spaceBar.onDown.add(() => {
+    fireArrow(d, false, null, d[currPlayer].shotDirection)
+    removeArrowDisplay(currPlayer)
+  })
 
   d.arrowsArray = []
 
@@ -106,10 +123,7 @@ export default function createFunc() {
 
   d.treasure = null
   d.game.time.events.add(4000, function() {createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)})
-  // createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)
   d.player1.nextArrowType = 'regular'
   d.player2.nextArrowType = 'regular'
 
-  // Checks for new player - keep this at the end of this function
-  // Client.askNewPlayer();
 }

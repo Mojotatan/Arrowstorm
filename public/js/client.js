@@ -5,6 +5,7 @@ import { opponentPos } from './update/update'
 import createPlayer from './create/player'
 import fireArrow from './update/fireArrow'
 import treasureChest from './update/treasureChest'
+import {removeArrowDisplay} from './update/arrowDisplay'
 
 var Client = {}
 Client.socket = io.connect()
@@ -13,15 +14,12 @@ Client.askNewPlayer = function(){
 	Client.socket.emit('newPlayer')
 }
 
-// Client.socket.on('newPlayer', function(data){
-// 	console.log('the d in newplayer', d)
-// })
-
 // assigning player 1 to first player that logs on
 Client.socket.on('assignedPlayer1', function(data){
 	console.log('assigned to player1')
 	d.currentPlayer = "player1"
 	d.myGame = data
+	if (d.youAre) d.youAre.text = 'You are PLAYER 1'
 })
 
 // assigning player 2 to second player that logs on
@@ -29,25 +27,38 @@ Client.socket.on('assignedPlayer2', function(data){
 	console.log('assigned to player2')
 	d.currentPlayer = "player2"
 	d.myGame = data
+	if (d.youAre) d.youAre.text = 'You are PLAYER 2'
 })
 
 Client.socket.on('newGame', function(data) {
-	if (d.game.state.current === 'menu') {
-		let newGame = new Phaser.Button(d.game, 16, 256, 'join', function() {
+	function loadNewGames(data) {
+		let newGame = new Phaser.Button(d.game, 144, 256 + d.openGames * 48, 'join', function() {
 			Client.socket.emit('joinGame', this.id)
 			d.game.state.start('newGameOptions')
 		})
+		newGame.scale.set(1.5, 1.5)
 		newGame.id = data
+		let newText = new Phaser.Text(d.game, 32, 256 + d.openGames * 48 - 2, `${data}`, {fontSize: 48})
 		d.lobbyGames.addChild(newGame)
+		d.lobbyGames.addChild(newText)
+		d.openGames++
+	}
+
+	if (d.game.state.current === 'menu') {
+		loadNewGames(data)
 	}
 })
 
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
+	let p1 = data.player1 ? 'JOINED' : ''
+	let p2 = data.player2 ? 'JOINED' : ''
+	let id = data.id
 	if (d.game.state.current === 'newGameOptions') {
-		if (d.myGame.player1) d.lobbyP1.text = `Player 1: ${d.myGame.player1}`
-		if (d.myGame.player2) d.lobbyP2.text = `Player 2: ${d.myGame.player2}`
-		if (data.player1 && data.player2) d.gameReady.text = 'ready!'
+		d.lobbyP1.text = `Player 1: ${p1}`
+		d.lobbyP2.text = `Player 2: ${p2}`
+		d.lobbyId.text = `Game ID: ${id}`
+		d.gameReady.text = (data.player1 && data.player2) ? 'ready!' : ''
 	}
 })
 
@@ -55,7 +66,7 @@ Client.socket.on('start', function() {
 	console.log('let the games begin')
 	function getMap() {
 		let x = (d.mapSel.x - 384) / 64
-		let y = (d.mapSel.y - 192) / 64
+		let y = (d.mapSel.y - 256) / 64
 		let select = y * 10 + x
 		return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
 	}
@@ -68,9 +79,11 @@ Client.socket.on('optionsUpdate', function(data) {
 	d.mapSel.position.set(data.map.x, data.map.y)
 	d.previewChar1.kill()
 	d.previewChar2.kill()
-	d.previewChar1 = d.game.add.image(16, 80, data.chars[1])
+	d.previewChar1 = d.game.add.image(16, 48, data.chars[1])
+	d.previewChar1.frame = 2
 	d.previewChar1.scale.set(4, 4)
-	d.previewChar2 = d.game.add.image(144, 80, data.chars[2])
+	d.previewChar2 = d.game.add.image(144, 48, data.chars[2])
+	d.previewChar2.frame = 2
 	d.previewChar2.scale.set(4, 4)
 })
 
@@ -103,8 +116,8 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 })
 
 Client.socket.on('opponentHasShot', function(data){
-	//console.log('the opponent has shot!!', opponentName)
 	let opponentName = data.player
+	removeArrowDisplay(opponentName)
 	let opponentShotDir = data.shotDirection
 	fireArrow(d, true, opponentName, opponentShotDir)
 })
@@ -114,7 +127,6 @@ Client.socket.on('opponentHasDied', function(opponent){
 })
 
 Client.socket.on('opponentPickedArrow', function(arrowIdx){
-	console.log('the d in pickedarrow', d.arrowsArray)
 	d.arrowsArray[arrowIdx].kill()
 })
 
@@ -123,19 +135,24 @@ Client.socket.on('opponentHitTC', function(data){
 	let opponent = data.player
 	d[opponent].treasure = {}
 	d[opponent].treasure.payload = treasure
-	console.log(' current player in client after assigning treasure', d[d.currentPlayer])
-	console.log(' opponent player in client after assigning treasure', d[opponent])
 
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
 })
+
+export function getGames() {
+	Client.socket.emit('requestAllGames')
+}
+
+export function leaveGame() {
+	Client.socket.emit('leaveGame')
+}
 
 export function point(id, round, score) {
 	Client.socket.emit('point', {id, round, score})
 }
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
-	//console.log('the bow in', position)
 	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale, position, rotation})
 }
 
@@ -156,13 +173,3 @@ export function hitTC(id, treasure, player) {
 }
 
 export default Client
-
-
-// Client.socket.on('allPlayers', function(data){
-// 	console.log('all players in client', data)
-// 	for (let i = 0; i < data.length; i++){
-// 		//d.playerMap.data = d.game.add.sprite(data[i].x, data[i].y, 'roboraj')
-// 		addNewPlayer(d, data[i].id, data[i].x, data[i].y)
-// 		//createPlayer(d, 'fatKid', 'player2', {x: 328, y: 0})
-// 	}
-// })

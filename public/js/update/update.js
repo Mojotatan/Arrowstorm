@@ -14,7 +14,6 @@ export default function updateFunc() {
   if (d.currentPlayer) {
     let currPlayer = d.currentPlayer
 
-    //console.log('the d in update is', d[currPlayer], currPlayer)
     //World wrap
     wrap(d.player1)
     wrap(d.player2)
@@ -37,7 +36,6 @@ export default function updateFunc() {
       d.blood.scale.set(2, 2)
       d.blood.animations.play('death')
       d.blood.animations.currentAnim.killOnComplete = true
-      console.log('the blood is', d.blood)
       d.player1.numArrows = 0
       playerDead(d.myGame.id, currPlayer)
     }
@@ -50,7 +48,6 @@ export default function updateFunc() {
       d.blood.scale.set(2, 2)
       d.blood.animations.play('death')
       d.blood.animations.currentAnim.killOnComplete = true
-      console.log('the blood is', d.blood)
       d.player2.numArrows = 0
       playerDead(d.myGame.id, currPlayer)
     }
@@ -78,18 +75,13 @@ export default function updateFunc() {
 
       // treasureChest details and logic
       if (treasureHitPlayer1 || treasureHitPlayer2) {
-          console.log('treasureHitPlayer1 in update is', treasureHitPlayer1)
-          console.log('treasureHitPlayer2 in update is', treasureHitPlayer2)
-          console.log('current player in update', d)
 
           treasureChest(treasureHitPlayer1, treasureHitPlayer2)
 
           if (treasureHitPlayer1 && d.currentPlayer === 'player1') {
-              console.log('player 1 treasure payload in update', d.player1.treasure.payload)
               hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
           }
           else if (treasureHitPlayer2 && d.currentPlayer === 'player2') {
-              console.log('player 2 treasure payload in update', d.player2.treasure.payload)
               hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
           }
         }
@@ -207,24 +199,6 @@ export default function updateFunc() {
     // arrow collisions
     arrowPhysics()
 
-    // // treasureChest details and logic
-    // if (treasureHitPlayer1 || treasureHitPlayer2) {
-    //     console.log('treasureHitPlayer1 in update is', treasureHitPlayer1)
-    //     console.log('treasureHitPlayer2 in update is', treasureHitPlayer2)
-    //     console.log('current player in update', d)
-
-    //     treasureChest(treasureHitPlayer1, treasureHitPlayer2)
-
-    //     if (treasureHitPlayer1 && d.currentPlayer === 'player1') {
-    //         console.log('player 1 treasure payload in update', d.player1.treasure.payload)
-    //         hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
-    //     }
-    //     else if (treasureHitPlayer2 && d.currentPlayer === 'player2') {
-    //         console.log('player 2 treasure payload in update', d.player2.treasure.payload)
-    //         hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
-    //     }
-    // }
-
     if (d.player1.wings === true && d.game.time.now - d.player1.wingStart > 5000) {
         d.player1.wings = false
         d.player1.wingLeft.kill()
@@ -267,8 +241,6 @@ export default function updateFunc() {
 }
 
 export function opponentPos(positionObj) {
-//console.log('positionObj is ',positionObj)
-//console.log('player2 is ', d.player2.x)
   if (d.currentPlayer === 'player1') {
     d.player2.x = positionObj.x
     d.player2.y = positionObj.y
