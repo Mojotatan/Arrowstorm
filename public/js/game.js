@@ -52,7 +52,6 @@ const gameFunc = function() {
     create: function() {
       axios.get('/maps')
       .then(maps => {
-        // console.log(maps)
         d.maps = maps.data.map(map => JSON.parse(map))
         d.game.state.start('menu')
       })
@@ -98,8 +97,14 @@ const gameFunc = function() {
       d.startBtn = d.game.add.button(384, 0, 'start', this.startGame, this)
       d.startBtn.scale.set(4, 4)
 
-      let p1 = (d.myGame) ? d.myGame.player1 : 'BLAR'
-      let p2 = (d.myGame) ? d.myGame.player2 : 'BLAR'
+      let p1, p2
+      if (d.myGame) {
+        p1 = d.myGame.player1 ? 'JOINED' : ''
+        p2 = d.myGame.player2 ? 'JOINED' : ''
+      } else {
+        p1 = 'ERROR'
+        p2 = 'ERROR'
+      }
       d.gameReady = d.game.add.text(648, 64, '', {fill: '#FFFFFF'})
       d.lobbyP1 = d.game.add.text(0, 0, `Player 1: ${p1}`, {fill: '#FFFFFF'})
       d.lobbyP2 = d.game.add.text(0, 32, `Player 2: ${p2}`, {fill: '#FFFFFF'})
@@ -112,6 +117,7 @@ const gameFunc = function() {
       d.previewChar1 = d.game.add.image(16, 80, 'blackMage')
       d.previewChar1.scale.set(4, 4)
       d.previewChar2 = d.game.add.image(144, 80, 'fatKid')
+      d.previewChar2.frame = 2
       d.previewChar2.scale.set(4, 4)
 
       //player options
@@ -122,12 +128,15 @@ const gameFunc = function() {
       }
 
       d.chooseRoboraj = d.game.add.button(16, 256, 'roboraj', avatar('roboraj'))
+      d.chooseRoboraj.frame = 2
       d.chooseRoboraj.scale.set(1.5, 1.5)
       d.chooseFatKid = d.game.add.button(64, 256, 'fatKid', avatar('fatKid'))
+      d.chooseFatKid.frame = 2
       d.chooseFatKid.scale.set(1.5, 1.5)
       d.chooseBlackMage = d.game.add.button(112, 256, 'blackMage', avatar('blackMage'))
       d.chooseBlackMage.scale.set(1.5, 1.5)
       d.chooseGale = d.game.add.button(160, 256, 'gale', avatar('gale'))
+      d.chooseGale.frame = 2
       d.chooseGale.scale.set(1.5, 1.5)
 
       let x = 384
@@ -135,7 +144,6 @@ const gameFunc = function() {
       d.mapSel = d.game.add.image(x, y, 'sel')
       d.mapSel.scale.set(1.5, 1.5)
 
-      // console.log(JSON.parse(d.maps[0]).name)
       d.maps.forEach(map => {
         d.game.add.text(x, y, map.name, {fontSize: 12, fill: '#FFFFFF', wordWrap: true, boundsAlignH: 'center', boundsAlignV: 'middle'})
         x += 64

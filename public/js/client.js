@@ -14,10 +14,6 @@ Client.askNewPlayer = function(){
 	Client.socket.emit('newPlayer')
 }
 
-// Client.socket.on('newPlayer', function(data){
-// 	console.log('the d in newplayer', d)
-// })
-
 // assigning player 1 to first player that logs on
 Client.socket.on('assignedPlayer1', function(data){
 	console.log('assigned to player1')
@@ -70,8 +66,10 @@ Client.socket.on('optionsUpdate', function(data) {
 	d.previewChar1.kill()
 	d.previewChar2.kill()
 	d.previewChar1 = d.game.add.image(16, 80, data.chars[1])
+	d.previewChar1.frame = 2
 	d.previewChar1.scale.set(4, 4)
 	d.previewChar2 = d.game.add.image(144, 80, data.chars[2])
+	d.previewChar2.frame = 2
 	d.previewChar2.scale.set(4, 4)
 })
 
@@ -104,7 +102,6 @@ Client.socket.on('opponentHasMoved', function(newOpponentPos){
 })
 
 Client.socket.on('opponentHasShot', function(data){
-	//console.log('the opponent has shot!!', opponentName)
 	let opponentName = data.player
 	removeArrowDisplay(opponentName)
 	let opponentShotDir = data.shotDirection

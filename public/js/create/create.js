@@ -72,31 +72,19 @@ export default function createFunc() {
   createPlayer(d, d.myGame.chars[1], 'player1', map.p1Start)
   createPlayer(d, d.myGame.chars[2], 'player2', map.p2Start)
 
-  //   // Creating left brick wall
-  //   d.leftWall = d.game.add.group()
-  //   for (let i = 0; i < 5; i++) {
-  //     var leftBlockStack = d.leftWall.create(64, i * 32 * 4, 'brick')
-  //     leftBlockStack.scale.setTo(4, 4)
-  //   }
-
-  // //creating right wall
-  // d.rightWall = d.game.add.group()
-  // for (let j = 0; j < 5; j++) {
-  //   var rightBlockStack = d.leftWall.create(832, j * 32 * 4, 'brick')
-  //   rightBlockStack.scale.setTo(4, 4)
-  // }
-
   d.game.add.text(16, 0, 'Player One', {fill: '#FFFFFF'})
   let avatar1 = d.game.add.image(6, 176, d.myGame.chars[1])
+  avatar1.frame = 2
   avatar1.crop(new Phaser.Rectangle(0, 0, 20, 16))
   avatar1.scale.set(9, 9)
-  d.game.add.text(96, 96, d.myGame.score[1], {fontSize: 48, fill: '#FFFFFF'})
+  d.game.add.text(80, 112, d.myGame.score[1], {fontSize: 48, fill: '#FFFFFF'})
 
   d.game.add.text(848, 0, 'Player Two', {fill: '#FFFFFF'})
   let avatar2 = d.game.add.image(838, 176, d.myGame.chars[2])
+  avatar2.frame = 2
   avatar2.crop(new Phaser.Rectangle(0, 0, 20, 16))
   avatar2.scale.set(9, 9)
-  d.game.add.text(928, 96, d.myGame.score[2], {fontSize: 48, fill: '#FFFFFF'})
+  d.game.add.text(912, 112, d.myGame.score[2], {fontSize: 48, fill: '#FFFFFF'})
 
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting
