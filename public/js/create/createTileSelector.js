@@ -15,12 +15,16 @@ export default function createTileSelector() {
 
   createTile(672, 0, 'brick')
   createTile(672, 32, 'cobble')
-  createTile(672, 64, 'spikes')
+  createTile(672, 64, 'stone')
   createTile(672, 96, 'dirt')
   createTile(672, 128, 'grass')
   createTile(672, 160, 'wood')
   createTile(672, 192, 'tree')
   createTile(672, 224, 'boulder')
+  createTile(672, 256, 'spikes')
+  createTile(672, 288, 'spikes-left')
+  createTile(672, 320, 'spikes-down')
+  createTile(672, 352, 'spikes-right')
 
   me.marker = d.game.add.graphics()
   me.marker.lineStyle(2, 0xffffff, 1)
