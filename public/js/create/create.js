@@ -9,6 +9,9 @@ export default function createFunc() {
   // important for the kill cam
   d.go = true
 
+  // set the current round to avoid double scoring
+  d.round = d.myGame.round
+
   // Obj for all players
   d.playerMap = {}
   let currPlayer
