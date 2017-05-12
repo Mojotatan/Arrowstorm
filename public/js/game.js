@@ -37,6 +37,9 @@ const gameFunc = function() {
       d.game.load.image('space', 'sprites/space-crop.png')
       d.game.load.spritesheet('shieldWall', 'sprites/shieldwall.png')
       d.game.load.image('spikes', 'sprites/spikes.png')
+      d.game.load.image('spikes-left', 'sprites/spikes-left.png')
+      d.game.load.image('spikes-down', 'sprites/spikes-down.png')
+      d.game.load.image('spikes-right', 'sprites/spikes-right.png')
       d.game.load.image('start', 'sprites/start-btn.png')
       d.game.load.image('back', 'sprites/back-btn.png')
       d.game.load.image('join', 'sprites/join-btn.png')
@@ -275,13 +278,24 @@ const gameFunc = function() {
 
   let mapEditor = {
     preload: function () {
-      d.game.load.image('brick', 'sprites/brick.png')
+      d.game.load.image('tc-editor', 'sprites/treasure-chest-editor.png')
+      d.game.load.image('p2', 'sprites/p2.png')
+      d.game.load.image('p1', 'sprites/p1.png')
+      d.game.load.image('background-for-editor', 'sprites/background-for-editor.png')
+      d.game.load.image('background-button', 'sprites/background-button.png')
+      d.game.load.image('space-button', 'sprites/space-button.png')
+      d.game.load.image('night-button', 'sprites/night-button.png')
+      d.game.load.image('sunset-button', 'sprites/sunset-button.png')
+      d.game.load.image('night-for-editor', 'sprites/night-for-editor.png')
     },
 
     create: function() {
       createTilemap()
     },
-    update: function() {}
+    update: function() {
+      console.log('text input value is', d.input.value)
+
+    }
   }
 
   let gameOver = {
