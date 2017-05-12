@@ -19,7 +19,7 @@ export default function createTilemap() {
   me.currentTile = 0
 
   d.game.stage.backgroundColor = '#FFFAFA';
-  let backgroundImage = d.game.add.image(0, 0, 'background-for-editor')
+  let backgroundImage = d.game.add.image(0, 0, 'background')
   let spaceImage = d.game.add.image(0, 0, 'space')
   let nightImage = d.game.add.image(0, 0, 'night')
   let sunsetImage = d.game.add.image(0, 0, 'sunset')
@@ -29,6 +29,7 @@ export default function createTilemap() {
   spaceImage.visible = false
   nightImage.visible = false
   sunsetImage.visible = false
+  me.backgroundForJSON = {file: 'background', scale: 1}
 
   d.backgroundButton = d.game.add.button(736, 96, 'background-button', backgroundOnClick, this)
   d.backgroundButton = d.game.add.button(864, 96, 'space-button', spaceOnClick, this)
@@ -42,6 +43,7 @@ export default function createTilemap() {
     spaceImage.visible = false
     nightImage.visible = false
     sunsetImage.visible = false
+    me.backgroundForJSON = {file: 'background', scale: 1}
   }
 
   function spaceOnClick() {
@@ -51,6 +53,7 @@ export default function createTilemap() {
     spaceImage.visible = true
     nightImage.visible = false
     sunsetImage.visible = false
+    me.backgroundForJSON = {file: 'space', scale: 1}
   }
 
   function nightOnClick() {
@@ -60,6 +63,7 @@ export default function createTilemap() {
     spaceImage.visible = false
     nightImage.visible = true
     sunsetImage.visible = false
+    me.backgroundForJSON = {file: 'night', scale: 10}
   }
 
   function sunsetOnClick() {
@@ -69,6 +73,7 @@ export default function createTilemap() {
     spaceImage.visible = false
     nightImage.visible = false
     sunsetImage.visible = true
+    me.backgroundForJSON = {file: 'sunset', scale: 10}
   }
 
   me.map  = d.game.add.tilemap()
@@ -107,7 +112,7 @@ export default function createTilemap() {
     placeHolder: 'Enter map name',
   })
 
-  //adding text 
+  //adding text
   var style = { font: "18px Arial", wordWrap: false, align: "center" };
   d.text = d.game.add.text(770, 60, "Select A Background", style)
 
@@ -122,18 +127,28 @@ export default function createTilemap() {
 
 function onClickCreate() {
   let me = d.mapEditor
-  let finalJSON = {} 
+  let finalJSON = {}
   let mapName = d.input.value
   let creator = "NishAlex"
 
   finalJSON.name = mapName
   finalJSON.creator = creator
   finalJSON.p1Start = me.p1.p1Start
+  finalJSON.p1Start.x += 192
   finalJSON.p2Start = me.p2.p2Start
+  finalJSON.p2Start.x += 192
   finalJSON.treasureSpawn = me.tc.treasureSpawn
+  finalJSON.treasureSpawn.x += 192
   finalJSON.blocks = me.blocks
+  finalJSON.blocks.forEach(obj => {
+    obj.x += 192
+  })
   finalJSON.spikes = me.spikes
-  finalJSON.sheilds = []
+  finalJSON.spikes.forEach(obj => {
+    obj.x += 192
+  })
+  finalJSON.shields = []
+  finalJSON.background = me.backgroundForJSON
 
   console.log('the json file is', finalJSON)
 

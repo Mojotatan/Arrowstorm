@@ -23,7 +23,6 @@ const gameFunc = function() {
       d.game.load.image('tc-editor', 'sprites/treasure-chest-editor.png')
       d.game.load.image('p2', 'sprites/p2.png')
       d.game.load.image('p1', 'sprites/p1.png')
-      d.game.load.image('background-for-editor', 'sprites/background-for-editor.png')
       d.game.load.image('background-button', 'sprites/background-button.png')
       d.game.load.image('space-button', 'sprites/space-button.png')
       d.game.load.image('night-button', 'sprites/night-button.png')
@@ -36,8 +35,6 @@ const gameFunc = function() {
       createTilemap()
     },
     update: function() {
-      console.log('text input value is', d.input.value)
-
     }
   }
 
