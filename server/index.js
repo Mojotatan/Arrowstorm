@@ -82,8 +82,9 @@ db.sync()
 				player1: socket.id,
 				player2: null,
 				chars: {1: 'blackMage', 2: 'fatKid'},
-				map: {x: 384, y: 192},
+				map: {x: 384, y: 256},
 				score: {1: 0, 2: 0},
+				points: [],
 				round: 0,
 				started: false
 			}
