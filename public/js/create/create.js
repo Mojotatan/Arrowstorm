@@ -50,7 +50,7 @@ export default function createFunc() {
   d.background.scale.set(map.background.scale, map.background.scale)
 
   //  We're going to be using physics, so enable the Arcade Physics system
-  d.game.physics.startSystem(Phaser.Physics.ARCADE);
+  d.game.physics.startSystem(Phaser.Physics.ARCADE)
   //set platforms
   d.platforms = d.game.add.group()
   //enable physics on platforms
@@ -112,7 +112,6 @@ export default function createFunc() {
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
-  d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => {
     fireArrow(d, false, null, d[currPlayer].shotDirection)
     removeArrowDisplay(currPlayer)

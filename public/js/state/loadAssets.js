@@ -43,7 +43,7 @@ let loadAssets = {
     axios.get('/maps')
     .then(maps => {
       d.maps = maps.data.map(map => JSON.parse(map))
-      d.game.state.start('menu')
+      d.game.state.start('title')
     })
   }
 }
