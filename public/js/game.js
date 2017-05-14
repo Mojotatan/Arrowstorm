@@ -1,6 +1,7 @@
 import createTilemap from './create/createTilemap'
 
 import loadAssets from './state/loadAssets'
+import title from './state/title'
 import menu from './state/menu'
 import newGameOptions from './state/newGameOptions'
 import runGame from './state/runGame'
@@ -39,6 +40,7 @@ const gameFunc = function() {
   }
 
   d.game.state.add('loadAssets', loadAssets)
+  d.game.state.add('title', title)
   d.game.state.add('menu', menu)
   d.game.state.add('newGameOptions', newGameOptions)
   d.game.state.add('runGame', runGame)

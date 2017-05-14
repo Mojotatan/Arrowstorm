@@ -60,9 +60,11 @@ db.sync()
 		Object.keys(allGames).forEach(game => {
 			if (allGames[game].player1 === id) {
 				allGames[game].player1 = null
+				allGames[game].alias[1] = null
 				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
 			} else if (allGames[game].player2 === id) {
 				allGames[game].player2 = null
+				allGames[game].alias[2] = null
 				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
 			}
 			if (!allGames[game].player1 && !allGames[game].player2) {
@@ -75,13 +77,14 @@ db.sync()
 		console.log('connected new user!', socket.id)
 
 		// logic for creating and joining games via lobby
-		socket.on('newGame', function(data) {
+		socket.on('newGame', function(alias) {
 			let key = generateId()
 			allGames[key] = {
 				id: key,
 				player1: socket.id,
 				player2: null,
 				chars: {1: 'blackMage', 2: 'fatKid'},
+				alias: {1: alias, 2: null},
 				map: {x: 384, y: 256},
 				score: {1: 0, 2: 0},
 				points: [],
@@ -94,17 +97,19 @@ db.sync()
 			socket.emit('assignedPlayer1', allGames[key])
 			socket.broadcast.emit('newGame', allGames[key].id)
 		})
-		socket.on('joinGame', function(id) {
-			if (!allGames[id].player1) {
-				allGames[id].player1 = socket.id
-				socket.emit('assignedPlayer1', allGames[id])
-				socket.join(`game ${id}`)
-			} else if (!allGames[id].player2) {
-				allGames[id].player2 = socket.id
-				socket.emit('assignedPlayer2', allGames[id])
-				socket.join(`game ${id}`)
+		socket.on('joinGame', function(data) {
+			if (!allGames[data.id].player1) {
+				allGames[data.id].player1 = socket.id
+				allGames[data.id].alias[1] = data.alias || null
+				socket.emit('assignedPlayer1', allGames[data.id])
+				socket.join(`game ${data.id}`)
+			} else if (!allGames[data.id].player2) {
+				allGames[data.id].player2 = socket.id
+				allGames[data.id].alias[2] = data.alias || null
+				socket.emit('assignedPlayer2', allGames[data.id])
+				socket.join(`game ${data.id}`)
 			}
-			io.in(`game ${id}`).emit('playerJoined', allGames[id])
+			io.in(`game ${data.id}`).emit('playerJoined', allGames[data.id])
 		})
 		socket.on('requestAllGames', function() {
 			Object.keys(allGames).forEach(game => {

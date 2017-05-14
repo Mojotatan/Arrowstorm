@@ -7,6 +7,8 @@ let menu = {
     d.openGames = 0
     getGames()
 
+    d.game.add.plugin(PhaserInput.Plugin)
+
     d.startBtn = d.game.add.button(0, 0, 'start', this.startGame, this)
     d.startBtn.scale.set(4, 4)
 
@@ -32,9 +34,23 @@ let menu = {
       d.gamesOnEnter.forEach(game => game())
     }
 
+    // instructions
     d.game.add.text(432, 240, 'How To Play', {fill: '#FFFFFF'})
     d.mapBtn = d.game.add.button(480, 288, 'go', this.startHowTo, this)
     d.mapBtn.scale.set(2, 2)
+
+    // name input
+    d.nameInput = d.game.add.inputField(770, 256, {
+      // font: '18px Arial',
+      fill: '#212121',
+      // fontWeight: 'bold',
+      width: 150,
+      padding: 8,
+      borderWidth: 1,
+      borderColor: '#000',
+      borderRadius: 6,
+      placeHolder: 'Enter a name',
+    })
 
     d.game.stage.setBackgroundColor('#008080')
   },

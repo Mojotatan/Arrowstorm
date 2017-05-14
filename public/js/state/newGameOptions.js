@@ -10,8 +10,10 @@ let newGameOptions = {
 
     let p1, p2, id
     if (d.myGame) {
-      p1 = d.myGame.player1 ? 'JOINED' : ''
-      p2 = d.myGame.player2 ? 'JOINED' : ''
+      if (d.myGame.player1) p1 = d.myGame.alias[1] || 'JOINED'
+      else p1 = ''
+      if (d.myGame.player2) p2 = d.myGame.alias[2] || 'JOINED'
+      else p2 = ''
       id = d.myGame.id
     } else {
       p1 = 'ERROR'

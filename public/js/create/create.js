@@ -50,7 +50,7 @@ export default function createFunc() {
   d.background.scale.set(map.background.scale, map.background.scale)
 
   //  We're going to be using physics, so enable the Arcade Physics system
-  d.game.physics.startSystem(Phaser.Physics.ARCADE);
+  d.game.physics.startSystem(Phaser.Physics.ARCADE)
   //set platforms
   d.platforms = d.game.add.group()
   //enable physics on platforms
@@ -93,14 +93,16 @@ export default function createFunc() {
   createPlayer(d, d.myGame.chars[1], 'player1', map.p1Start)
   createPlayer(d, d.myGame.chars[2], 'player2', map.p2Start)
 
-  d.game.add.text(16, 0, 'Player One', {fill: '#FFFFFF'})
+  let name1 = d.myGame.alias[1] || 'Player One'
+  d.game.add.text(16, 0, name1, {fill: '#FFFFFF'})
   let avatar1 = d.game.add.image(6, 176, d.myGame.chars[1])
   avatar1.frame = 2
   avatar1.crop(new Phaser.Rectangle(0, 0, 20, 16))
   avatar1.scale.set(9, 9)
   d.game.add.text(80, 112, d.myGame.score[1], {fontSize: 48, fill: '#FFFFFF'})
 
-  d.game.add.text(848, 0, 'Player Two', {fill: '#FFFFFF'})
+  let name2 = d.myGame.alias[2] || 'Player Two'
+  d.game.add.text(848, 0, name2, {fill: '#FFFFFF'})
   let avatar2 = d.game.add.image(838, 176, d.myGame.chars[2])
   avatar2.frame = 2
   avatar2.crop(new Phaser.Rectangle(0, 0, 20, 16))
@@ -110,7 +112,6 @@ export default function createFunc() {
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
-  d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => {
     fireArrow(d, false, null, d[currPlayer].shotDirection)
     removeArrowDisplay(currPlayer)
