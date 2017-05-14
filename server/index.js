@@ -85,7 +85,7 @@ db.sync()
 				player2: null,
 				chars: {1: 'blackMage', 2: 'fatKid'},
 				alias: {1: alias, 2: null},
-				map: {x: 384, y: 256},
+				map: {page: 0, y: 400},
 				score: {1: 0, 2: 0},
 				points: [],
 				round: 0,

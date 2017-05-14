@@ -6,6 +6,7 @@ import createPlayer from './create/player'
 import fireArrow from './update/fireArrow'
 import treasureChest from './update/treasureChest'
 import {removeArrowDisplay} from './update/arrowDisplay'
+import {renderMaps, getPreview} from './update/preview'
 
 var Client = {}
 Client.socket = io.connect()
@@ -82,7 +83,10 @@ Client.socket.on('start', function() {
 
 Client.socket.on('optionsUpdate', function(data) {
 	d.myGame = data
-	d.mapSel.position.set(data.map.x, data.map.y)
+	d.currentPage = data.page
+	renderMaps(d.currentPage)
+	d.mapSel.position.y = data.map
+	getPreview(d.currentPage)
 	d.previewChar1.kill()
 	d.previewChar2.kill()
 	d.previewChar1 = d.game.add.image(60, 48, data.chars[1])
