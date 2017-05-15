@@ -54,20 +54,20 @@ let newGameOptions = {
     // defaults to p1 as roboraj and p2 as fatkid
     let pp1
     if (d.myGame) pp1 = d.myGame.alias[1] || 'Player 1'
-    else pp2 = 'Player 1'
+    else pp1 = 'Player 1'
     d.preview1 = d.game.add.text(528, 240, pp1, {fill: '#0000FF'})
-    d.previewChar1 = d.game.add.image(528, 288, 'RoboRaj')
+    d.previewChar1 = d.game.add.image(528, 296, 'RoboRaj')
     d.previewChar1.scale.set(6, 6)
-    d.preview1Char = d.game.add.text(528, 494, 'RoboRaj')
+    d.preview1Char = d.game.add.text(528, 512, 'RoboRaj')
 
     let pp2
     if (d.myGame) pp2 = d.myGame.alias[2] || 'Player 2'
     else pp2 = 'Player 2'
     d.preview2 = d.game.add.text(720, 240, pp2, {fill: '#FF0000'})
-    d.previewChar2 = d.game.add.image(720, 288, 'Billy')
+    d.previewChar2 = d.game.add.image(720, 296, 'Billy')
     d.previewChar2.frame = 2
     d.previewChar2.scale.set(6, 6)
-    d.preview2Char = d.game.add.text(720, 494, 'Billy')
+    d.preview2Char = d.game.add.text(720, 512, 'Billy')
 
     let avatar = function(char) {
       return function() {
@@ -94,7 +94,7 @@ let newGameOptions = {
 
     // map select
     let mapShade = d.game.add.graphics(0, 0)
-    mapShade.beginFill(0xccccff)
+    mapShade.beginFill(0xccddff)
     mapShade.drawRect(0, 0, 352, 640)
     mapShade.endFill()
 
@@ -106,7 +106,7 @@ let newGameOptions = {
     d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '20pt Arial', fill: '#FFFFFF'})
 
     d.mapSel = d.game.add.graphics(16, 412)
-    d.mapSel.beginFill(0x00cc99)
+    d.mapSel.beginFill(0x0099ff)
     d.mapSel.drawRect(0, 0, 320, 32)
     d.mapSel.endFill()
 

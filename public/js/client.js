@@ -89,11 +89,11 @@ Client.socket.on('optionsUpdate', function(data) {
 	getPreview(d.currentPage)
 	d.previewChar1.kill()
 	d.previewChar2.kill()
-	d.previewChar1 = d.game.add.image(528, 304, data.chars[1])
+	d.previewChar1 = d.game.add.image(528, 296, data.chars[1])
 	d.previewChar1.frame = 2
 	d.previewChar1.scale.set(6, 6)
 	d.preview1Char.text = data.chars[1]
-	d.previewChar2 = d.game.add.image(720, 304, data.chars[2])
+	d.previewChar2 = d.game.add.image(720, 296, data.chars[2])
 	d.previewChar2.frame = 2
 	d.previewChar2.scale.set(6, 6)
 	d.preview2Char.text = data.chars[2]
