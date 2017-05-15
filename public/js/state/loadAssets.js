@@ -40,6 +40,7 @@ let loadAssets = {
     d.game.load.image('boulder', 'sprites/boulder.png')
     d.game.load.image('submit', 'sprites/submitBtn.png')
     d.game.load.image('background', 'sprites/background.png')
+    d.game.load.image('title', 'sprites/title-drop.png')
   },
   create: function() {
     axios.get('/maps')
