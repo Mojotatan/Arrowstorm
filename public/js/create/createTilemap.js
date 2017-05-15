@@ -150,13 +150,10 @@ function onClickCreate() {
   finalJSON.shields = []
   finalJSON.background = me.backgroundForJSON
 
-  console.log('the json file is', finalJSON)
-
   let finalString = JSON.stringify(finalJSON)
 
   axios.post('/maps', {name: mapName, creator, json: finalString})
   .then(function(){
-    console.log('map created!!!!!!!')
   })
 
 }
@@ -166,7 +163,6 @@ function updateMarker(){
 
   me.marker.x = me.layer1.getTileX(d.game.input.activePointer.worldX) * 32;
   me.marker.y = me.layer1.getTileY(d.game.input.activePointer.worldY) * 32;
-
 
   if (d.game.input.mousePointer.isDown) {
       convertToJSON(me)
