@@ -4,6 +4,8 @@ let title = {
   create: function() {
     d.game.physics.startSystem(Phaser.Physics.ARCADE)
 
+    // d.game.add.sprite(0, 0)
+
     d.titleArrow = d.game.add.sprite(512 - 24, -640, 'arrow')
     d.titleArrow.scale.set(8, -8)
     d.game.physics.arcade.enable(d.titleArrow)

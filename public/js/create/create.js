@@ -94,20 +94,20 @@ export default function createFunc() {
   createPlayer(d, d.myGame.chars[2], 'player2', map.p2Start)
 
   let name1 = d.myGame.alias[1] || 'Player One'
-  d.game.add.text(16, 0, name1, {fill: '#FFFFFF'})
+  d.game.add.text(16, 0, name1, {font: '20pt Arial', fill: '#FFFFFF'})
   let avatar1 = d.game.add.image(6, 176, d.myGame.chars[1])
   avatar1.frame = 2
   avatar1.crop(new Phaser.Rectangle(0, 0, 20, 16))
   avatar1.scale.set(9, 9)
-  d.game.add.text(80, 112, d.myGame.score[1], {fontSize: 48, fill: '#FFFFFF'})
+  d.game.add.text(80, 112, d.myGame.score[1], {font: '48pt Arial', fill: '#FFFFFF'})
 
   let name2 = d.myGame.alias[2] || 'Player Two'
-  d.game.add.text(848, 0, name2, {fill: '#FFFFFF'})
+  d.game.add.text(848, 0, name2, {font: '20pt Arial', fill: '#FFFFFF'})
   let avatar2 = d.game.add.image(838, 176, d.myGame.chars[2])
   avatar2.frame = 2
   avatar2.crop(new Phaser.Rectangle(0, 0, 20, 16))
   avatar2.scale.set(9, 9)
-  d.game.add.text(912, 112, d.myGame.score[2], {fontSize: 48, fill: '#FFFFFF'})
+  d.game.add.text(912, 112, d.myGame.score[2], {font: '48pt Arial', fill: '#FFFFFF'})
 
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting

@@ -6,6 +6,7 @@ import createPlayer from './create/player'
 import fireArrow from './update/fireArrow'
 import treasureChest from './update/treasureChest'
 import {removeArrowDisplay} from './update/arrowDisplay'
+import {renderMaps, getPreview} from './update/preview'
 
 var Client = {}
 Client.socket = io.connect()
@@ -64,17 +65,17 @@ Client.socket.on('playerJoined', function(data) {
 		d.lobbyP1.text = `Player 1: ${p1}`
 		d.lobbyP2.text = `Player 2: ${p2}`
 		d.lobbyId.text = `Game ID: ${id}`
+		d.preview1.text = data.alias[1] || 'Player 1'
+		d.preview2.text = data.alias[2] || 'Player 2'
 		d.gameReady.text = (data.player1 && data.player2) ? 'ready!' : ''
 	}
 })
 
-Client.socket.on('start', function() {
+Client.socket.on('start', function(rng) {
 	console.log('let the games begin')
 	function getMap() {
-		let x = (d.mapSel.x - 384) / 64
-		let y = (d.mapSel.y - 256) / 64
-		let select = y * 10 + x
-		return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
+		let select = (d.mapSel.y - 412) / 32
+		return (select >= d.pages[d.currentPage].length) ? Math.floor(rng * d.pages[d.currentPage].length) : select
 	}
 	d.map = d.maps[getMap()]
 	d.game.state.start('runGame')
@@ -82,15 +83,20 @@ Client.socket.on('start', function() {
 
 Client.socket.on('optionsUpdate', function(data) {
 	d.myGame = data
-	d.mapSel.position.set(data.map.x, data.map.y)
+	d.currentPage = data.map.page
+	renderMaps(d.currentPage)
+	d.mapSel.position.y = data.map.y
+	getPreview(d.currentPage)
 	d.previewChar1.kill()
 	d.previewChar2.kill()
-	d.previewChar1 = d.game.add.image(60, 48, data.chars[1])
+	d.previewChar1 = d.game.add.image(528, 296, data.chars[1])
 	d.previewChar1.frame = 2
-	d.previewChar1.scale.set(4, 4)
-	d.previewChar2 = d.game.add.image(224, 48, data.chars[2])
+	d.previewChar1.scale.set(6, 6)
+	d.preview1Char.text = data.chars[1]
+	d.previewChar2 = d.game.add.image(720, 296, data.chars[2])
 	d.previewChar2.frame = 2
-	d.previewChar2.scale.set(4, 4)
+	d.previewChar2.scale.set(6, 6)
+	d.preview2Char.text = data.chars[2]
 })
 
 Client.socket.on('score', function(data) {

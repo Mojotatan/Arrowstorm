@@ -83,9 +83,9 @@ db.sync()
 				id: key,
 				player1: socket.id,
 				player2: null,
-				chars: {1: 'blackMage', 2: 'fatKid'},
+				chars: {1: 'RoboRaj', 2: 'Billy'},
 				alias: {1: alias, 2: null},
-				map: {x: 384, y: 256},
+				map: {page: 0, y: 392},
 				score: {1: 0, 2: 0},
 				points: [],
 				round: 0,
@@ -122,7 +122,7 @@ db.sync()
 		socket.on('start', function(id) {
 			console.log('starting game', allGames[id])
 			allGames[id].started = true
-			io.in(`game ${id}`).emit('start')
+			io.in(`game ${id}`).emit('start', Math.random())
 		})
 
 		// a point is scored, a round ends
