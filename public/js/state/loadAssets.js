@@ -4,10 +4,10 @@ import d from '../game'
 let loadAssets = {
   preload: function() {
     d.game.load.image('raj', 'sprites/raj.png')
-    d.game.load.spritesheet('roboraj', 'sprites/roboraj.png', 20, 32)
-    d.game.load.spritesheet('fatKid', 'sprites/fat-kid.png', 20, 32)
-    d.game.load.spritesheet('blackMage', 'sprites/black-mage.png', 20, 32)
-    d.game.load.spritesheet('gale', 'sprites/gale.png', 20, 32)
+    d.game.load.spritesheet('RoboRaj', 'sprites/roboraj.png', 20, 32)
+    d.game.load.spritesheet('Billy', 'sprites/fat-kid.png', 20, 32)
+    d.game.load.spritesheet('Black Mage', 'sprites/black-mage.png', 20, 32)
+    d.game.load.spritesheet('Gale', 'sprites/gale.png', 20, 32)
     d.game.load.spritesheet('blood', 'sprites/blood.png', 32, 32)
     d.game.load.image('arrow', 'sprites/Arrow.png')
     d.game.load.image('arrowSide', 'sprites/Arrow copy.png')
@@ -29,6 +29,8 @@ let loadAssets = {
     d.game.load.image('back', 'sprites/back-btn.png')
     d.game.load.image('join', 'sprites/join-btn.png')
     d.game.load.image('go', 'sprites/go-btn.png')
+    d.game.load.image('down', 'sprites/down-btn.png')
+    d.game.load.image('up', 'sprites/up-btn.png')
     d.game.load.image('treasure', 'sprites/treasure-chest.png')
     d.game.load.image('night', 'sprites/night.png')
     d.game.load.image('sunset', 'sprites/sunset.png')

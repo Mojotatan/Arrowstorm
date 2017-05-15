@@ -23,7 +23,7 @@ let newGameOptions = {
     d.lobbyId = d.game.add.text(648, 0, `Game ID: ${id}`, {fill: '#FFFFFF'})
     d.lobbyP1 = d.game.add.text(648, 32, `Player 1: ${p1}`, {fill: '#0000FF'})
     d.lobbyP2 = d.game.add.text(648, 64, `Player 2: ${p2}`, {fill: '#FF0000'})
-    d.gameReady = d.game.add.text(648, 96, '', {fill: '#FFFFFF'})
+    d.gameReady = d.game.add.text(896, 64, '', {fill: '#FFFFFF'})
 
     d.leaveBtn = d.game.add.button(896, 0, 'back', function(){
       leaveGame()
@@ -31,64 +31,82 @@ let newGameOptions = {
     })
     d.leaveBtn.scale.set(2, 2)
 
-    d.message = d.game.add.text(384, 128 + 16, 'You are: ', {fill: '#FFFFFF'})
-    d.youAre = d.game.add.text(384 + 112, 128 + 16, '', {fill: '#FFFFFF'})
+    d.message = d.game.add.text(648, 96, 'You are: ', {fill: '#FFFFFF'})
+    d.youAre = d.game.add.text(648 + 112, 96, '', {fill: '#FFFFFF'})
     if (d.currentPlayer) {
       d.youAre.text = d.currentPlayer === 'player1' ? 'PLAYER 1' : 'PLAYER 2'
       d.youAre.fill = d.currentPlayer === 'player1' ? '#0000FF' : '#FF0000'
     }
 
+
     // character select
-    // d.game.add.text(16, 0, 'Choose your character', {fill: '#FFFFFF'})
+    let charShade = d.game.add.graphics(352, 160)
+    charShade.beginFill(0xcccccc)
+    charShade.drawRect(0, 0, 688, 480)
+    charShade.endFill()
 
+    let instrShade = d.game.add.graphics(352, 160)
+    instrShade.beginFill(0x9999ff)
+    instrShade.drawRect(0, 0, 688, 64)
+    instrShade.endFill()
+    d.game.add.text(512, 176, 'Choose your character')
 
-    // // defaults to p1 as blackmage and p2 as fatkid
-    // let previewShade1 = d.game.add.graphics(58, 46)
-    // previewShade1.lineStyle(4, 0x0000ff)
-    // previewShade1.drawRect(0, 0, 84, 132)
-    // d.previewChar1 = d.game.add.image(60, 48, 'blackMage')
-    // d.previewChar1.scale.set(4, 4)
+    // defaults to p1 as roboraj and p2 as fatkid
+    let pp1
+    if (d.myGame) pp1 = d.myGame.alias[1] || 'Player 1'
+    else pp2 = 'Player 1'
+    d.preview1 = d.game.add.text(528, 240, pp1, {fill: '#0000FF'})
+    d.previewChar1 = d.game.add.image(528, 288, 'RoboRaj')
+    d.previewChar1.scale.set(6, 6)
+    d.preview1Char = d.game.add.text(528, 494, 'RoboRaj')
 
-    // let previewShade2 = d.game.add.graphics(222, 46)
-    // previewShade2.lineStyle(4, 0xff0000)
-    // previewShade2.drawRect(0, 0, 84, 132)
-    // d.previewChar2 = d.game.add.image(224, 48, 'fatKid')
-    // d.previewChar2.frame = 2
-    // d.previewChar2.scale.set(4, 4)
+    let pp2
+    if (d.myGame) pp2 = d.myGame.alias[2] || 'Player 2'
+    else pp2 = 'Player 2'
+    d.preview2 = d.game.add.text(720, 240, pp2, {fill: '#FF0000'})
+    d.previewChar2 = d.game.add.image(720, 288, 'Billy')
+    d.previewChar2.frame = 2
+    d.previewChar2.scale.set(6, 6)
+    d.preview2Char = d.game.add.text(720, 494, 'Billy')
 
-    // let avatar = function(char) {
-    //   return function() {
-    //     chooseChar({char, id: d.myGame.id})
-    //   }
-    // }
+    let avatar = function(char) {
+      return function() {
+        chooseChar({char, id: d.myGame.id})
+      }
+    }
 
-    // let rosterShade = d.game.add.graphics(16, 192)
-    // rosterShade.beginFill(0x9999ff)
-    // rosterShade.drawRect(0, 0, 352, 80)
-    // rosterShade.endFill()
+    let rosterShade = d.game.add.graphics(352, 560)
+    rosterShade.beginFill(0x9999ff)
+    rosterShade.drawRect(0, 0, 688, 80)
+    rosterShade.endFill()
 
-    // d.chooseRoboraj = d.game.add.button(88 - 15 + 16 - 44, 208, 'roboraj', avatar('roboraj'))
-    // d.chooseRoboraj.frame = 2
-    // d.chooseRoboraj.scale.set(1.5, 1.5)
-    // d.chooseFatKid = d.game.add.button(88 * 2 - 15 + 16 - 44, 208, 'fatKid', avatar('fatKid'))
-    // d.chooseFatKid.frame = 2
-    // d.chooseFatKid.scale.set(1.5, 1.5)
-    // d.chooseBlackMage = d.game.add.button(88 * 3 - 15 + 16 - 44, 208, 'blackMage', avatar('blackMage'))
-    // d.chooseBlackMage.scale.set(1.5, 1.5)
-    // d.chooseGale = d.game.add.button(88 * 4 - 15 + 16 - 44, 208, 'gale', avatar('gale'))
-    // d.chooseGale.frame = 2
-    // d.chooseGale.scale.set(1.5, 1.5)
+    d.chooseRoboraj = d.game.add.button(88 - 15 + 512 - 44, 576, 'RoboRaj', avatar('RoboRaj'))
+    d.chooseRoboraj.frame = 2
+    d.chooseRoboraj.scale.set(1.5, 1.5)
+    d.chooseFatKid = d.game.add.button(88 * 2 - 15 + 512 - 44, 576, 'Billy', avatar('Billy'))
+    d.chooseFatKid.frame = 2
+    d.chooseFatKid.scale.set(1.5, 1.5)
+    d.chooseBlackMage = d.game.add.button(88 * 3 - 15 + 512 - 44, 576, 'Black Mage', avatar('Black Mage'))
+    d.chooseBlackMage.scale.set(1.5, 1.5)
+    d.chooseGale = d.game.add.button(88 * 4 - 15 + 512 - 44, 576, 'Gale', avatar('Gale'))
+    d.chooseGale.frame = 2
+    d.chooseGale.scale.set(1.5, 1.5)
 
     // map select
     let mapShade = d.game.add.graphics(0, 0)
-    mapShade.beginFill(0x999966)
+    mapShade.beginFill(0xccccff)
     mapShade.drawRect(0, 0, 352, 640)
     mapShade.endFill()
 
-    d.game.add.text(16, 320 + 32, 'Map Select', {fill: '#FFFFFF'})
+    let mapSelShade = d.game.add.graphics(0, 320 + 32)
+    mapSelShade.beginFill(0x373737)
+    mapSelShade.drawRect(0, 0, 352, 320 - 32)
+    mapSelShade.endFill()
 
-    d.mapSel = d.game.add.graphics(16, 400)
-    d.mapSel.beginFill(0xff3399)
+    d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '20pt Arial', fill: '#FFFFFF'})
+
+    d.mapSel = d.game.add.graphics(16, 412)
+    d.mapSel.beginFill(0x00cc99)
     d.mapSel.drawRect(0, 0, 320, 32)
     d.mapSel.endFill()
 
@@ -100,36 +118,31 @@ let newGameOptions = {
     d.currentMaps = []
     renderMaps(d.currentPage)
 
-    // d.mapSel = d.game.add.image(x, y, 'sel')
-    // d.mapSel.scale.set(1.5, 1.5)
-
-    // d.maps.forEach(map => {
-    //   d.game.add.text(x, y, map.name, {fontSize: 12, fill: '#FFFFFF', wordWrap: true, boundsAlignH: 'center', boundsAlignV: 'middle'})
-    //   x += 64
-    //   if (x >= 1024) {
-    //     x = 384
-    //     y += 64
-    //   }
-    // })
-
-    // let previewShade = d.game.add.graphics(16, 272)
-    // previewShade.beginFill(0x999966)
-    // previewShade.drawRect(0, 0, 352, 352)
-    // previewShade.endFill()
-
     d.preview = d.game.add.group()
     getPreview(d.currentPage)
 
     let cursors = d.game.input.keyboard.createCursorKeys()
     cursors.up.onDown.add(() => {
-      if (d.mapSel.position.y > 400) d.mapSel.position.y -= 32
-      getPreview(d.currentPage)
-      mapSel({id: d.myGame.id, map: d.mapSel.position})
+      if (d.mapSel.position.y > 412) {
+        d.mapSel.position.y -= 32
+        getPreview(d.currentPage)
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      } else if (d.pages[d.currentPage - 1]) {
+        d.currentPage--
+        d.mapSel.position.y = 604
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      }
     })
     cursors.down.onDown.add(() => {
-      if (d.mapSel.position.y < 592) d.mapSel.position.y += 32
-      getPreview(d.currentPage)
-      mapSel({id: d.myGame.id, map: {y: d.mapSel.y, page: d.currentPage}})
+      if (d.mapSel.position.y < 604) {
+        d.mapSel.position.y += 32
+        getPreview(d.currentPage)
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      } else if (d.pages[d.currentPage + 1]) {
+        d.currentPage++
+        d.mapSel.position.y = 412
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      }
     })
   },
   update: function() {

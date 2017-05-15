@@ -1,8 +1,8 @@
 import d from '../game'
+import {mapSel} from '../client'
 
 export function preview(map) {
   d.preview = d.game.add.group()
-  console.log(map)
 
   map.blocks.forEach(block => {
     let x = block.x - 192
@@ -19,9 +19,9 @@ export function preview(map) {
 export function renderMaps(page) {
   if (d.prevPage) d.prevPage.kill()
   if (d.nextPage) d.nextPage.kill()
-  d.mapSel.position.y = 400
+  d.mapSel.position.y = 412
 
-  let y = 320 + 32 + 48 //400
+  let y = 416
   d.currentMaps.forEach(map => {
     map.kill()
   })
@@ -34,21 +34,23 @@ export function renderMaps(page) {
   })
 
   if (d.pages[page - 1]) {
-    d.prevPage = d.game.add.button(256, 352, 'go', function() {
+    d.prevPage = d.game.add.button(272, 352 + 16, 'up', function() {
       d.currentPage--
-      renderMaps(d.currentPage)
+      d.mapSel.position.y = 412
+      mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
     })
   }
   if (d.pages[page + 1]) {
-    d.nextPage = d.game.add.button(256 + 64, 352, 'go', function() {
+    d.nextPage = d.game.add.button(272 + 32, 352 + 16, 'down', function() {
       d.currentPage++
-      renderMaps(d.currentPage)
+      d.mapSel.position.y = 412
+      mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
     })
   }
 }
 
 export function getPreview(page) {
   d.preview.callAll('kill')
-  let select = (d.mapSel.y - 400) / 32
+  let select = (d.mapSel.position.y - 412) / 32
   if (select < d.pages[page].length) preview(d.pages[page][select])
 }
