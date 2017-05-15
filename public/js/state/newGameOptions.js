@@ -22,20 +22,20 @@ let newGameOptions = {
     rosterShade.drawRect(0, 0, 688, 128)
     rosterShade.endFill()
 
-    d.leaveBtn = d.game.add.button(352, 0, 'back', function(){
+    d.leaveBtn = d.game.add.button(352 + 16, 0 + 16, 'back', function(){
       leaveGame()
       d.game.state.start('menu')
       d.myGame = undefined
     })
-    d.leaveBtn.scale.set(3, 3)
+    d.leaveBtn.scale.set(2, 2)
 
     let instructions = d.game.add.text(544, 0, 'Choose your\ncharacter', {font: 'bold 20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle', align: 'center'})
     instructions.setTextBounds(0, 0, 288, 96)
 
-    d.startBtn = d.game.add.button(832, 0, 'start', function() {
+    d.startBtn = d.game.add.button(832 + 48, 0 + 16, 'start', function() {
       letsGo(d.myGame.id)
     })
-    d.startBtn.scale.set(3, 3)
+    d.startBtn.scale.set(2, 2)
 
     // defaults to p1 as roboraj and p2 as billy
     let x1 = 352 + 224 - 80
@@ -73,24 +73,20 @@ let newGameOptions = {
     }
 
     // roster
-    d.chooseRoboraj = d.game.add.button(352 + 172 * 0 + 6, 512, 'RoboRaj', avatar('RoboRaj'))
+    d.chooseRoboraj = d.game.add.button(352 + 136 * 1 - 38 + 4, 512 + 16, 'RoboRaj', avatar('RoboRaj'))
     d.chooseRoboraj.frame = 2
-    d.chooseRoboraj.crop(new Phaser.Rectangle(0, 0, 20, 16))
-    d.chooseRoboraj.scale.set(8, 8)
+    d.chooseRoboraj.scale.set(3, 3)
 
-    d.chooseBilly = d.game.add.button(352 + 172 * 1 + 6, 512, 'Billy', avatar('Billy'))
+    d.chooseBilly = d.game.add.button(352 + 136 * 2 - 38 + 4, 512 + 16, 'Billy', avatar('Billy'))
     d.chooseBilly.frame = 2
-    d.chooseBilly.crop(new Phaser.Rectangle(0, 0, 20, 16))
-    d.chooseBilly.scale.set(8, 8)
+    d.chooseBilly.scale.set(3, 3)
 
-    d.chooseBlackMage = d.game.add.button(352 + 172 * 2 + 6, 512, 'Black Mage', avatar('Black Mage'))
-    d.chooseBlackMage.crop(new Phaser.Rectangle(0, 0, 20, 16))
-    d.chooseBlackMage.scale.set(8, 8)
+    d.chooseBlackMage = d.game.add.button(352 + 136 * 3 - 38 + 4, 512 + 16, 'Black Mage', avatar('Black Mage'))
+    d.chooseBlackMage.scale.set(3, 3)
 
-    d.chooseGale = d.game.add.button(352 + 172 * 3 + 6, 512, 'Gale', avatar('Gale'))
+    d.chooseGale = d.game.add.button(352 + 136 * 4 - 38 + 4, 512 + 16, 'Gale', avatar('Gale'))
     d.chooseGale.frame = 2
-    d.chooseGale.crop(new Phaser.Rectangle(0, 1, 20, 16))
-    d.chooseGale.scale.set(8, 8)
+    d.chooseGale.scale.set(3, 3)
 
 
     // map select
