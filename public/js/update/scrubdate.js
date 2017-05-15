@@ -27,13 +27,32 @@ export default function scrubdateFunc() {
   wrap(d.player1)
   wrap(d.player2)
 
-  if (d.arrow) wrap(d.arrow)
-
   //Define collisions
   let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
   let hitPlatformP2 = d.game.physics.arcade.collide(d.platforms, d.player2)
   let hitSpikes = d.game.physics.arcade.collide(d.spikes, d.player1)
   let hitSpikesP2 = d.game.physics.arcade.collide(d.spikes, d.player2)
+
+  d.arrowsArray.forEach(arrow => {
+    wrap(arrow)
+    let arrowHitPlatforms = d.game.physics.arcade.collide(arrow, d.platforms)
+    let arrowHitSpikes = d.game.physics.arcade.collide(arrow, d.spikes)
+
+    if (arrow.body.velocity.x > 0) {
+      arrow.angle += 1
+    }
+    if (arrow.body.velocity.x < 0) {
+      arrow.angle -= 1
+    }
+
+    if (arrowHitPlatforms || arrowHitSpikes) {
+      arrow.body.velocity.x = 0
+      arrow.body.velocity.y = 0
+      arrow.body.acceleration = 0
+      arrow.body.gravity.y = 0
+      arrow.body.immovable = true
+    }
+  })
 
   //Spike collisions
   if (hitSpikes) {

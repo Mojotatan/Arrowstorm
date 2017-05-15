@@ -77,9 +77,12 @@ Client.socket.on('start', function(rng) {
 	console.log('let the games begin')
 	function getMap() {
 		let select = (d.mapSel.y - 412) / 32
-		return (select >= d.pages[d.currentPage].length) ? Math.floor(rng * d.pages[d.currentPage].length) : select
+		return (select >= d.pages[d.currentPage].length) ? Math.floor(rng * d.maps.length) : select + d.currentPage * 7
 	}
 	d.map = d.maps[getMap()]
+	console.log(d.myGame.map)
+	console.log(d.currentPage)
+	console.log(d.pages)
 	d.game.state.start('runGame')
 })
 
