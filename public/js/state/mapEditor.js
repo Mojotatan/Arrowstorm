@@ -11,7 +11,8 @@ let mapEditor = {
       d.game.load.image('night-button', 'sprites/night-button.png')
       d.game.load.image('sunset-button', 'sprites/sunset-button.png')
       d.game.load.image('night-for-editor', 'sprites/night-for-editor.png')
-      d.game.load.image('submitBtn', 'sprites/submitBtn.png')
+      //d.game.load.image('submitBtn', 'sprites/submitBtn.png')
+      d.game.load.image('map-editor-btn', 'sprites/map-editor-btn.png')
     },
 
     create: function() {
