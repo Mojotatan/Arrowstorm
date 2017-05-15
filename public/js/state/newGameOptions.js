@@ -38,7 +38,7 @@ let newGameOptions = {
     d.startBtn.scale.set(2, 2)
 
     // defaults to p1 as roboraj and p2 as billy
-    let x1 = 352 + 224 - 80
+    let x1 = 352 + 168 * 0
     let y1 = 96 + 208 - 128
     let pp1 = ''
     if (d.myGame && d.myGame.player1) pp1 = d.myGame.alias[1] || 'Player 1'
@@ -52,7 +52,7 @@ let newGameOptions = {
     d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview1Char.setTextBounds(0, 0, 160, 80)
 
-    let x2 = 352 + 224 * 2 - 80
+    let x2 = 352 + 168 * 1
     let y2 = 96 + 208 - 128
     let pp2 = ''
     if (d.myGame && d.myGame.player2) pp2 = d.myGame.alias[2] || 'Player 2'
@@ -65,6 +65,34 @@ let newGameOptions = {
     pp2 = (d.myGame && d.myGame.player2) ? 'Billy' : ''
     d.preview2Char = d.game.add.text(x2, y2 + 256, pp2, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview2Char.setTextBounds(0, 0, 160, 80)
+
+    let x3 = 352 + 168 * 2
+    let y3 = 96 + 208 - 128
+    let pp3 = ''
+    if (d.myGame && d.myGame.player3) pp3 = d.myGame.alias[3] || 'Player 3'
+    d.preview3 = d.game.add.text(x3, 96, pp3, {font: '20pt Arial', fill: '#008800', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3.setTextBounds(0, 0, 160, 80)
+    d.previewChar3 = d.game.add.image(x3, y3, 'Black Mage')
+    d.previewChar3.frame = 2
+    d.previewChar3.scale.set(8, 8)
+    d.previewChar3.visible = d.myGame && d.myGame.player3
+    pp3 = (d.myGame && d.myGame.player3) ? 'Black Mage' : ''
+    d.preview3Char = d.game.add.text(x3, y3 + 256, pp3, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3Char.setTextBounds(0, 0, 160, 80)
+
+    let x4 = 352 + 168 * 3
+    let y4 = 96 + 208 - 128
+    let pp4 = ''
+    if (d.myGame && d.myGame.player4) pp4 = d.myGame.alias[4] || 'Player 4'
+    d.preview4 = d.game.add.text(x4, 96, pp4, {font: '20pt Arial', fill: '#bbbb00', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4.setTextBounds(0, 0, 160, 80)
+    d.previewChar4 = d.game.add.image(x4, y4, 'Gale')
+    d.previewChar4.frame = 2
+    d.previewChar4.scale.set(8, 8)
+    d.previewChar4.visible = d.myGame && d.myGame.player4
+    pp4 = (d.myGame && d.myGame.player4) ? 'Gale' : ''
+    d.preview4Char = d.game.add.text(x4, y4 + 256, pp4, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4Char.setTextBounds(0, 0, 160, 80)
 
     let avatar = function(char) {
       return function() {

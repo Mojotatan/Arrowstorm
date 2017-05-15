@@ -11,18 +11,10 @@ import {renderMaps, getPreview} from './update/preview'
 var Client = {}
 Client.socket = io.connect()
 
-// assigning player 1 to first player that logs on
-Client.socket.on('assignedPlayer1', function(data){
-	console.log('assigned to player1')
-	d.currentPlayer = "player1"
-	d.myGame = data
-})
-
-// assigning player 2 to second player that logs on
-Client.socket.on('assignedPlayer2', function(data){
-	console.log('assigned to player2')
-	d.currentPlayer = "player2"
-	d.myGame = data
+Client.socket.on('assignedToPlayer', function(data){
+	console.log('assigned to', data.player)
+	d.currentPlayer = data.player
+	d.myGame = data.game
 })
 
 Client.socket.on('newGame', function(data) {
@@ -48,6 +40,8 @@ Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
 	let p1 = ''
 	let p2 = ''
+	let p3 = ''
+	let p4 = ''
 	let id = data.id
 	if (d.game.state.current === 'newGameOptions') {
 		if (data.player1) {
@@ -70,6 +64,26 @@ Client.socket.on('playerJoined', function(data) {
 			d.previewChar2.visible = false
 			d.preview2Char.text = p2
 		}
+		if (data.player3) {
+			d.preview3.text = data.alias[3] || 'Player 3'
+			d.previewChar3.visible = true
+			d.preview3Char.text = data.chars[3]
+		}
+		else {
+			d.preview3.text = p3
+			d.previewChar3.visible = false
+			d.preview3Char.text = p3
+		}
+		if (data.player4) {
+			d.preview4.text = data.alias[4] || 'Player 4'
+			d.previewChar4.visible = true
+			d.preview4Char.text = data.chars[4]
+		}
+		else {
+			d.preview4.text = p4
+			d.previewChar4.visible = false
+			d.preview4Char.text = p4
+		}
 	}
 })
 
@@ -80,9 +94,6 @@ Client.socket.on('start', function(rng) {
 		return (select >= d.pages[d.currentPage].length) ? Math.floor(rng * d.maps.length) : select + d.currentPage * 7
 	}
 	d.map = d.maps[getMap()]
-	console.log(d.myGame.map)
-	console.log(d.currentPage)
-	console.log(d.pages)
 	d.game.state.start('runGame')
 })
 
@@ -92,10 +103,14 @@ Client.socket.on('optionsUpdate', function(data) {
 	renderMaps(d.currentPage)
 	d.mapSel.position.y = data.map.y
 	getPreview(d.currentPage)
-	let xy1 = d.previewChar1.position || {x: 352 + 224 - 80, y: 96 + 208 - 128}
-	let xy2 = d.previewChar2.position || {x: 352 + 224 * 2 - 80, y: 96 + 208 - 128}
+	let xy1 = d.previewChar1.position || {x: 352 + 168 * 0, y: 96 + 208 - 128}
+	let xy2 = d.previewChar2.position || {x: 352 + 168 * 1, y: 96 + 208 - 128}
+	let xy3 = d.previewChar3.position || {x: 352 + 168 * 2, y: 96 + 208 - 128}
+	let xy4 = d.previewChar4.position || {x: 352 + 168 * 3, y: 96 + 208 - 128}
 	d.previewChar1.kill()
 	d.previewChar2.kill()
+	d.previewChar3.kill()
+	d.previewChar4.kill()
 	if (data.player1) {
 		d.previewChar1 = d.game.add.image(xy1.x, xy1.y, data.chars[1])
 		d.previewChar1.frame = 2
@@ -107,6 +122,18 @@ Client.socket.on('optionsUpdate', function(data) {
 		d.previewChar2.frame = 2
 		d.previewChar2.scale.set(8, 8)
 		d.preview2Char.text = data.chars[2]
+	}
+	if (data.player3) {
+		d.previewChar3 = d.game.add.image(xy3.x, xy3.y, data.chars[3])
+		d.previewChar3.frame = 2
+		d.previewChar3.scale.set(8, 8)
+		d.preview3Char.text = data.chars[3]
+	}
+	if (data.player4) {
+		d.previewChar4 = d.game.add.image(xy4.x, xy4.y, data.chars[4])
+		d.previewChar4.frame = 2
+		d.previewChar4.scale.set(8, 8)
+		d.preview4Char.text = data.chars[4]
 	}
 })
 
@@ -122,8 +149,8 @@ Client.socket.on('score', function(data) {
 	d.myGame = data.myGame
 })
 
-Client.socket.on('opponentHasMoved', function(newOpponentPos){
-	opponentPos(newOpponentPos)
+Client.socket.on('opponentHasMoved', function(data){
+	opponentPos(data)
 })
 
 Client.socket.on('opponentHasShot', function(data){
@@ -149,6 +176,8 @@ Client.socket.on('opponentHitTC', function(data){
 
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
+	else if (opponent === 'player3') {treasureChest(false, false, true)}
+	else if (opponent === 'player4') {treasureChest(false, false, false, true)}
 })
 
 //utility functions that invoke client
@@ -181,11 +210,11 @@ export function point(id, round, score) {
 }
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
-	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale, position, rotation})
+	Client.socket.emit('playerHasMoved', {id, player, x, y, frame, scale, position, rotation})
 }
 
-export function arrowShot(id, playerName, shotDirection) {
-	Client.socket.emit('playerHasShot', {id, player: playerName, shotDirection})
+export function arrowShot(id, player, shotDirection) {
+	Client.socket.emit('playerHasShot', {id, player, shotDirection})
 }
 
 export function playerDead(id, player) {
