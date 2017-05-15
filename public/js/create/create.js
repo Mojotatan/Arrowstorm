@@ -92,10 +92,16 @@ export default function createFunc() {
   })
 
   // create players
-  if (d.myGame.player1) createPlayer(d, d.myGame.chars[1], 'player1', map.p1Start)
-  if (d.myGame.player2) createPlayer(d, d.myGame.chars[2], 'player2', map.p2Start)
-  if (d.myGame.player3) createPlayer(d, d.myGame.chars[3], 'player3', map.p3Start)
-  if (d.myGame.player4) createPlayer(d, d.myGame.chars[4], 'player4', map.p4Start)
+  let starts = [map.p1Start, map.p2Start, map.p3Start, map.p4Start]
+  function rStart () {
+    let rng = Math.floor(Math.random() * starts.length)
+    return starts.splice(rng, 1)[0]
+  }
+
+  if (d.myGame.player1) createPlayer(d, d.myGame.chars[1], 'player1', rStart())
+  if (d.myGame.player2) createPlayer(d, d.myGame.chars[2], 'player2', rStart())
+  if (d.myGame.player3) createPlayer(d, d.myGame.chars[3], 'player3', rStart())
+  if (d.myGame.player4) createPlayer(d, d.myGame.chars[4], 'player4', rStart())
 
   if (d.myGame.player1) {
     let name1 = d.myGame.alias[1] || 'Player One'
