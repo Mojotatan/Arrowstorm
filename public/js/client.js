@@ -16,11 +16,6 @@ Client.socket.on('assignedPlayer1', function(data){
 	console.log('assigned to player1')
 	d.currentPlayer = "player1"
 	d.myGame = data
-	if (d.youAre) {
-		d.message.text = 'You are: '
-		d.youAre.text = 'PLAYER 1'
-		d.youAre.fill = '#0000FF'
-	}
 })
 
 // assigning player 2 to second player that logs on
@@ -28,11 +23,6 @@ Client.socket.on('assignedPlayer2', function(data){
 	console.log('assigned to player2')
 	d.currentPlayer = "player2"
 	d.myGame = data
-	if (d.youAre) {
-		d.message.text = 'You are: '
-		d.youAre.text = 'PLAYER 2'
-		d.youAre.fill = '#FF0000'
-	}
 })
 
 Client.socket.on('newGame', function(data) {
@@ -57,17 +47,29 @@ Client.socket.on('newGame', function(data) {
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
 	let p1 = ''
-	if (data.player1) p1 = data.alias[1] || 'JOINED'
 	let p2 = ''
-	if (data.player2) p2 = data.alias[2] || 'JOINED'
 	let id = data.id
 	if (d.game.state.current === 'newGameOptions') {
-		d.lobbyP1.text = `Player 1: ${p1}`
-		d.lobbyP2.text = `Player 2: ${p2}`
-		d.lobbyId.text = `Game ID: ${id}`
-		d.preview1.text = data.alias[1] || 'Player 1'
-		d.preview2.text = data.alias[2] || 'Player 2'
-		d.gameReady.text = (data.player1 && data.player2) ? 'ready!' : ''
+		if (data.player1) {
+			d.preview1.text = data.alias[1] || 'Player 1'
+			d.previewChar1.visible = true
+			d.preview1Char.text = data.chars[1]
+		}
+		else {
+			d.preview1.text = p1
+			d.previewChar1.visible = false
+			d.preview1Char.text = p1
+		}
+		if (data.player2) {
+			d.preview2.text = data.alias[2] || 'Player 2'
+			d.previewChar2.visible = true
+			d.preview2Char.text = data.chars[2]
+		}
+		else {
+			d.preview2.text = p2
+			d.previewChar2.visible = false
+			d.preview2Char.text = p2
+		}
 	}
 })
 
@@ -87,16 +89,22 @@ Client.socket.on('optionsUpdate', function(data) {
 	renderMaps(d.currentPage)
 	d.mapSel.position.y = data.map.y
 	getPreview(d.currentPage)
+	let xy1 = d.previewChar1.position || {x: 352 + 224 - 80, y: 96 + 208 - 128}
+	let xy2 = d.previewChar2.position || {x: 352 + 224 * 2 - 80, y: 96 + 208 - 128}
 	d.previewChar1.kill()
 	d.previewChar2.kill()
-	d.previewChar1 = d.game.add.image(528, 296, data.chars[1])
-	d.previewChar1.frame = 2
-	d.previewChar1.scale.set(6, 6)
-	d.preview1Char.text = data.chars[1]
-	d.previewChar2 = d.game.add.image(720, 296, data.chars[2])
-	d.previewChar2.frame = 2
-	d.previewChar2.scale.set(6, 6)
-	d.preview2Char.text = data.chars[2]
+	if (data.player1) {
+		d.previewChar1 = d.game.add.image(xy1.x, xy1.y, data.chars[1])
+		d.previewChar1.frame = 2
+		d.previewChar1.scale.set(8, 8)
+		d.preview1Char.text = data.chars[1]
+	}
+	if (data.player2) {
+		d.previewChar2 = d.game.add.image(xy2.x, xy2.y, data.chars[2])
+		d.previewChar2.frame = 2
+		d.previewChar2.scale.set(8, 8)
+		d.preview2Char.text = data.chars[2]
+	}
 })
 
 Client.socket.on('score', function(data) {

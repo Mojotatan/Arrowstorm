@@ -5,69 +5,66 @@ import {letsGo, mapSel, chooseChar, leaveGame} from '../client'
 
 let newGameOptions = {
   create: function() {
-    d.startBtn = d.game.add.button(384, 0, 'start', this.startGame, this)
-    d.startBtn.scale.set(4, 4)
-
-    let p1, p2, id
-    if (d.myGame) {
-      if (d.myGame.player1) p1 = d.myGame.alias[1] || 'JOINED'
-      else p1 = ''
-      if (d.myGame.player2) p2 = d.myGame.alias[2] || 'JOINED'
-      else p2 = ''
-      id = d.myGame.id
-    } else {
-      p1 = 'ERROR'
-      p2 = 'ERROR'
-      id = 'UNKNOWN'
-    }
-    d.lobbyId = d.game.add.text(648, 0, `Game ID: ${id}`, {font: '20pt Arial', fill: '#FFFFFF'})
-    d.lobbyP1 = d.game.add.text(648, 32, `Player 1: ${p1}`, {font: '20pt Arial', fill: '#0000FF'})
-    d.lobbyP2 = d.game.add.text(648, 64, `Player 2: ${p2}`, {font: '20pt Arial', fill: '#FF0000'})
-    d.gameReady = d.game.add.text(896, 64, '', {font: '20pt Arial', fill: '#FFFFFF'})
-
-    d.leaveBtn = d.game.add.button(896, 0, 'back', function(){
-      leaveGame()
-      d.game.state.start('menu')
-    })
-    d.leaveBtn.scale.set(2, 2)
-
-    d.message = d.game.add.text(648, 96, 'You are: ', {font: '20pt Arial', fill: '#FFFFFF'})
-    d.youAre = d.game.add.text(648 + 112, 96, '', {font: '20pt Arial', fill: '#FFFFFF'})
-    if (d.currentPlayer) {
-      d.youAre.text = d.currentPlayer === 'player1' ? 'PLAYER 1' : 'PLAYER 2'
-      d.youAre.fill = d.currentPlayer === 'player1' ? '#0000FF' : '#FF0000'
-    }
-
 
     // character select
-    let charShade = d.game.add.graphics(352, 160)
+    let instrShade = d.game.add.graphics(352, 0)
+    instrShade.beginFill(0x9999ff)
+    instrShade.drawRect(0, 0, 688, 96)
+    instrShade.endFill()
+
+    let charShade = d.game.add.graphics(352, 96)
     charShade.beginFill(0xcccccc)
-    charShade.drawRect(0, 0, 688, 480)
+    charShade.drawRect(0, 0, 688, 416)
     charShade.endFill()
 
-    let instrShade = d.game.add.graphics(352, 160)
-    instrShade.beginFill(0x9999ff)
-    instrShade.drawRect(0, 0, 688, 64)
-    instrShade.endFill()
-    d.game.add.text(512, 176, 'Choose your character', {font: 'bold 20pt Arial'})
+    let rosterShade = d.game.add.graphics(352, 512)
+    rosterShade.beginFill(0x9999ff)
+    rosterShade.drawRect(0, 0, 688, 128)
+    rosterShade.endFill()
 
-    // defaults to p1 as roboraj and p2 as fatkid
-    let pp1
-    if (d.myGame) pp1 = d.myGame.alias[1] || 'Player 1'
-    else pp1 = 'Player 1'
-    d.preview1 = d.game.add.text(528, 240, pp1, {font: '20pt Arial', fill: '#0000FF'})
-    d.previewChar1 = d.game.add.image(528, 296, 'RoboRaj')
-    d.previewChar1.scale.set(6, 6)
-    d.preview1Char = d.game.add.text(528, 512, 'RoboRaj')
+    d.leaveBtn = d.game.add.button(352, 0, 'back', function(){
+      leaveGame()
+      d.game.state.start('menu')
+      d.myGame = undefined
+    })
+    d.leaveBtn.scale.set(3, 3)
 
-    let pp2
-    if (d.myGame) pp2 = d.myGame.alias[2] || 'Player 2'
-    else pp2 = 'Player 2'
-    d.preview2 = d.game.add.text(720, 240, pp2, {font: '20pt Arial', fill: '#FF0000'})
-    d.previewChar2 = d.game.add.image(720, 296, 'Billy')
+    let instructions = d.game.add.text(544, 0, 'Choose your\ncharacter', {font: 'bold 20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle', align: 'center'})
+    instructions.setTextBounds(0, 0, 288, 96)
+
+    d.startBtn = d.game.add.button(832, 0, 'start', function() {
+      letsGo(d.myGame.id)
+    })
+    d.startBtn.scale.set(3, 3)
+
+    // defaults to p1 as roboraj and p2 as billy
+    let x1 = 352 + 224 - 80
+    let y1 = 96 + 208 - 128
+    let pp1 = ''
+    if (d.myGame && d.myGame.player1) pp1 = d.myGame.alias[1] || 'Player 1'
+    d.preview1 = d.game.add.text(x1, 96, pp1, {font: '20pt Arial', fill: '#0000FF', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview1.setTextBounds(0, 0, 160, 80)
+    d.previewChar1 = d.game.add.image(x1, y1, 'RoboRaj')
+    d.previewChar1.frame = 2
+    d.previewChar1.scale.set(8, 8)
+    d.previewChar1.visible = d.myGame && d.myGame.player1
+    pp1 = (d.myGame && d.myGame.player1) ? 'RoboRaj' : ''
+    d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview1Char.setTextBounds(0, 0, 160, 80)
+
+    let x2 = 352 + 224 * 2 - 80
+    let y2 = 96 + 208 - 128
+    let pp2 = ''
+    if (d.myGame && d.myGame.player2) pp2 = d.myGame.alias[2] || 'Player 2'
+    d.preview2 = d.game.add.text(x2, 96, pp2, {font: '20pt Arial', fill: '#FF0000', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2.setTextBounds(0, 0, 160, 80)
+    d.previewChar2 = d.game.add.image(x2, y2, 'Billy')
     d.previewChar2.frame = 2
-    d.previewChar2.scale.set(6, 6)
-    d.preview2Char = d.game.add.text(720, 512, 'Billy')
+    d.previewChar2.scale.set(8, 8)
+    d.previewChar2.visible = d.myGame && d.myGame.player2
+    pp2 = (d.myGame && d.myGame.player2) ? 'Billy' : ''
+    d.preview2Char = d.game.add.text(x2, y2 + 256, pp2, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2Char.setTextBounds(0, 0, 160, 80)
 
     let avatar = function(char) {
       return function() {
@@ -75,22 +72,26 @@ let newGameOptions = {
       }
     }
 
-    let rosterShade = d.game.add.graphics(352, 560)
-    rosterShade.beginFill(0x9999ff)
-    rosterShade.drawRect(0, 0, 688, 80)
-    rosterShade.endFill()
-
-    d.chooseRoboraj = d.game.add.button(88 - 15 + 512 - 44, 576, 'RoboRaj', avatar('RoboRaj'))
+    // roster
+    d.chooseRoboraj = d.game.add.button(352 + 172 * 0 + 6, 512, 'RoboRaj', avatar('RoboRaj'))
     d.chooseRoboraj.frame = 2
-    d.chooseRoboraj.scale.set(1.5, 1.5)
-    d.chooseFatKid = d.game.add.button(88 * 2 - 15 + 512 - 44, 576, 'Billy', avatar('Billy'))
-    d.chooseFatKid.frame = 2
-    d.chooseFatKid.scale.set(1.5, 1.5)
-    d.chooseBlackMage = d.game.add.button(88 * 3 - 15 + 512 - 44, 576, 'Black Mage', avatar('Black Mage'))
-    d.chooseBlackMage.scale.set(1.5, 1.5)
-    d.chooseGale = d.game.add.button(88 * 4 - 15 + 512 - 44, 576, 'Gale', avatar('Gale'))
+    d.chooseRoboraj.crop(new Phaser.Rectangle(0, 0, 20, 16))
+    d.chooseRoboraj.scale.set(8, 8)
+
+    d.chooseBilly = d.game.add.button(352 + 172 * 1 + 6, 512, 'Billy', avatar('Billy'))
+    d.chooseBilly.frame = 2
+    d.chooseBilly.crop(new Phaser.Rectangle(0, 0, 20, 16))
+    d.chooseBilly.scale.set(8, 8)
+
+    d.chooseBlackMage = d.game.add.button(352 + 172 * 2 + 6, 512, 'Black Mage', avatar('Black Mage'))
+    d.chooseBlackMage.crop(new Phaser.Rectangle(0, 0, 20, 16))
+    d.chooseBlackMage.scale.set(8, 8)
+
+    d.chooseGale = d.game.add.button(352 + 172 * 3 + 6, 512, 'Gale', avatar('Gale'))
     d.chooseGale.frame = 2
-    d.chooseGale.scale.set(1.5, 1.5)
+    d.chooseGale.crop(new Phaser.Rectangle(0, 1, 20, 16))
+    d.chooseGale.scale.set(8, 8)
+
 
     // map select
     let mapShade = d.game.add.graphics(0, 0)
@@ -147,12 +148,6 @@ let newGameOptions = {
   },
   update: function() {
 
-  },
-  startGame: function () {
-    // d.game.state.start('runGame')
-    // if (d.gameReady.text === 'ready!') {
-      letsGo(d.myGame.id)
-    // }
   }
 }
 

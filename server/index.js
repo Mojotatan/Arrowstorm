@@ -56,15 +56,17 @@ db.sync()
 		else return abc
 	}
 
-	const clearGames = (id) => {
+	const clearGames = (socket) => {
 		Object.keys(allGames).forEach(game => {
-			if (allGames[game].player1 === id) {
+			if (allGames[game].player1 === socket.id) {
 				allGames[game].player1 = null
 				allGames[game].alias[1] = null
+				socket.leave(`game ${allGames[game].id}`)
 				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
-			} else if (allGames[game].player2 === id) {
+			} else if (allGames[game].player2 === socket.id) {
 				allGames[game].player2 = null
 				allGames[game].alias[2] = null
+				socket.leave(`game ${allGames[game].id}`)
 				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
 			}
 			if (!allGames[game].player1 && !allGames[game].player2) {
@@ -85,7 +87,7 @@ db.sync()
 				player2: null,
 				chars: {1: 'RoboRaj', 2: 'Billy'},
 				alias: {1: alias, 2: null},
-				map: {page: 0, y: 392},
+				map: {page: 0, y: 412},
 				score: {1: 0, 2: 0},
 				points: [],
 				round: 0,
@@ -117,7 +119,7 @@ db.sync()
 			})
 		})
 		socket.on('leaveGame', function() {
-			clearGames(socket.id)
+			clearGames(socket)
 		})
 		socket.on('start', function(id) {
 			console.log('starting game', allGames[id])
@@ -191,7 +193,7 @@ db.sync()
 
 		socket.on('disconnect', function(){
 			console.log('the disconnected user', socket.id)
-			clearGames(socket.id)
+			clearGames(socket)
 		})
 
 	})
