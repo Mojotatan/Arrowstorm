@@ -2,7 +2,6 @@ import {appendArrowDisplay} from '../update/arrowDisplay'
 
 export default function createPlayer (d, spriteName, player, position) {
   // character sprites are 20 by 32
-  console.log()
 
   d[player] = d.game.add.sprite(position.x, position.y, spriteName)
   d[player].scale.set(1.5, 1.5) // (2, 2) looks better but is a bit big for the map
