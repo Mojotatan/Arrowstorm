@@ -19,6 +19,8 @@ let howTo = {
     d.game.add.text(16, 288, 'PRO TIPS', {font: '20pt Arial', fill: '#FFFFFF'})
     d.game.add.text(16, 320, 'Your arrow supply is limited', {font: '20pt Arial', fill: '#FFFFFF'})
     d.game.add.text(16, 352, 'Find awesome power ups in treasure chests', {font: '20pt Arial', fill: '#FFFFFF'})
+
+    d.game.stage.setBackgroundColor('#000842')
   }
 }
 
