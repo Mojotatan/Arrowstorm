@@ -7,7 +7,7 @@ const mapToJson = function(obj, name) {
 }
 
 let obj = {}
-obj.name = 'default'
+obj.name = 'Alufted'
 obj.creator = 'mojo'
 obj.p1Start = {x: 244, y: 0}
 obj.p2Start = {x: 780, y: 0}
@@ -44,7 +44,7 @@ for (let i = 0; i < 20; i++) {
 }
 
 let nobj = {}
-nobj.name = 'spike palace'
+nobj.name = 'Spike Palace'
 nobj.creator = 'mojo'
 nobj.p1Start = {x: 244 + 32 * 2, y: 32 * 4}
 nobj.p2Start = {x: 780 - 32 * 2, y: 32 * 4}
@@ -83,7 +83,7 @@ for (let i = 0; i < 20; i++) {
 }
 
 let pobj = {}
-pobj.name = 'tunnel vision'
+pobj.name = 'Tunnel Vision'
 pobj.creator = 'mojo'
 pobj.p1Start = {x: 700, y: 17 * 32}
 pobj.p2Start = {x: 700, y: 11 * 32}
@@ -130,7 +130,7 @@ for (let i = 0; i < 20; i++) {
 }
 
 let qobj = {}
-qobj.name = 'free fall'
+qobj.name = 'Free Fall'
 qobj.creator = 'mojo'
 qobj.p1Start = {x: 244, y: 32 * 8}
 qobj.p2Start = {x: 780, y: 32 * 8}
