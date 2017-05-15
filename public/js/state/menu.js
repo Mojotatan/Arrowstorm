@@ -12,12 +12,12 @@ let menu = {
     d.startBtn = d.game.add.button(0, 0, 'start', this.startGame, this)
     d.startBtn.scale.set(4, 4)
 
-    d.game.add.text(256, 0, 'start\nnew\ngame', {fill: '#FFFFFF'})
+    d.game.add.text(256, 0, 'start\nnew\ngame', {font: '20pt Arial', fill: '#FFFFFF'})
 
     d.mapBtn = d.game.add.button(768, 0, 'start', this.startMap, this)
     d.mapBtn.scale.set(4, 4)
 
-    d.game.add.text(688, 0, 'make\nnew\nmap', {fill: '#FFFFFF'})
+    d.game.add.text(688, 0, 'make\nnew\nmap', {font: '20pt Arial', fill: '#FFFFFF'})
 
 
     // games to join
@@ -35,7 +35,7 @@ let menu = {
     }
 
     // instructions
-    d.game.add.text(432, 240, 'How To Play', {fill: '#FFFFFF'})
+    d.game.add.text(432, 240, 'How To Play', {font: '20pt Arial', fill: '#FFFFFF'})
     d.mapBtn = d.game.add.button(480, 288, 'go', this.startHowTo, this)
     d.mapBtn.scale.set(2, 2)
 

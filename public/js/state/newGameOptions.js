@@ -20,10 +20,10 @@ let newGameOptions = {
       p2 = 'ERROR'
       id = 'UNKNOWN'
     }
-    d.lobbyId = d.game.add.text(648, 0, `Game ID: ${id}`, {fill: '#FFFFFF'})
-    d.lobbyP1 = d.game.add.text(648, 32, `Player 1: ${p1}`, {fill: '#0000FF'})
-    d.lobbyP2 = d.game.add.text(648, 64, `Player 2: ${p2}`, {fill: '#FF0000'})
-    d.gameReady = d.game.add.text(896, 64, '', {fill: '#FFFFFF'})
+    d.lobbyId = d.game.add.text(648, 0, `Game ID: ${id}`, {font: '20pt Arial', fill: '#FFFFFF'})
+    d.lobbyP1 = d.game.add.text(648, 32, `Player 1: ${p1}`, {font: '20pt Arial', fill: '#0000FF'})
+    d.lobbyP2 = d.game.add.text(648, 64, `Player 2: ${p2}`, {font: '20pt Arial', fill: '#FF0000'})
+    d.gameReady = d.game.add.text(896, 64, '', {font: '20pt Arial', fill: '#FFFFFF'})
 
     d.leaveBtn = d.game.add.button(896, 0, 'back', function(){
       leaveGame()
@@ -31,8 +31,8 @@ let newGameOptions = {
     })
     d.leaveBtn.scale.set(2, 2)
 
-    d.message = d.game.add.text(648, 96, 'You are: ', {fill: '#FFFFFF'})
-    d.youAre = d.game.add.text(648 + 112, 96, '', {fill: '#FFFFFF'})
+    d.message = d.game.add.text(648, 96, 'You are: ', {font: '20pt Arial', fill: '#FFFFFF'})
+    d.youAre = d.game.add.text(648 + 112, 96, '', {font: '20pt Arial', fill: '#FFFFFF'})
     if (d.currentPlayer) {
       d.youAre.text = d.currentPlayer === 'player1' ? 'PLAYER 1' : 'PLAYER 2'
       d.youAre.fill = d.currentPlayer === 'player1' ? '#0000FF' : '#FF0000'
@@ -49,13 +49,13 @@ let newGameOptions = {
     instrShade.beginFill(0x9999ff)
     instrShade.drawRect(0, 0, 688, 64)
     instrShade.endFill()
-    d.game.add.text(512, 176, 'Choose your character')
+    d.game.add.text(512, 176, 'Choose your character', {font: 'bold 20pt Arial'})
 
     // defaults to p1 as roboraj and p2 as fatkid
     let pp1
     if (d.myGame) pp1 = d.myGame.alias[1] || 'Player 1'
     else pp1 = 'Player 1'
-    d.preview1 = d.game.add.text(528, 240, pp1, {fill: '#0000FF'})
+    d.preview1 = d.game.add.text(528, 240, pp1, {font: '20pt Arial', fill: '#0000FF'})
     d.previewChar1 = d.game.add.image(528, 296, 'RoboRaj')
     d.previewChar1.scale.set(6, 6)
     d.preview1Char = d.game.add.text(528, 512, 'RoboRaj')
@@ -63,7 +63,7 @@ let newGameOptions = {
     let pp2
     if (d.myGame) pp2 = d.myGame.alias[2] || 'Player 2'
     else pp2 = 'Player 2'
-    d.preview2 = d.game.add.text(720, 240, pp2, {fill: '#FF0000'})
+    d.preview2 = d.game.add.text(720, 240, pp2, {font: '20pt Arial', fill: '#FF0000'})
     d.previewChar2 = d.game.add.image(720, 296, 'Billy')
     d.previewChar2.frame = 2
     d.previewChar2.scale.set(6, 6)
