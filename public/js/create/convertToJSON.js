@@ -28,7 +28,25 @@ export default function convertToJSON(me){
          me.map.putTile(me.currentTile, me.layer1.getTileX(me.marker.x), me.layer1.getTileY(me.marker.y), me.layer1)
          me.p2.p2Start = { x, y}
        }
-   } else if (x < 640 && me.tileType === 'tc-editor') {
+   } else if (x < 640 && me.tileType === 'p3') {
+      if (me.p3.p3Start && me.p3.p3Start.x === x && me.p3.p3Start.y === y) {
+         let removedItem = me.map.removeTile(me.layer1.getTileX(me.marker.x), me.layer1.getTileY(me.marker.y), me.layer1)
+         delete me.p3.p3Start
+       } else if (!me.p3.p3Start) {
+         me.map.putTile(me.currentTile, me.layer1.getTileX(me.marker.x), me.layer1.getTileY(me.marker.y), me.layer1)
+         me.p3.p3Start = { x, y}
+       }
+   }
+   else if (x < 640 && me.tileType === 'p4') {
+      if (me.p4.p4Start && me.p4.p4Start.x === x && me.p4.p4Start.y === y) {
+         let removedItem = me.map.removeTile(me.layer1.getTileX(me.marker.x), me.layer1.getTileY(me.marker.y), me.layer1)
+         delete me.p4.p4Start
+       } else if (!me.p4.p4Start) {
+         me.map.putTile(me.currentTile, me.layer1.getTileX(me.marker.x), me.layer1.getTileY(me.marker.y), me.layer1)
+         me.p4.p4Start = { x, y}
+       }
+   }
+   else if (x < 640 && me.tileType === 'tc-editor') {
       if (me.tc.treasureSpawn && me.tc.treasureSpawn.x === x && me.tc.treasureSpawn.y === y) {
        let removedItem = me.map.removeTile(me.layer1.getTileX(me.marker.x), me.layer1.getTileY(me.marker.y), me.layer1)
        delete me.tc.treasureSpawn
