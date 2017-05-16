@@ -1,44 +1,32 @@
-import updateFunc from './update/update'
-import createFunc from './create/create'
-//import Phaser from '../phaser/phaser'
+import loadAssets from './state/loadAssets'
+import title from './state/title'
+import menu from './state/menu'
+import newGameOptions from './state/newGameOptions'
+import runGame from './state/runGame'
+import howTo from './state/howTo'
+import mapEditor from './state/mapEditor'
+import killCam from './state/killCam'
+import gameOver from './state/gameOver'
 
 let d = {}
 export default d
 
 const gameFunc = function() {
 
-  
+
   // game play area is a box so walls of 192 width on each side
-  d.game = new Phaser.Game(1024, 640, Phaser.AUTO, '', { preload, create, update });
-  d.game.antialias = false
+  d.game = new Phaser.Game(1024, 640, Phaser.AUTO, 'app', null, false, false);
 
-  function init() {
-  }
-
-  function preload() {
-    d.game.load.image('raj', 'sprites/raj.png')
-    d.game.load.spritesheet('roboraj', 'sprites/roboraj.png', 32, 32)
-    d.game.load.spritesheet('fatKid', 'sprites/fat-kid.png', 20, 32)
-    d.game.load.image('arrow', 'sprites/Arrow.png')
-    d.game.load.image('bow', 'sprites/bow-crop.png')
-    d.game.load.image('ground', 'sprites/platform.png')
-    d.game.load.image('brick', 'sprites/brick.png')
-    d.game.load.image('grassBlock', 'sprites/grass_2x1.png')
-    d.game.load.image('background', 'sprites/background.png')
-    d.game.load.image('grassBlockLedge', 'sprites/grass_4x1.png')
-    d.game.load.image('dirt', 'sprites/dirt.png')
-  }
-
-  function create() {
-    createFunc(d)
-
-  }
-
-
-
-  function update() {
-    updateFunc(d)
-  }
+  d.game.state.add('loadAssets', loadAssets)
+  d.game.state.add('title', title)
+  d.game.state.add('menu', menu)
+  d.game.state.add('newGameOptions', newGameOptions)
+  d.game.state.add('runGame', runGame)
+  d.game.state.add('mapEditor', mapEditor)
+  d.game.state.add('howTo', howTo)
+  d.game.state.add('killCam', killCam)
+  d.game.state.add('gameOver', gameOver)
+  d.game.state.start('loadAssets')
 
   return {}
 }()

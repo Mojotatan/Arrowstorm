@@ -1,82 +1,152 @@
-export default function fireArrow(d) {
+import createArrow from '../create/createArrow'
+import { arrowShot } from '../client'
 
-    const shotDelay = 300  // milliseconds (10 bullets/3 seconds)
-    let lastArrowShotAt
+export default function fireArrow(d, opponentBool, opponentName, shotDirection) {
 
-    // Enforce a short delay between shots by recording
-    // the time that each arrow is shot and testing if
-    // the amount of time since the last shot is more than
-    // the required delay.
-    if (lastArrowShotAt === undefined) lastArrowShotAt = 0
-    if (d.game.time.now - lastArrowShotAt < shotDelay) return
-    lastArrowShotAt = d.game.time.now
+    let currPlayer
 
-    // Get a dead arrow from the pool
-    let arrow = d.arrowsGroup.getFirstDead();
+    if (d.currentPlayer) {
+        currPlayer = d.currentPlayer
+    }
 
-    // If there aren't any bullets available then don't shoot
-    if (!arrow) return
-
-    // This makes the arrow "alive"
-    arrow.revive()
-
-    arrow.reset(d.player1.x, d.player1.y)
-
-    // if (d.game.physics.arcade.collide(arrow, d.platforms, stopMoving, null, this)) {
-    //     console.log('collision!!!')
-    // }
-
-    if (d.aimUp.isDown) {
-        if (d.aimLeft.isDown) {
-            arrow.rotation = -0.785
-            arrow.body.velocity.y = -1000
-            arrow.body.velocity.x = -1000
-            arrow.body.acceleration.y = 1000
-            arrow.body.acceleration.x = 1000
-            arrow.angle -= 10
-        } else if (d.aimRight.isDown) {
-            arrow.rotation = 0.785
-            arrow.body.velocity.y = -1000
-            arrow.body.velocity.x = 1000
-            arrow.body.acceleration.y = 1000
-            arrow.body.acceleration.x = -1000
+    if (opponentBool === true) {
+        let opponent = opponentName
+        createArrow(d, opponent, d[currPlayer].nextArrowType)
+   
+        if (shotDirection.up) {
+            if (shotDirection.left) {
+                d.arrow.rotation = -0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (shotDirection.right) {
+                d.arrow.rotation = 0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 0
+                d.arrow.body.velocity.y = -1414
+                d.arrow.body.acceleration.y = 1000
+            }
+        } else if (shotDirection.down) {
+            if (shotDirection.left) {
+                d.arrow.rotation = -2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (shotDirection.right) {
+                d.arrow.rotation = 2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 3.14
+                d.arrow.body.velocity.y = 1414
+                d.arrow.body.acceleration.y = -1000
+            }
+        } else if (shotDirection.right || d[opponent].scale.x < 0) {
+            d.arrow.rotation = 1.57
+            d.arrow.body.velocity.x = 1414
+            d.arrow.body.acceleration.x = -1000
         } else {
-            arrow.rotation = 0
-            arrow.body.velocity.y = -1000
-            arrow.body.acceleration.y = 1000
+            d.arrow.rotation = -1.57
+            d.arrow.body.velocity.x = -1414
+            d.arrow.body.acceleration.x = 1000
         }
-    } else if (d.aimDown.isDown) {
-        if (d.aimLeft.isDown) {
-            arrow.rotation = -2.355
-            arrow.body.velocity.y = 1000
-            arrow.body.velocity.x = -1000
-            arrow.body.acceleration.y = -1000
-            arrow.body.acceleration.x = 1000
-        } else if (d.aimRight.isDown) {
-            arrow.rotation = 2.355
-            arrow.body.velocity.y = 1000
-            arrow.body.velocity.x = 1000
-            arrow.body.acceleration.y = -1000
-            arrow.body.acceleration.x = -1000
+
+        if (d.arrow.type === 'bouncyArrow') {
+            d.arrow.rotation = 0
+            d.arrow.body.acceleration.set(0, 0)
+        }
+    }
+
+    else {
+
+
+        const shotDelay = 300  // milliseconds (10 bullets/3 seconds)
+        let lastArrowShotAt
+
+        // Enforce a short delay between shots by recording
+        // the time that each arrow is shot and testing if
+        // the amount of time since the last shot is more than
+        // the required delay.
+        if (lastArrowShotAt === undefined) lastArrowShotAt = 0
+        if (d.game.time.now - lastArrowShotAt < shotDelay) return
+        lastArrowShotAt = d.game.time.now
+
+        if (d[currPlayer].numArrows > 0) {
+              let playerWhoShot = currPlayer
+              arrowShot(d.myGame.id, playerWhoShot, d[currPlayer].shotDirection)
+              createArrow(d, currPlayer, d[currPlayer].nextArrowType)
+        }
+
+        // If there aren't any arrows available then don't shoot
+        // if (!d.arrow || d[currPlayer].numArrows <= 0) return
+
+        if (d[currPlayer].numArrows <= 0) return
+
+
+        if (d.aimUp.isDown) {
+            if (d.aimLeft.isDown) {
+                d.arrow.rotation = -0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (d.aimRight.isDown) {
+                d.arrow.rotation = 0.785
+                d.arrow.body.velocity.y = -1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = 1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 0
+                d.arrow.body.velocity.y = -1414
+                d.arrow.body.acceleration.y = 1000
+            }
+        } else if (d.aimDown.isDown) {
+            if (d.aimLeft.isDown) {
+                d.arrow.rotation = -2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = -1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = 1000
+            } else if (d.aimRight.isDown) {
+                d.arrow.rotation = 2.355
+                d.arrow.body.velocity.y = 1000
+                d.arrow.body.velocity.x = 1000
+                d.arrow.body.acceleration.y = -1000
+                d.arrow.body.acceleration.x = -1000
+            } else {
+                d.arrow.rotation = 3.14
+                d.arrow.body.velocity.y = 1414
+                d.arrow.body.acceleration.y = -1000
+            }
+        } else if (d.aimRight.isDown || d[currPlayer].scale.x < 0) {
+            d.arrow.rotation = 1.57
+            d.arrow.body.velocity.x = 1414
+            d.arrow.body.acceleration.x = -1000
         } else {
-            arrow.rotation = 3.14
-            arrow.body.velocity.y = 1000
-            arrow.body.acceleration.y = -1000
+            d.arrow.rotation = -1.57
+            d.arrow.body.velocity.x = -1414
+            d.arrow.body.acceleration.x = 1000
         }
-    } else if (d.aimRight.isDown) {
-        arrow.rotation = 1.57
-        arrow.body.velocity.x = 1000
-        arrow.body.acceleration.x = -1000
-    } else {
-        arrow.rotation = -1.57
-        arrow.body.velocity.x = -1000
-        arrow.body.acceleration.x = 1000
+
+        if (d.arrow.type === 'bouncyArrow') {
+            d.arrow.rotation = 0
+            d.arrow.body.acceleration.set(0, 0)
+        }
+
+        if (opponentBool === false) {
+            d[currPlayer].numArrows--
+            d[currPlayer].nextArrowType = 'regular'
+        }
+
     }
 
 }
-
-// function stopMoving(arrow) {
-//     console.log('in the stopMoving function!!!')
-//     arrow.body.velocity.y = 0
-//     arrow.body.velocity.x = 0
-// }
