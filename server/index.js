@@ -164,8 +164,6 @@ db.sync()
 				if (history[data.id]['player2'] < history[data.id].length - 120) dead.push('player2')
 				if (history[data.id]['player3'] < history[data.id].length - 120) dead.push('player3')
 				if (history[data.id]['player4'] < history[data.id].length - 120) dead.push('player4')
-				console.log(history[data.id]['player1'])
-				console.log(history[data.id].length)
 				io.in(`game ${data.id}`).emit('score', {myGame: allGames[data.id], history: history[data.id], dead})
 			}
 		})

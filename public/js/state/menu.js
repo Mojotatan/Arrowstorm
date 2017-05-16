@@ -2,13 +2,7 @@ import {getGames, newGame} from '../client'
 import d from '../game'
 
 let menu = {
-  preload: function () {
-    d.game.load.image('start-btn-bg', '../sprites/start-btn-bg.png')
-    d.game.load.image('make-map-btn', '../sprites/make-map-btn.png')
-    d.game.load.image('question-mark-btn', '../sprites/question-mark-btn.png')
-    d.game.load.image('miniMap', '../sprites/miniMap.png')
-    d.game.load.image('join-game-btn', '../sprites/join-game-btn.png')
-  },
+  preload: function () {},
   create: function () {
     d.openGames = 0
     getGames()
@@ -84,8 +78,6 @@ let menu = {
     d.game.state.start('newGameOptions')
   },
   startMap: function() {
-
-    console.log(d.game.state)
     this.game.state.start('mapEditor')
   },
   startHowTo: function() {
