@@ -112,6 +112,18 @@ export default function createTilemap() {
     placeHolder: 'Enter map name',
   })
 
+  d.nameInput = d.game.add.inputField(775, 470, {
+    font: '18px Arial',
+    fill: '#212121',
+    fontWeight: 'bold',
+    width: 140,
+    padding: 8,
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 6,
+    placeHolder: 'Creator\'s name',
+  })
+
   //adding text
   var style = { font: "18px Arial", wordWrap: false, align: "center" };
   d.text = d.game.add.text(770, 60, "Select A Background", style)
@@ -119,7 +131,7 @@ export default function createTilemap() {
   // create map button
   let createStyle = { font: "15px Arial", wordWrap: false, align: "center" };
   d.game.add.button(812, 512, 'submitBtn', onClickCreate, this)
-  d.game.add.text(818, 520, "Create Map", createStyle)
+  d.game.add.text(820, 520, "Create Map", createStyle)
 
   d.game.input.addMoveCallback(updateMarker, this)
 
@@ -129,7 +141,7 @@ function onClickCreate() {
   let me = d.mapEditor
   let finalJSON = {}
   let mapName = d.input.value
-  let creator = "NishAlex"
+  let creator = d.nameInput.value
 
   finalJSON.name = mapName
   finalJSON.creator = creator
