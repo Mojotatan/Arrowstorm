@@ -19,13 +19,17 @@ Client.socket.on('assignedToPlayer', function(data){
 
 Client.socket.on('newGame', function(data) {
 	function loadNewGames(data) {
-		let newGame = new Phaser.Button(d.game, 144, 256 + d.openGames * 48, 'join', function() {
+		//d.startBtn = d.game.add.button(362, 170, 'start-btn-bg', this.startGame, this)
+		let newGame = d.game.add.button(180, 256 + d.openGames * 48, 'join-game-btn', function() {
 			Client.socket.emit('joinGame', {id: this.id, alias: d.nameInput.value})
 			d.game.state.start('newGameOptions')
-		})
+		}, this)
 		newGame.scale.set(1.5, 1.5)
 		newGame.id = data
-		let newText = new Phaser.Text(d.game, 32, 256 + d.openGames * 48 - 2, `${data}`, {fontSize: 48})
+		let joinBtnStyle = {font: 'bold 14pt Arial', fill: '#000000'}
+		let joinBtnText = d.game.add.text(4, 1, 'JOIN', joinBtnStyle)
+		newGame.addChild(joinBtnText)
+		let newText = new Phaser.Text(d.game, 105, 256 + d.openGames * 48, `${data}`, {fontSize: 30})
 		d.lobbyGames.addChild(newGame)
 		d.lobbyGames.addChild(newText)
 		d.openGames++
