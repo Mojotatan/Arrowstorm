@@ -7,6 +7,7 @@ let menu = {
     d.game.load.image('make-map-btn', '../sprites/make-map-btn.png')
     d.game.load.image('question-mark-btn', '../sprites/question-mark-btn.png')
     d.game.load.image('miniMap', '../sprites/miniMap.png')
+    d.game.load.image('join-game-btn', '../sprites/join-game-btn.png')
   },
   create: function () {
     d.openGames = 0
@@ -53,22 +54,22 @@ let menu = {
     mapText.setTextBounds(0, 0, 300, 112)
     d.mapBtn.addChild(mapText)
 
-    d.game.add.image(748, 255, 'miniMap')
+    d.game.add.image(748, 252, 'miniMap')
 
     // instructions
-    d.questionBtn = d.game.add.button(31, 490, 'question-mark-btn', this.startHowTo, this)
+    d.questionBtn = d.game.add.button(31, 500, 'question-mark-btn', this.startHowTo, this)
 
     // name input
 
-    let nameTextStyle = {font: '14pt Arial', fill: '#ffffff', boundsAlignH: "center", boundsAlignV: "bottom"}
+    let nameTextStyle = {font: '14pt Arial', fill: '#ffffff', boundsAlignH: "left", boundsAlignV: "bottom"}
     let enterNameText = d.game.add.text(0, 0, 'Enter your name:', nameTextStyle)
-    enterNameText.setTextBounds(693, 490, 300, 75)
+    enterNameText.setTextBounds(695, 490, 300, 75)
 
-    d.nameInput = d.game.add.inputField(765, 565, {
+    d.nameInput = d.game.add.inputField(693, 565, {
       // font: '18px Arial',
       fill: '#212121',
       // fontWeight: 'bold',
-      width: 150,
+      width: 300,
       padding: 8,
       borderWidth: 1,
       borderColor: '#000',
