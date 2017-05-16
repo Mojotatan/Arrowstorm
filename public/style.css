@@ -1,11 +1,28 @@
+html {
+	background-image: url("https://jzdubya.files.wordpress.com/2011/11/web_backing_1.png");;
+}
+
 canvas {
-  margin: auto
+  margin: auto;
+  outline: black 3px solid;
+  margin-top: 25px;
 }
 
 body {
-  background-color: #ffffff
+
 }
 
 li {
   list-style-type: none
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+  font-family: "Helvetica Neue", Arial, sans-serif;
 }
