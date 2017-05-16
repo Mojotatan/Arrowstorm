@@ -129,9 +129,17 @@ export default function createTilemap() {
   d.text = d.game.add.text(770, 60, "Select A Background", style)
 
   // create map button
-  let createStyle = { font: "15px Arial", wordWrap: false, align: "center" };
-  d.game.add.button(812, 512, 'submitBtn', onClickCreate, this)
-  d.game.add.text(820, 520, "Create Map", createStyle)
+  let createStyle = { font: "15px Arial", fill: '#000000', boundsAlignH: "center", boundsAlignV: "middle" };
+  let createMapBtn = d.game.add.button(736, 480, 'map-editor-btn', onClickCreate, this)
+  let createMapText = d.game.add.text(0, 0, "Create Map", createStyle)
+  createMapBtn.addChild(createMapText)
+  createMapText.setTextBounds(0, 0, 96, 48)
+
+  // back to main menu button
+  let backToMenuBtn = d.game.add.button(864, 480, 'map-editor-btn', () => d.game.state.start('menu'), this)
+  let backToMenuText = d.game.add.text(0, 0, "Main Menu", createStyle)
+  backToMenuBtn.addChild(backToMenuText)
+  backToMenuText.setTextBounds(0, 0, 96, 48)
 
   d.game.input.addMoveCallback(updateMarker, this)
 
@@ -162,13 +170,10 @@ function onClickCreate() {
   finalJSON.shields = []
   finalJSON.background = me.backgroundForJSON
 
-  console.log('the json file is', finalJSON)
-
   let finalString = JSON.stringify(finalJSON)
 
   axios.post('/maps', {name: mapName, creator, json: finalString})
   .then(function(){
-    console.log('map created!!!!!!!')
   })
 
 }
@@ -178,7 +183,6 @@ function updateMarker(){
 
   me.marker.x = me.layer1.getTileX(d.game.input.activePointer.worldX) * 32;
   me.marker.y = me.layer1.getTileY(d.game.input.activePointer.worldY) * 32;
-
 
   if (d.game.input.mousePointer.isDown) {
       convertToJSON(me)

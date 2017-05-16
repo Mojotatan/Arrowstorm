@@ -7,10 +7,12 @@ const mapToJson = function(obj, name) {
 }
 
 let obj = {}
-obj.name = 'default'
+obj.name = 'Alufted'
 obj.creator = 'mojo'
-obj.p1Start = {x: 244, y: 0}
-obj.p2Start = {x: 780, y: 0}
+obj.p1Start = {x: 244, y: 64}
+obj.p2Start = {x: 780, y: 64}
+obj.p3Start = {x: 244, y: 544}
+obj.p4Start = {x: 780, y: 544}
 obj.treasureSpawn = {x: 320 + 192, y: 0}
 obj.blocks = []
 obj.shields = []
@@ -44,10 +46,12 @@ for (let i = 0; i < 20; i++) {
 }
 
 let nobj = {}
-nobj.name = 'spike\npalace'
+nobj.name = 'Spike Palace'
 nobj.creator = 'mojo'
 nobj.p1Start = {x: 244 + 32 * 2, y: 32 * 4}
 nobj.p2Start = {x: 780 - 32 * 2, y: 32 * 4}
+nobj.p3Start = {x: 192 + 48, y: 32 * 14}
+nobj.p4Start = {x: 832 - 48, y: 32 * 14}
 nobj.treasureSpawn = {x: 320 + 192, y: 0}
 nobj.blocks = []
 nobj.shields = []
@@ -83,10 +87,12 @@ for (let i = 0; i < 20; i++) {
 }
 
 let pobj = {}
-pobj.name = 'tunnel\nvision'
+pobj.name = 'Tunnel Vision'
 pobj.creator = 'mojo'
 pobj.p1Start = {x: 700, y: 17 * 32}
-pobj.p2Start = {x: 700, y: 11 * 32}
+pobj.p2Start = {x: 700 - 32, y: 11 * 32}
+pobj.p3Start = {x: 192 + 32 * 3, y: 3 * 32}
+pobj.p4Start = {x: 192 + 32 * 6, y: 32 * 9}
 pobj.treasureSpawn = {x: 132 + 192, y: 132}
 pobj.blocks = []
 pobj.shields = []
@@ -130,10 +136,12 @@ for (let i = 0; i < 20; i++) {
 }
 
 let qobj = {}
-qobj.name = 'free\nfall'
+qobj.name = 'Free Fall'
 qobj.creator = 'mojo'
-qobj.p1Start = {x: 244, y: 32 * 8}
-qobj.p2Start = {x: 780, y: 32 * 8}
+qobj.p1Start = {x: 244, y: 32 * 4}
+qobj.p2Start = {x: 780, y: 32 * 4}
+qobj.p3Start = {x: 244 + 64, y: 32 * 15}
+qobj.p4Start = {x: 780 - 64, y: 32 * 15}
 qobj.treasureSpawn = {x: 320 + 192, y: 0}
 qobj.blocks = []
 qobj.shields = []

@@ -20,34 +20,70 @@ export default function scrubdateFunc() {
   let moment = d.history[0]
 
   //Turn down player physics to avoid unwanted movement
-  d.player1.body.gravity.x = 0
-  d.player1.body.gravity.y = 0
+  let hitPlatform1, hitPlatform2, hitPlatform3, hitPlatform4, hitSpikes1, hitSpikes2, hitSpikes3, hitSpikes4
 
-  //World wrap
-  wrap(d.player1)
-  wrap(d.player2)
+  if (d.player1) {
+    wrap(d.player1)
+    d.player1.body.gravity.set(0, 0)
+    hitPlatform1 = d.game.physics.arcade.collide(d.platforms, d.player1)
+    hitSpikes1 = d.game.physics.arcade.collide(d.spikes, d.player1)
+  }
+  if (d.player2) {
+    wrap(d.player2)
+    d.player2.body.gravity.set(0, 0)
+    hitPlatform2 = d.game.physics.arcade.collide(d.platforms, d.player2)
+    hitSpikes2 = d.game.physics.arcade.collide(d.spikes, d.player2)
+  }
+  if (d.player3) {
+    wrap(d.player3)
+    d.player3.body.gravity.set(0, 0)
+    hitPlatform3 = d.game.physics.arcade.collide(d.platforms, d.player3)
+    hitSpikes3 = d.game.physics.arcade.collide(d.spikes, d.player3)
+  }
+  if (d.player4) {
+    wrap(d.player4)
+    d.player4.body.gravity.set(0, 0)
+    hitPlatform4 = d.game.physics.arcade.collide(d.platforms, d.player4)
+    hitSpikes4 = d.game.physics.arcade.collide(d.spikes, d.player4)
+  }
 
-  if (d.arrow) wrap(d.arrow)
+  d.arrowsArray.forEach(arrow => {
+    wrap(arrow)
+    let arrowHitPlatforms = d.game.physics.arcade.collide(arrow, d.platforms)
+    let arrowHitSpikes = d.game.physics.arcade.collide(arrow, d.spikes)
 
-  //Define collisions
-  let hitPlatform = d.game.physics.arcade.collide(d.platforms, d.player1)
-  let hitPlatformP2 = d.game.physics.arcade.collide(d.platforms, d.player2)
-  let hitSpikes = d.game.physics.arcade.collide(d.spikes, d.player1)
-  let hitSpikesP2 = d.game.physics.arcade.collide(d.spikes, d.player2)
+    if (arrow.body.velocity.x > 0) {
+      arrow.angle += 1
+    }
+    if (arrow.body.velocity.x < 0) {
+      arrow.angle -= 1
+    }
+
+    if (arrowHitPlatforms || arrowHitSpikes) {
+      arrow.body.velocity.x = 0
+      arrow.body.velocity.y = 0
+      arrow.body.acceleration = 0
+      arrow.body.gravity.y = 0
+      arrow.body.immovable = true
+    }
+  })
 
   //Spike collisions
-  if (hitSpikes) {
+  if (hitSpikes1) {
     d.player1.kill()
     d.player1.numArrows = 0
   }
-  if (hitSpikesP2) {
+  if (hitSpikes2) {
     d.player2.kill()
     d.player2.numArrows = 0
   }
-
-  // define collisions for new players
-  for (let i = 0; i < d.playerMap.length; i++) {
-    d.game.physics.arcade.collide(d.platforms, d.playerMap[i])
+  if (hitSpikes3) {
+    d.player3.kill()
+    d.player3.numArrows = 0
+  }
+  if (hitSpikes4) {
+    d.player4.kill()
+    d.player4.numArrows = 0
   }
 
   // note: not loading or dealing with treasure at all here

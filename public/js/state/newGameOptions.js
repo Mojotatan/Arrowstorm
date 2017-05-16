@@ -1,60 +1,98 @@
 import d from '../game'
-import preview from '../update/preview'
+import {preview, renderMaps, getPreview} from '../update/preview'
 import {letsGo, mapSel, chooseChar, leaveGame} from '../client'
 
 
 let newGameOptions = {
   create: function() {
-    d.startBtn = d.game.add.button(384, 0, 'start', this.startGame, this)
-    d.startBtn.scale.set(4, 4)
 
-    let p1, p2, id
-    if (d.myGame) {
-      if (d.myGame.player1) p1 = d.myGame.alias[1] || 'JOINED'
-      else p1 = ''
-      if (d.myGame.player2) p2 = d.myGame.alias[2] || 'JOINED'
-      else p2 = ''
-      id = d.myGame.id
-    } else {
-      p1 = 'ERROR'
-      p2 = 'ERROR'
-      id = 'UNKNOWN'
-    }
-    d.lobbyId = d.game.add.text(648, 0, `Game ID: ${id}`, {fill: '#FFFFFF'})
-    d.lobbyP1 = d.game.add.text(648, 32, `Player 1: ${p1}`, {fill: '#0000FF'})
-    d.lobbyP2 = d.game.add.text(648, 64, `Player 2: ${p2}`, {fill: '#FF0000'})
-    d.gameReady = d.game.add.text(648, 96, '', {fill: '#FFFFFF'})
+    // character select
+    let instrShade = d.game.add.graphics(352, 0)
+    instrShade.beginFill(0x9999ff)
+    instrShade.drawRect(0, 0, 688, 96)
+    instrShade.endFill()
 
-    d.leaveBtn = d.game.add.button(896, 0, 'back', function(){
+    let charShade = d.game.add.graphics(352, 96)
+    charShade.beginFill(0xcccccc)
+    charShade.drawRect(0, 0, 688, 416)
+    charShade.endFill()
+
+    let rosterShade = d.game.add.graphics(352, 512)
+    rosterShade.beginFill(0x9999ff)
+    rosterShade.drawRect(0, 0, 688, 128)
+    rosterShade.endFill()
+
+    d.leaveBtn = d.game.add.button(352 + 16, 0 + 16, 'back', function(){
       leaveGame()
       d.game.state.start('menu')
+      d.myGame = undefined
     })
     d.leaveBtn.scale.set(2, 2)
 
-    d.message = d.game.add.text(384, 128 + 16, 'You are: ', {fill: '#FFFFFF'})
-    d.youAre = d.game.add.text(384 + 112, 128 + 16, '', {fill: '#FFFFFF'})
-    if (d.currentPlayer) {
-      d.youAre.text = d.currentPlayer === 'player1' ? 'PLAYER 1' : 'PLAYER 2'
-      d.youAre.fill = d.currentPlayer === 'player1' ? '#0000FF' : '#FF0000'
-    }
+    let instructions = d.game.add.text(544, 0, 'Choose your\ncharacter', {font: 'bold 20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle', align: 'center'})
+    instructions.setTextBounds(0, 0, 288, 96)
 
-    // character select
-    d.game.add.text(16, 0, 'Choose your character', {fill: '#FFFFFF'})
+    d.startBtn = d.game.add.button(832 + 48, 0 + 16, 'start', function() {
+      letsGo(d.myGame.id)
+    })
+    d.startBtn.scale.set(2, 2)
 
+    // defaults to p1 as roboraj and p2 as billy
+    let x1 = 352 + 168 * 0
+    let y1 = 96 + 208 - 128
+    let pp1 = ''
+    if (d.myGame && d.myGame.player1) pp1 = d.myGame.alias[1] || 'Player 1'
+    d.preview1 = d.game.add.text(x1, 96, pp1, {font: '20pt Arial', fill: '#0000FF', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview1.setTextBounds(0, 0, 160, 80)
+    d.previewChar1 = d.game.add.image(x1, y1, 'RoboRaj')
+    d.previewChar1.frame = 2
+    d.previewChar1.scale.set(8, 8)
+    d.previewChar1.visible = d.myGame && d.myGame.player1
+    pp1 = (d.myGame && d.myGame.player1) ? 'RoboRaj' : ''
+    d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview1Char.setTextBounds(0, 0, 160, 80)
 
-    // defaults to p1 as blackmage and p2 as fatkid
-    let previewShade1 = d.game.add.graphics(58, 46)
-    previewShade1.lineStyle(4, 0x0000ff)
-    previewShade1.drawRect(0, 0, 84, 132)
-    d.previewChar1 = d.game.add.image(60, 48, 'blackMage')
-    d.previewChar1.scale.set(4, 4)
-
-    let previewShade2 = d.game.add.graphics(222, 46)
-    previewShade2.lineStyle(4, 0xff0000)
-    previewShade2.drawRect(0, 0, 84, 132)
-    d.previewChar2 = d.game.add.image(224, 48, 'fatKid')
+    let x2 = 352 + 168 * 1
+    let y2 = 96 + 208 - 128
+    let pp2 = ''
+    if (d.myGame && d.myGame.player2) pp2 = d.myGame.alias[2] || 'Player 2'
+    d.preview2 = d.game.add.text(x2, 96, pp2, {font: '20pt Arial', fill: '#FF0000', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2.setTextBounds(0, 0, 160, 80)
+    d.previewChar2 = d.game.add.image(x2, y2, 'Billy')
     d.previewChar2.frame = 2
-    d.previewChar2.scale.set(4, 4)
+    d.previewChar2.scale.set(8, 8)
+    d.previewChar2.visible = d.myGame && d.myGame.player2
+    pp2 = (d.myGame && d.myGame.player2) ? 'Billy' : ''
+    d.preview2Char = d.game.add.text(x2, y2 + 256, pp2, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2Char.setTextBounds(0, 0, 160, 80)
+
+    let x3 = 352 + 168 * 2
+    let y3 = 96 + 208 - 128
+    let pp3 = ''
+    if (d.myGame && d.myGame.player3) pp3 = d.myGame.alias[3] || 'Player 3'
+    d.preview3 = d.game.add.text(x3, 96, pp3, {font: '20pt Arial', fill: '#008800', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3.setTextBounds(0, 0, 160, 80)
+    d.previewChar3 = d.game.add.image(x3, y3, 'Black Mage')
+    d.previewChar3.frame = 2
+    d.previewChar3.scale.set(8, 8)
+    d.previewChar3.visible = d.myGame && d.myGame.player3
+    pp3 = (d.myGame && d.myGame.player3) ? 'Black Mage' : ''
+    d.preview3Char = d.game.add.text(x3, y3 + 256, pp3, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3Char.setTextBounds(0, 0, 160, 80)
+
+    let x4 = 352 + 168 * 3
+    let y4 = 96 + 208 - 128
+    let pp4 = ''
+    if (d.myGame && d.myGame.player4) pp4 = d.myGame.alias[4] || 'Player 4'
+    d.preview4 = d.game.add.text(x4, 96, pp4, {font: '20pt Arial', fill: '#bbbb00', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4.setTextBounds(0, 0, 160, 80)
+    d.previewChar4 = d.game.add.image(x4, y4, 'Gale')
+    d.previewChar4.frame = 2
+    d.previewChar4.scale.set(8, 8)
+    d.previewChar4.visible = d.myGame && d.myGame.player4
+    pp4 = (d.myGame && d.myGame.player4) ? 'Gale' : ''
+    d.preview4Char = d.game.add.text(x4, y4 + 256, pp4, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4Char.setTextBounds(0, 0, 160, 80)
 
     let avatar = function(char) {
       return function() {
@@ -62,91 +100,78 @@ let newGameOptions = {
       }
     }
 
-    let rosterShade = d.game.add.graphics(16, 192)
-    rosterShade.beginFill(0x9999ff)
-    rosterShade.drawRect(0, 0, 352, 80)
-    rosterShade.endFill()
-
-    d.chooseRoboraj = d.game.add.button(88 - 15 + 16 - 44, 208, 'roboraj', avatar('roboraj'))
+    // roster
+    d.chooseRoboraj = d.game.add.button(352 + 136 * 1 - 38 + 4, 512 + 16, 'RoboRaj', avatar('RoboRaj'))
     d.chooseRoboraj.frame = 2
-    d.chooseRoboraj.scale.set(1.5, 1.5)
-    d.chooseFatKid = d.game.add.button(88 * 2 - 15 + 16 - 44, 208, 'fatKid', avatar('fatKid'))
-    d.chooseFatKid.frame = 2
-    d.chooseFatKid.scale.set(1.5, 1.5)
-    d.chooseBlackMage = d.game.add.button(88 * 3 - 15 + 16 - 44, 208, 'blackMage', avatar('blackMage'))
-    d.chooseBlackMage.scale.set(1.5, 1.5)
-    d.chooseGale = d.game.add.button(88 * 4 - 15 + 16 - 44, 208, 'gale', avatar('gale'))
+    d.chooseRoboraj.scale.set(3, 3)
+
+    d.chooseBilly = d.game.add.button(352 + 136 * 2 - 38 + 4, 512 + 16, 'Billy', avatar('Billy'))
+    d.chooseBilly.frame = 2
+    d.chooseBilly.scale.set(3, 3)
+
+    d.chooseBlackMage = d.game.add.button(352 + 136 * 3 - 38 + 4, 512 + 16, 'Black Mage', avatar('Black Mage'))
+    d.chooseBlackMage.scale.set(3, 3)
+
+    d.chooseGale = d.game.add.button(352 + 136 * 4 - 38 + 4, 512 + 16, 'Gale', avatar('Gale'))
     d.chooseGale.frame = 2
-    d.chooseGale.scale.set(1.5, 1.5)
+    d.chooseGale.scale.set(3, 3)
+
 
     // map select
-    let mapShade = d.game.add.graphics(368, 192)
-    mapShade.beginFill(0x999966)
-    mapShade.drawRect(0, 0, 640, 432)
+    let mapShade = d.game.add.graphics(0, 0)
+    mapShade.beginFill(0xccddff)
+    mapShade.drawRect(0, 0, 352, 640)
     mapShade.endFill()
 
-    d.game.add.text(384, 208, 'Map Select (change maps with arrow keys)', {fill: '#FFFFFF'})
+    let mapSelShade = d.game.add.graphics(0, 320 + 32)
+    mapSelShade.beginFill(0x373737)
+    mapSelShade.drawRect(0, 0, 352, 320 - 32)
+    mapSelShade.endFill()
 
-    let x = 384
-    let y = 256
-    d.mapSel = d.game.add.image(x, y, 'sel')
-    d.mapSel.scale.set(1.5, 1.5)
+    d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '20pt Arial', fill: '#FFFFFF'})
 
-    d.maps.forEach(map => {
-      d.game.add.text(x, y, map.name, {fontSize: 12, fill: '#FFFFFF', wordWrap: true, boundsAlignH: 'center', boundsAlignV: 'middle'})
-      x += 64
-      if (x >= 1024) {
-        x = 384
-        y += 64
-      }
-    })
+    d.mapSel = d.game.add.graphics(16, 412)
+    d.mapSel.beginFill(0x0099ff)
+    d.mapSel.drawRect(0, 0, 320, 32)
+    d.mapSel.endFill()
 
-    let previewShade = d.game.add.graphics(16, 272)
-    previewShade.beginFill(0x999966)
-    previewShade.drawRect(0, 0, 352, 352)
-    previewShade.endFill()
-
-    function getPreview() {
-      d.preview.callAll('kill')
-      let x = (d.mapSel.x - 384) / 64
-      let y = (d.mapSel.y - 256) / 64
-      let select = y * 10 + x
-      if (select < d.maps.length) preview(d.maps[select])
+    d.pages = {}
+    for (let i = 0; i < Math.ceil(d.maps.length / 7); i++) {
+      d.pages[i] = d.maps.slice(i * 7, i * 7 + 7)
     }
+    d.currentPage = 0
+    d.currentMaps = []
+    renderMaps(d.currentPage)
 
     d.preview = d.game.add.group()
-    getPreview()
+    getPreview(d.currentPage)
 
     let cursors = d.game.input.keyboard.createCursorKeys()
-    cursors.right.onDown.add(() => {
-      if (d.mapSel.position.x < 960) d.mapSel.position.x += 64
-      getPreview()
-      mapSel({id: d.myGame.id, map: d.mapSel.position})
-    })
-    cursors.left.onDown.add(() => {
-      if (d.mapSel.position.x > 384) d.mapSel.position.x -= 64
-      getPreview()
-      mapSel({id: d.myGame.id, map: d.mapSel.position})
-    })
     cursors.up.onDown.add(() => {
-      if (d.mapSel.position.y > 256) d.mapSel.position.y -= 64
-      getPreview()
-      mapSel({id: d.myGame.id, map: d.mapSel.position})
+      if (d.mapSel.position.y > 412) {
+        d.mapSel.position.y -= 32
+        getPreview(d.currentPage)
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      } else if (d.pages[d.currentPage - 1]) {
+        d.currentPage--
+        d.mapSel.position.y = 604
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      }
     })
     cursors.down.onDown.add(() => {
-      if (d.mapSel.position.y < 576) d.mapSel.position.y += 64
-      getPreview()
-      mapSel({id: d.myGame.id, map: d.mapSel.position})
+      if (d.mapSel.position.y < 604) {
+        d.mapSel.position.y += 32
+        getPreview(d.currentPage)
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      } else if (d.pages[d.currentPage + 1]) {
+        d.currentPage++
+        d.mapSel.position.y = 412
+        mapSel({id: d.myGame.id, map: {y: d.mapSel.position.y, page: d.currentPage}})
+      }
     })
   },
   update: function() {
 
-  },
-  startGame: function () {
-    // d.game.state.start('runGame')
-    // if (d.gameReady.text === 'ready!') {
-      letsGo(d.myGame.id)
-    // }
   }
 }
 

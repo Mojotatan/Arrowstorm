@@ -6,32 +6,15 @@ import createPlayer from './create/player'
 import fireArrow from './update/fireArrow'
 import treasureChest from './update/treasureChest'
 import {removeArrowDisplay} from './update/arrowDisplay'
+import {renderMaps, getPreview} from './update/preview'
 
 var Client = {}
 Client.socket = io.connect()
 
-// assigning player 1 to first player that logs on
-Client.socket.on('assignedPlayer1', function(data){
-	console.log('assigned to player1')
-	d.currentPlayer = "player1"
-	d.myGame = data
-	if (d.youAre) {
-		d.message.text = 'You are: '
-		d.youAre.text = 'PLAYER 1'
-		d.youAre.fill = '#0000FF'
-	}
-})
-
-// assigning player 2 to second player that logs on
-Client.socket.on('assignedPlayer2', function(data){
-	console.log('assigned to player2')
-	d.currentPlayer = "player2"
-	d.myGame = data
-	if (d.youAre) {
-		d.message.text = 'You are: '
-		d.youAre.text = 'PLAYER 2'
-		d.youAre.fill = '#FF0000'
-	}
+Client.socket.on('assignedToPlayer', function(data){
+	console.log('assigned to', data.player)
+	d.currentPlayer = data.player
+	d.myGame = data.game
 })
 
 Client.socket.on('newGame', function(data) {
@@ -56,25 +39,59 @@ Client.socket.on('newGame', function(data) {
 Client.socket.on('playerJoined', function(data) {
 	d.myGame = data
 	let p1 = ''
-	if (data.player1) p1 = data.alias[1] || 'JOINED'
 	let p2 = ''
-	if (data.player2) p2 = data.alias[2] || 'JOINED'
+	let p3 = ''
+	let p4 = ''
 	let id = data.id
 	if (d.game.state.current === 'newGameOptions') {
-		d.lobbyP1.text = `Player 1: ${p1}`
-		d.lobbyP2.text = `Player 2: ${p2}`
-		d.lobbyId.text = `Game ID: ${id}`
-		d.gameReady.text = (data.player1 && data.player2) ? 'ready!' : ''
+		if (data.player1) {
+			d.preview1.text = data.alias[1] || 'Player 1'
+			d.previewChar1.visible = true
+			d.preview1Char.text = data.chars[1]
+		}
+		else {
+			d.preview1.text = p1
+			d.previewChar1.visible = false
+			d.preview1Char.text = p1
+		}
+		if (data.player2) {
+			d.preview2.text = data.alias[2] || 'Player 2'
+			d.previewChar2.visible = true
+			d.preview2Char.text = data.chars[2]
+		}
+		else {
+			d.preview2.text = p2
+			d.previewChar2.visible = false
+			d.preview2Char.text = p2
+		}
+		if (data.player3) {
+			d.preview3.text = data.alias[3] || 'Player 3'
+			d.previewChar3.visible = true
+			d.preview3Char.text = data.chars[3]
+		}
+		else {
+			d.preview3.text = p3
+			d.previewChar3.visible = false
+			d.preview3Char.text = p3
+		}
+		if (data.player4) {
+			d.preview4.text = data.alias[4] || 'Player 4'
+			d.previewChar4.visible = true
+			d.preview4Char.text = data.chars[4]
+		}
+		else {
+			d.preview4.text = p4
+			d.previewChar4.visible = false
+			d.preview4Char.text = p4
+		}
 	}
 })
 
-Client.socket.on('start', function() {
+Client.socket.on('start', function(rng) {
 	console.log('let the games begin')
 	function getMap() {
-		let x = (d.mapSel.x - 384) / 64
-		let y = (d.mapSel.y - 256) / 64
-		let select = y * 10 + x
-		return (select >= d.maps.length) ? Math.floor(Math.random() * d.maps.length) : select
+		let select = (d.mapSel.y - 412) / 32
+		return (select >= d.pages[d.currentPage].length) ? Math.floor(rng * d.maps.length) : select + d.currentPage * 7
 	}
 	d.map = d.maps[getMap()]
 	d.game.state.start('runGame')
@@ -82,15 +99,42 @@ Client.socket.on('start', function() {
 
 Client.socket.on('optionsUpdate', function(data) {
 	d.myGame = data
-	d.mapSel.position.set(data.map.x, data.map.y)
+	d.currentPage = data.map.page
+	renderMaps(d.currentPage)
+	d.mapSel.position.y = data.map.y
+	getPreview(d.currentPage)
+	let xy1 = d.previewChar1.position || {x: 352 + 168 * 0, y: 96 + 208 - 128}
+	let xy2 = d.previewChar2.position || {x: 352 + 168 * 1, y: 96 + 208 - 128}
+	let xy3 = d.previewChar3.position || {x: 352 + 168 * 2, y: 96 + 208 - 128}
+	let xy4 = d.previewChar4.position || {x: 352 + 168 * 3, y: 96 + 208 - 128}
 	d.previewChar1.kill()
 	d.previewChar2.kill()
-	d.previewChar1 = d.game.add.image(60, 48, data.chars[1])
-	d.previewChar1.frame = 2
-	d.previewChar1.scale.set(4, 4)
-	d.previewChar2 = d.game.add.image(224, 48, data.chars[2])
-	d.previewChar2.frame = 2
-	d.previewChar2.scale.set(4, 4)
+	d.previewChar3.kill()
+	d.previewChar4.kill()
+	if (data.player1) {
+		d.previewChar1 = d.game.add.image(xy1.x, xy1.y, data.chars[1])
+		d.previewChar1.frame = 2
+		d.previewChar1.scale.set(8, 8)
+		d.preview1Char.text = data.chars[1]
+	}
+	if (data.player2) {
+		d.previewChar2 = d.game.add.image(xy2.x, xy2.y, data.chars[2])
+		d.previewChar2.frame = 2
+		d.previewChar2.scale.set(8, 8)
+		d.preview2Char.text = data.chars[2]
+	}
+	if (data.player3) {
+		d.previewChar3 = d.game.add.image(xy3.x, xy3.y, data.chars[3])
+		d.previewChar3.frame = 2
+		d.previewChar3.scale.set(8, 8)
+		d.preview3Char.text = data.chars[3]
+	}
+	if (data.player4) {
+		d.previewChar4 = d.game.add.image(xy4.x, xy4.y, data.chars[4])
+		d.previewChar4.frame = 2
+		d.previewChar4.scale.set(8, 8)
+		d.preview4Char.text = data.chars[4]
+	}
 })
 
 Client.socket.on('score', function(data) {
@@ -105,8 +149,8 @@ Client.socket.on('score', function(data) {
 	d.myGame = data.myGame
 })
 
-Client.socket.on('opponentHasMoved', function(newOpponentPos){
-	opponentPos(newOpponentPos)
+Client.socket.on('opponentHasMoved', function(data){
+	opponentPos(data)
 })
 
 Client.socket.on('opponentHasShot', function(data){
@@ -132,6 +176,8 @@ Client.socket.on('opponentHitTC', function(data){
 
 	if (opponent === 'player1') {treasureChest(true, false)}
 	else if (opponent === 'player2') {treasureChest(false, true)}
+	else if (opponent === 'player3') {treasureChest(false, false, true)}
+	else if (opponent === 'player4') {treasureChest(false, false, false, true)}
 })
 
 //utility functions that invoke client
@@ -164,11 +210,11 @@ export function point(id, round, score) {
 }
 
 export function playerMoved(id, player, x, y, frame, scale, position, rotation) {
-	Client.socket.emit('playerHasMoved', {id, x, y, frame, scale, position, rotation})
+	Client.socket.emit('playerHasMoved', {id, player, x, y, frame, scale, position, rotation})
 }
 
-export function arrowShot(id, playerName, shotDirection) {
-	Client.socket.emit('playerHasShot', {id, player: playerName, shotDirection})
+export function arrowShot(id, player, shotDirection) {
+	Client.socket.emit('playerHasShot', {id, player, shotDirection})
 }
 
 export function playerDead(id, player) {

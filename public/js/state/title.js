@@ -4,6 +4,9 @@ let title = {
   create: function() {
     d.game.physics.startSystem(Phaser.Physics.ARCADE)
 
+    let backdrop = d.game.add.sprite(0, 0, 'title')
+    backdrop.scale.set(16, 16)
+
     d.titleArrow = d.game.add.sprite(512 - 24, -640, 'arrow')
     d.titleArrow.scale.set(8, -8)
     d.game.physics.arcade.enable(d.titleArrow)
@@ -25,9 +28,11 @@ let title = {
     d.startGame.scale.set(2, 2)
     d.startGame.alpha = 0
 
-    d.titleText1 = d.game.add.text(16, 16, 'INSERT', {fill: '#FFFFFF', fontSize: 128})
+    d.titleText1 = d.game.add.text(0, 16, 'ARROW', {fill: '#FFFFFF', fontSize: 112, boundsAlignH: 'right'})
+    d.titleText1.setTextBounds(0, 0, 496, 112)
     d.titleText1.visible = false
-    d.titleText2 = d.game.add.text(528, 16, 'TITLE', {fill: '#FFFFFF', fontSize: 128})
+    d.titleText2 = d.game.add.text(528, 16, 'STORM', {fill: '#FFFFFF', fontSize: 112, boundsAlignH: 'left'})
+    d.titleText2.setTextBounds(0, 0, 496, 112)
     d.titleText2.visible = false
 
     d.trigger = false
