@@ -5,10 +5,12 @@ const {Map, db} = require('./db')
 const path = require('path')
 const socketio = require('socket.io')
 
+let port = process.env.PORT || 3000
+
 const app = express();
 db.sync()
 .then(() => {
-	const server = app.listen(3000, () => {console.log('Listening on port 3000...')})
+	const server = app.listen(port, () => {console.log('Listening on port 3000...')})
 	const io = socketio(server)
 
 	app.use(morgan('tiny'))
@@ -131,7 +133,7 @@ db.sync()
 				socket.emit('assignedToPlayer', {game: allGames[data.id], player: 'player4'})
 				socket.join(`game ${data.id}`)
 			}
-			
+
 			io.in(`game ${data.id}`).emit('playerJoined', allGames[data.id])
 		})
 		socket.on('requestAllGames', function() {
