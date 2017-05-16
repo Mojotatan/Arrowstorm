@@ -43,6 +43,11 @@ let loadAssets = {
     d.game.load.image('title', 'sprites/title-drop.png')
     d.game.load.image('arena', 'sprites/arena.jpg')
     d.game.load.image('dungeon', 'sprites/dungeon.jpg')
+    d.game.load.image('start-btn-bg', '../sprites/start-btn-alt.png')
+    d.game.load.image('make-map-btn', '../sprites/make-map-btn.png')
+    d.game.load.image('question-mark-btn', '../sprites/question-mark-btn.png')
+    d.game.load.image('miniMap', '../sprites/miniMap.png')
+    d.game.load.image('join-game-btn', '../sprites/join-game-btn.png')
   },
   create: function() {
     axios.get('/maps')

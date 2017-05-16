@@ -35,6 +35,18 @@ let title = {
     d.titleText2.setTextBounds(0, 0, 496, 112)
     d.titleText2.visible = false
 
+    d.credits = d.game.add.text(16, 544, 'Presented by DDot Studios', {font: '20pt Arial', fill: '#FFFFFF'})
+    d.credits.alpha = 0
+    d.creditJames = d.game.add.text(832, 568 - 16, 'James', {font: '12pt Arial', fill: '#FFFFFF', boundsAlignH: 'right'})
+    d.creditJames.setTextBounds(0, 0, 176, 96)
+    d.creditJames.alpha = 0
+    d.creditNish = d.game.add.text(832, 584 - 8, 'Nish', {font: '12pt Arial', fill: '#FFFFFF', boundsAlignH: 'right'})
+    d.creditNish.setTextBounds(0, 0, 176, 96)
+    d.creditNish.alpha = 0
+    d.creditAlex = d.game.add.text(832, 600, 'Alex', {font: '12pt Arial', fill: '#FFFFFF', boundsAlignH: 'right'})
+    d.creditAlex.setTextBounds(0, 0, 176, 96)
+    d.creditAlex.alpha = 0
+
     d.trigger = false
     d.alpha = false
 
@@ -56,7 +68,13 @@ let title = {
         d.alpha = true
       })
     }
-    if (d.alpha && d.startGame.alpha < 1) d.startGame.alpha += .005 
+    if (d.alpha && d.startGame.alpha < 1) {
+      d.startGame.alpha += .01
+      d.credits.alpha += .01
+      d.creditJames.alpha += .01
+      d.creditNish.alpha += .01
+      d.creditAlex.alpha += .01
+    }
   }
 }
 

@@ -39,9 +39,9 @@ for (let i = 0; i < 20; i++) {
     obj.blocks.push({tile: 'cobble', x: 192 + 32 * i, y: 448})
   }
   if (i === 1) {
-    obj.spikes.push({tile: 'spikes-right', x: 192 + 32 * i + 16, y: 288 + 16, rotation: 1.57})
+    obj.spikes.push({tile: 'spikes-right', x: 192 + 32 * i, y: 288})
   } else if (i === 18) {
-    obj.spikes.push({tile: 'spikes-left', x: 192 + 32 * i + 16, y: 288 + 16, rotation: -1.57})
+    obj.spikes.push({tile: 'spikes-left', x: 192 + 32 * i, y: 288})
   }
 }
 
@@ -81,8 +81,8 @@ for (let i = 0; i < 20; i++) {
     nobj.blocks.push({tile: 'wood', x: 192 + 32 * i, y: 32 * 16})
   }
   if ((i > 0 && i < 7) || (i > 12 && i < 19)) {
-    nobj.spikes.push({tile: 'spikes-down', x: 192 + 32 * i + 16, y: 32 * 1 + 16, rotation: 3.14})
-    nobj.spikes.push({tile: 'spikes', x: 192 + 32 * i + 16, y: 32 * 18 + 16, rotation: 0})
+    nobj.spikes.push({tile: 'spikes-down', x: 192 + 32 * i, y: 32 * 1})
+    nobj.spikes.push({tile: 'spikes', x: 192 + 32 * i, y: 32 * 18})
   }
 }
 

@@ -46,6 +46,7 @@ export default function updateFunc() {
       d.blood = d.game.add.sprite(d.player1.x, d.player1.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
+      d.blood.anchor.x = .5
       d.blood.animations.play('death')
       d.blood.animations.currentAnim.killOnComplete = true
       d.player1.numArrows = 0
@@ -58,6 +59,7 @@ export default function updateFunc() {
       d.blood = d.game.add.sprite(d.player2.x, d.player2.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
+      d.blood.anchor.x = .5
       d.blood.animations.play('death')
       d.blood.animations.currentAnim.killOnComplete = true
       d.player2.numArrows = 0
@@ -70,6 +72,7 @@ export default function updateFunc() {
       d.blood = d.game.add.sprite(d.player3.x, d.player3.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
+      d.blood.anchor.x = .5
       d.blood.animations.play('death')
       d.blood.animations.currentAnim.killOnComplete = true
       d.player3.numArrows = 0
@@ -82,6 +85,7 @@ export default function updateFunc() {
       d.blood = d.game.add.sprite(d.player4.x, d.player4.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
+      d.blood.anchor.x = .5
       d.blood.animations.play('death')
       d.blood.animations.currentAnim.killOnComplete = true
       d.player4.numArrows = 0

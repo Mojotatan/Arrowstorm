@@ -85,10 +85,8 @@ export default function createFunc() {
 
   // add spikes to map
   map.spikes.forEach(spike => {
-    let newSpike = d.spikes.create(spike.x, spike.y, 'spikes')
+    let newSpike = d.spikes.create(spike.x, spike.y, spike.tile)
     newSpike.body.immovable = true
-    newSpike.anchor.set(.5, .5)
-    newSpike.rotation = spike.rotation
   })
 
   // create players
@@ -157,6 +155,7 @@ export default function createFunc() {
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
+  d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => {
     fireArrow(d, false, null, d[currPlayer].shotDirection)
     removeArrowDisplay(currPlayer)
