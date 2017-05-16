@@ -104,7 +104,6 @@ db.sync()
 				round: 0,
 				started: false
 			}
-			history[key] = []
 			socket.join(`game ${key}`)
 			console.log('joining channel', `game ${key}`)
 			socket.emit('assignedToPlayer', {game: allGames[key], player: 'player1'})
@@ -146,6 +145,7 @@ db.sync()
 		socket.on('start', function(id) {
 			console.log('starting game', allGames[id])
 			allGames[id].started = true
+			history[id] = []
 			let rng = []
 			for (let i = 0; i < 5; i++) {
 				rng.push(Math.random())
