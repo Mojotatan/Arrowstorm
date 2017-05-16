@@ -155,6 +155,7 @@ export default function createFunc() {
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}
   // arrow and shooting
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
+  d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => {
     fireArrow(d, false, null, d[currPlayer].shotDirection)
     removeArrowDisplay(currPlayer)
