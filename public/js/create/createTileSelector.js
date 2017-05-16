@@ -28,6 +28,8 @@ export default function createTileSelector() {
   createTile(672, 384, 'tc-editor')
   createTile(672, 416, 'p1')
   createTile(672, 448, 'p2')
+  createTile(672, 480, 'p3')
+  createTile(672, 512, 'p4')
 
   me.marker = d.game.add.graphics()
   me.marker.lineStyle(2, 0xffffff, 1)
