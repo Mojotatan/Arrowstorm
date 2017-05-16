@@ -165,6 +165,11 @@ Client.socket.on('opponentHasShot', function(data){
 
 Client.socket.on('opponentHasDied', function(opponent){
 	d[opponent].kill()
+	let blood = d.game.add.sprite(d[opponent].x, d[opponent].y, 'blood')
+	blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
+	blood.scale.set(2, 2)
+	blood.animations.play('death')
+	blood.animations.currentAnim.killOnComplete = true
 })
 
 Client.socket.on('opponentPickedArrow', function(arrowIdx){
