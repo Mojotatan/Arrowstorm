@@ -19,7 +19,6 @@ Client.socket.on('assignedToPlayer', function(data){
 
 Client.socket.on('newGame', function(data) {
 	function loadNewGames(data) {
-		//d.startBtn = d.game.add.button(362, 170, 'start-btn-bg', this.startGame, this)
 		let newGame = d.game.add.button(180, 256 + d.openGames * 48, 'join-game-btn', function() {
 			Client.socket.emit('joinGame', {id: this.id, alias: d.nameInput.value})
 			d.game.state.start('newGameOptions')

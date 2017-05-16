@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack -w & nodemon server/index.js",
-    "deploy-heroku": "bin/deploy-heroku.sh"
+    "start:dev": "webpack -w & nodemon server/index.js",
+    "seed": "node public/js/mapper.js",
+    "start": "node server/index.js",
+    "build": "webpack",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -43,9 +46,7 @@
     "redux-thunk": "^2.2.0",
     "sequelize": "^3.30.4",
     "socket.io": "^1.7.3",
-    "webpack": "^2.4.1"
-  },
-  "devDependencies": {
+    "webpack": "^2.4.1",
     "@orange-games/phaser-input": "^2.0.4"
   }
 }
