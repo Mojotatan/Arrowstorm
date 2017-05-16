@@ -89,9 +89,10 @@ Client.socket.on('playerJoined', function(data) {
 
 Client.socket.on('start', function(rng) {
 	console.log('let the games begin')
+	d.rng = rng
 	function getMap() {
 		let select = (d.mapSel.y - 412) / 32
-		return (select >= d.pages[d.currentPage].length) ? Math.floor(rng * d.maps.length) : select + d.currentPage * 7
+		return (select >= d.pages[d.currentPage].length) ? Math.floor(d.rng.pop() * d.maps.length) : select + d.currentPage * 7
 	}
 	d.map = d.maps[getMap()]
 	d.game.state.start('runGame')
@@ -100,6 +101,7 @@ Client.socket.on('start', function(rng) {
 Client.socket.on('optionsUpdate', function(data) {
 	d.myGame = data
 	d.currentPage = data.map.page
+	d.pages = d.pages || {}
 	renderMaps(d.currentPage)
 	d.mapSel.position.y = data.map.y
 	getPreview(d.currentPage)
@@ -139,6 +141,7 @@ Client.socket.on('optionsUpdate', function(data) {
 
 Client.socket.on('score', function(data) {
 	// d.game.state.start('gameOver')
+	d.dead = data.dead
 	d.history = data.history
 	d.game.time.events.add(1000, function() {
 		d.game.lockRender = true
