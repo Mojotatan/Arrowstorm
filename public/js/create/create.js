@@ -85,10 +85,8 @@ export default function createFunc() {
 
   // add spikes to map
   map.spikes.forEach(spike => {
-    let newSpike = d.spikes.create(spike.x, spike.y, 'spikes')
+    let newSpike = d.spikes.create(spike.x, spike.y, spike.tile)
     newSpike.body.immovable = true
-    newSpike.anchor.set(.5, .5)
-    newSpike.rotation = spike.rotation
   })
 
   // create players
