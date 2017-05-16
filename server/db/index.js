@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
-let db = new Sequelize('postgres://localhost:5432/ddot', {logging: false})
+let dbUrl = process.env.DATABASE_URL || 'postgres://localhost:5432/ddot'
+let db = new Sequelize(dbUrl, {logging: false})
 
 let Map = db.define('map', {
   name: Sequelize.STRING,
