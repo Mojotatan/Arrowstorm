@@ -92,9 +92,20 @@ export default function createFunc() {
   })
 
   // create players
-  let starts = [map.p1Start, map.p2Start, map.p3Start, map.p4Start]
+  let playerCount = 0
+  if (d.myGame.player1) playerCount++
+  if (d.myGame.player2) playerCount++
+  if (d.myGame.player3) playerCount++
+  if (d.myGame.player4) playerCount++
+
+  let starts = [map.p1Start, map.p2Start]
+  if (playerCount > 2) {
+    starts.push(map.p3Start)
+    starts.push(map.p4Start)
+  }
+
   function rStart () {
-    let rng = Math.floor(Math.random() * starts.length)
+    let rng = Math.floor(d.rng.pop() * starts.length)
     return starts.splice(rng, 1)[0]
   }
 
@@ -130,7 +141,7 @@ export default function createFunc() {
     avatar3.frame = 2
     avatar3.crop(new Phaser.Rectangle(0, 0, 20, 16))
     avatar3.scale.set(9, 9)
-    d.game.add.text(80, 112 + 320, d.myGame.score[2], {font: '48pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(80, 112 + 320, d.myGame.score[3], {font: '48pt Arial', fill: '#FFFFFF'})
   }
 
   if (d.myGame.player4) {
@@ -140,7 +151,7 @@ export default function createFunc() {
     avatar4.frame = 2
     avatar4.crop(new Phaser.Rectangle(0, 0, 20, 16))
     avatar4.scale.set(9, 9)
-    d.game.add.text(912, 112 + 320, d.myGame.score[2], {font: '48pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(912, 112 + 320, d.myGame.score[4], {font: '48pt Arial', fill: '#FFFFFF'})
   }
 
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}

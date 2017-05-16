@@ -321,7 +321,7 @@ export default function updateFunc() {
     if (d.player4.alive) curAlive++
   }
 
-  if (curAlive <= 1) {
+  if (curAlive <= 1 && curAlive !== maxAlive) {
     if (d.go) {
       let s1 = (d.player1 && d.player1.alive) ? 1 : 0
       let s2 = (d.player2 && d.player2.alive) ? 1 : 0
