@@ -19,13 +19,17 @@ Client.socket.on('assignedToPlayer', function(data){
 
 Client.socket.on('newGame', function(data) {
 	function loadNewGames(data) {
-		let newGame = new Phaser.Button(d.game, 144, 256 + d.openGames * 48, 'join', function() {
+		//d.startBtn = d.game.add.button(362, 170, 'start-btn-bg', this.startGame, this)
+		let newGame = d.game.add.button(180, 256 + d.openGames * 48, 'join-game-btn', function() {
 			Client.socket.emit('joinGame', {id: this.id, alias: d.nameInput.value})
 			d.game.state.start('newGameOptions')
-		})
+		}, this)
 		newGame.scale.set(1.5, 1.5)
 		newGame.id = data
-		let newText = new Phaser.Text(d.game, 32, 256 + d.openGames * 48 - 2, `${data}`, {fontSize: 48})
+		let joinBtnStyle = {font: 'bold 14pt Arial', fill: '#000000'}
+		let joinBtnText = d.game.add.text(4, 1, 'JOIN', joinBtnStyle)
+		newGame.addChild(joinBtnText)
+		let newText = new Phaser.Text(d.game, 105, 256 + d.openGames * 48, `${data}`, {fontSize: 30})
 		d.lobbyGames.addChild(newGame)
 		d.lobbyGames.addChild(newText)
 		d.openGames++
@@ -89,9 +93,10 @@ Client.socket.on('playerJoined', function(data) {
 
 Client.socket.on('start', function(rng) {
 	console.log('let the games begin')
+	d.rng = rng
 	function getMap() {
 		let select = (d.mapSel.y - 412) / 32
-		return (select >= d.pages[d.currentPage].length) ? Math.floor(rng * d.maps.length) : select + d.currentPage * 7
+		return (select >= d.pages[d.currentPage].length) ? Math.floor(d.rng.pop() * d.maps.length) : select + d.currentPage * 7
 	}
 	d.map = d.maps[getMap()]
 	d.game.state.start('runGame')
@@ -100,6 +105,7 @@ Client.socket.on('start', function(rng) {
 Client.socket.on('optionsUpdate', function(data) {
 	d.myGame = data
 	d.currentPage = data.map.page
+	d.pages = d.pages || {}
 	renderMaps(d.currentPage)
 	d.mapSel.position.y = data.map.y
 	getPreview(d.currentPage)
@@ -139,6 +145,7 @@ Client.socket.on('optionsUpdate', function(data) {
 
 Client.socket.on('score', function(data) {
 	// d.game.state.start('gameOver')
+	d.dead = data.dead
 	d.history = data.history
 	d.game.time.events.add(1000, function() {
 		d.game.lockRender = true

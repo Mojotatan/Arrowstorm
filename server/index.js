@@ -146,7 +146,11 @@ db.sync()
 		socket.on('start', function(id) {
 			console.log('starting game', allGames[id])
 			allGames[id].started = true
-			io.in(`game ${id}`).emit('start', Math.random())
+			let rng = []
+			for (let i = 0; i < 5; i++) {
+				rng.push(Math.random())
+			}
+			io.in(`game ${id}`).emit('start', rng)
 		})
 
 		// a point is scored, a round ends
@@ -155,7 +159,12 @@ db.sync()
 				console.log('point received and accepted')
 				allGames[data.id].round++
 				allGames[data.id].score = data.score
-				io.in(`game ${data.id}`).emit('score', {myGame: allGames[data.id], history: history[data.id]})
+				let dead = []
+				if (history[data.id]['player1'] < history[data.id].length - 120) dead.push('player1')
+				if (history[data.id]['player2'] < history[data.id].length - 120) dead.push('player2')
+				if (history[data.id]['player3'] < history[data.id].length - 120) dead.push('player3')
+				if (history[data.id]['player4'] < history[data.id].length - 120) dead.push('player4')
+				io.in(`game ${data.id}`).emit('score', {myGame: allGames[data.id], history: history[data.id], dead})
 			}
 		})
 
@@ -218,6 +227,7 @@ db.sync()
 			}
 		})
 		socket.on('playerHasDied', function(data){
+			history[data.id][data.player] = history[data.id][data.player] || history[data.id].length
 			socket.broadcast.to(`game ${data.id}`).emit('opponentHasDied', data.player)
 		})
 		socket.on('arrowPickedUp', function(data){
