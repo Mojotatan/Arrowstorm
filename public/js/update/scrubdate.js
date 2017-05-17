@@ -81,8 +81,8 @@ export default function scrubdateFunc() {
       fireArrow(d, true, snapshot.player, snapshot.shotDirection)
     }
     else if (snapshot.action === 'death') {
-      d[snapshot.player].kill()
-      d.blood = d.game.add.sprite(d[snapshot.player].x, d[snapshot.player].y, 'blood')
+      d[snapshot.victim].kill()
+      d.blood = d.game.add.sprite(d[snapshot.victim].x, d[snapshot.victim].y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
       d.blood.anchor.x = .5
@@ -95,7 +95,9 @@ export default function scrubdateFunc() {
   if (d.history.length > 1) {
     d.history.shift()
   } else if (d.go) {
-    d.game.lockRender = true
+    d.game.time.events.add(250, function() {
+      d.game.lockRender = true
+    })
     d.game.time.events.add(1500, function() {
       d.game.state.start('gameOver')
       d.game.lockRender = false
