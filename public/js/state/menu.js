@@ -28,7 +28,7 @@ let menu = {
     d.lobbyGames = d.game.add.group()
 
     let joinStyle = {font: '30pt Arial', fill: '#000000', boundsAlignH: "center", boundsAlignV: "middle"}
-    let joinText = d.game.add.text(0, 0, 'Open Games', joinStyle)
+    let joinText = d.game.add.text(0, -8, 'Open Games', joinStyle)
     joinText.font = 'ArcadeClassic'
     joinText.setTextBounds(31, 170, 300, 112)
 
@@ -40,7 +40,7 @@ let menu = {
     // Start new Game button
     d.startBtn = d.game.add.button(362, 170, 'start-btn-bg', this.startGame, this)
     let startTextStyle = {font: '30pt Arial', fill: '#000000', boundsAlignH: "center", boundsAlignV: "middle"}
-    let startText1 = d.game.add.text(0, 0, 'Start New Game', startTextStyle)
+    let startText1 = d.game.add.text(0, -8, 'Start New Game', startTextStyle)
     startText1.font = 'ArcadeClassic'
     startText1.setTextBounds(0, 0, 300, 112)
     d.startBtn.addChild(startText1)
@@ -48,12 +48,13 @@ let menu = {
     // Create map button
     d.mapBtn = d.game.add.button(693, 170, 'make-map-btn', this.startMap, this)
     let mapTextStyle = {font: '30pt Arial', fill: '#000000', boundsAlignH: "center", boundsAlignV: "middle"}
-    let mapText = d.game.add.text(0, 0, 'Create Map', mapTextStyle)
+    let mapText = d.game.add.text(0, -8, 'Create Map', mapTextStyle)
     mapText.font = 'ArcadeClassic'
     mapText.setTextBounds(0, 0, 300, 112)
     d.mapBtn.addChild(mapText)
 
-    d.game.add.image(748, 252, 'miniMap')
+    let miniMap = d.game.add.image(748, 252, 'miniMap')
+    miniMap.scale.set(.27, .27)
 
     // instructions
     d.questionBtn = d.game.add.button(31, 500, 'question-mark-btn', this.startHowTo, this)
@@ -77,7 +78,7 @@ let menu = {
       placeHolder: 'Enter a name',
     })
 
-    d.game.stage.setBackgroundColor('#000842')
+    d.game.stage.setBackgroundColor('#A84A25')
   },
   startGame: function () {
     newGame()
