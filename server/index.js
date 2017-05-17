@@ -243,6 +243,20 @@ db.sync()
 		socket.on('playerHasDied', function(data){
 			if (allGames[data.id]) {
 				history[data.id][data.player] = history[data.id][data.player] || history[data.id].length
+				let log = Object.assign({}, data, {action: 'death'})
+				if (allGames[data.id].player1 === socket.id) log.player = 'player1'
+				else if (allGames[data.id].player1 === socket.id) log.player = 'player2'
+				else if (allGames[data.id].player1 === socket.id) log.player = 'player3'
+				else if (allGames[data.id].player1 === socket.id) log.player = 'player4'
+
+				// push data to history
+				let eot = history[data.id][history[data.id].length - 1] || []
+				let dupes = eot.filter(entry => {return entry.player === log.player})
+				if (eot.length === 1 && dupes.length === 0) {
+					eot.push(log)
+				} else {
+					history[data.id].push([log])
+				}
 				socket.broadcast.to(`game ${data.id}`).emit('opponentHasDied', data.player)
 			}
 		})

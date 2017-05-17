@@ -8,7 +8,6 @@
 html {
   height: 100%;
   box-sizing: border-box;
-	/*background-image: url("http://sdeerwallpaper.com/Cool-Wallpapers/dark-wood-backgrounds-Is-Cool-Wallpapers.jpg");*/
   background-image: url(/sprites/stone-brick-light-gray.png);
 }
 
