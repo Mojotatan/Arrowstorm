@@ -71,6 +71,11 @@ export default function scrubdateFunc() {
   //Spike collisions
   if (hitSpikes1) {
     d.player1.kill()
+    //d.blood = d.game.add.sprite(d.player1.x, d.player1.y, 'blood')
+      //d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
+      //d.blood.scale.set(2, 2)
+      d.blood.animations.play('death')
+      //d.blood.animations.currentAnim.killOnComplete = true
     d.player1.numArrows = 0
   }
   if (hitSpikes2) {

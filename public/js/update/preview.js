@@ -28,7 +28,8 @@ export function renderMaps(page) {
   d.currentMaps = []
 
   d.pages[page].forEach((map, index) => {
-    let showMap = d.game.add.text(16 + 8, y, map.name, {font: '16pt Arial', fill: '#FFFFFF'})
+    let showMap = d.game.add.text(16 + 8, y, map.name, {font: '25pt Arial', fill: '#FFFFFF'})
+    showMap.font = 'ArcadeClassic'
     d.currentMaps.push(showMap)
     y += 32
   })
