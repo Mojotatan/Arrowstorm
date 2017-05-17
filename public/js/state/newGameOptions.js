@@ -8,17 +8,17 @@ let newGameOptions = {
 
     // character select
     let instrShade = d.game.add.graphics(352, 0)
-    instrShade.beginFill(0x9999ff)
+    instrShade.beginFill(0xA84A25)
     instrShade.drawRect(0, 0, 688, 96)
     instrShade.endFill()
 
     let charShade = d.game.add.graphics(352, 96)
-    charShade.beginFill(0xcccccc)
+    charShade.beginFill(0xB7A182)
     charShade.drawRect(0, 0, 688, 416)
     charShade.endFill()
 
     let rosterShade = d.game.add.graphics(352, 512)
-    rosterShade.beginFill(0x9999ff)
+    rosterShade.beginFill(0xA84A25)
     rosterShade.drawRect(0, 0, 688, 128)
     rosterShade.endFill()
 
@@ -29,8 +29,9 @@ let newGameOptions = {
     })
     d.leaveBtn.scale.set(2, 2)
 
-    let instructions = d.game.add.text(544, 0, 'Choose your\ncharacter', {font: 'bold 20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle', align: 'center'})
+    let instructions = d.game.add.text(544, 0, 'Choose your\ncharacter', {font: 'bold 30pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle', align: 'center'})
     instructions.setTextBounds(0, 0, 288, 96)
+    instructions.font = 'ArcadeClassic'
 
     d.startBtn = d.game.add.button(832 + 48, 0 + 16, 'start', function() {
       letsGo(d.myGame.id)
@@ -42,57 +43,65 @@ let newGameOptions = {
     let y1 = 96 + 208 - 128
     let pp1 = ''
     if (d.myGame && d.myGame.player1) pp1 = d.myGame.alias[1] || 'Player 1'
-    d.preview1 = d.game.add.text(x1, 96, pp1, {font: '20pt Arial', fill: '#0000FF', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview1 = d.game.add.text(x1, 96, pp1, {font: '25pt Arial', fill: '#0000FF', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview1.setTextBounds(0, 0, 160, 80)
+    d.preview1.font = 'ArcadeClassic'
     d.previewChar1 = d.game.add.image(x1, y1, 'RoboRaj')
     d.previewChar1.frame = 2
     d.previewChar1.scale.set(8, 8)
     d.previewChar1.visible = d.myGame && d.myGame.player1
     pp1 = (d.myGame && d.myGame.player1) ? 'RoboRaj' : ''
-    d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '25pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview1Char.setTextBounds(0, 0, 160, 80)
+    d.preview1Char.font = 'ArcadeClassic'
 
     let x2 = 352 + 168 * 1
     let y2 = 96 + 208 - 128
     let pp2 = ''
     if (d.myGame && d.myGame.player2) pp2 = d.myGame.alias[2] || 'Player 2'
-    d.preview2 = d.game.add.text(x2, 96, pp2, {font: '20pt Arial', fill: '#FF0000', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2 = d.game.add.text(x2, 96, pp2, {font: '25pt Arial', fill: '#FF0000', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview2.setTextBounds(0, 0, 160, 80)
+    d.preview2.font = 'ArcadeClassic'
     d.previewChar2 = d.game.add.image(x2, y2, 'Billy')
     d.previewChar2.frame = 2
     d.previewChar2.scale.set(8, 8)
     d.previewChar2.visible = d.myGame && d.myGame.player2
     pp2 = (d.myGame && d.myGame.player2) ? 'Billy' : ''
-    d.preview2Char = d.game.add.text(x2, y2 + 256, pp2, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2Char = d.game.add.text(x2, y2 + 256, pp2, {font: '25pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview2Char.setTextBounds(0, 0, 160, 80)
+    d.preview2Char.font = 'ArcadeClassic'
 
     let x3 = 352 + 168 * 2
     let y3 = 96 + 208 - 128
     let pp3 = ''
     if (d.myGame && d.myGame.player3) pp3 = d.myGame.alias[3] || 'Player 3'
-    d.preview3 = d.game.add.text(x3, 96, pp3, {font: '20pt Arial', fill: '#008800', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3 = d.game.add.text(x3, 96, pp3, {font: '25pt Arial', fill: '#008800', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview3.setTextBounds(0, 0, 160, 80)
+    d.preview3.font = 'ArcadeClassic'
     d.previewChar3 = d.game.add.image(x3, y3, 'Black Mage')
     d.previewChar3.frame = 2
     d.previewChar3.scale.set(8, 8)
     d.previewChar3.visible = d.myGame && d.myGame.player3
     pp3 = (d.myGame && d.myGame.player3) ? 'Black Mage' : ''
-    d.preview3Char = d.game.add.text(x3, y3 + 256, pp3, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3Char = d.game.add.text(x3, y3 + 256, pp3, {font: '25pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview3Char.setTextBounds(0, 0, 160, 80)
+    d.preview3Char.font = 'ArcadeClassic'
 
     let x4 = 352 + 168 * 3
     let y4 = 96 + 208 - 128
     let pp4 = ''
     if (d.myGame && d.myGame.player4) pp4 = d.myGame.alias[4] || 'Player 4'
-    d.preview4 = d.game.add.text(x4, 96, pp4, {font: '20pt Arial', fill: '#bbbb00', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4 = d.game.add.text(x4, 96, pp4, {font: '25pt Arial', fill: '#bbbb00', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview4.setTextBounds(0, 0, 160, 80)
+    d.preview4.font = 'ArcadeClassic'
     d.previewChar4 = d.game.add.image(x4, y4, 'Gale')
     d.previewChar4.frame = 2
     d.previewChar4.scale.set(8, 8)
     d.previewChar4.visible = d.myGame && d.myGame.player4
     pp4 = (d.myGame && d.myGame.player4) ? 'Gale' : ''
-    d.preview4Char = d.game.add.text(x4, y4 + 256, pp4, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4Char = d.game.add.text(x4, y4 + 256, pp4, {font: '25pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview4Char.setTextBounds(0, 0, 160, 80)
+    d.preview4Char.font = 'ArcadeClassic'
 
     let avatar = function(char) {
       return function() {
@@ -119,7 +128,7 @@ let newGameOptions = {
 
     // map select
     let mapShade = d.game.add.graphics(0, 0)
-    mapShade.beginFill(0xccddff)
+    mapShade.beginFill(0x599199)
     mapShade.drawRect(0, 0, 352, 640)
     mapShade.endFill()
 
@@ -128,10 +137,11 @@ let newGameOptions = {
     mapSelShade.drawRect(0, 0, 352, 320 - 32)
     mapSelShade.endFill()
 
-    d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '20pt Arial', fill: '#FFFFFF'})
+    let mapSelectText = d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '30pt Arial', fill: '#FFFFFF'})
+    mapSelectText.font = 'ArcadeClassic'
 
     d.mapSel = d.game.add.graphics(16, 412)
-    d.mapSel.beginFill(0x0099ff)
+    d.mapSel.beginFill(0x599199)
     d.mapSel.drawRect(0, 0, 320, 32)
     d.mapSel.endFill()
 

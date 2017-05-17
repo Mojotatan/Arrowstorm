@@ -4,6 +4,10 @@ import {mapSel} from '../client'
 export function preview(map) {
   d.preview = d.game.add.group()
 
+  let previewBackground = d.preview.create(16, 16, map.background.file)
+  previewBackground.scale.set(map.background.scale / 2, map.background.scale / 2)
+
+
   map.blocks.forEach(block => {
     let x = block.x - 192
     x /= 2
@@ -28,7 +32,8 @@ export function renderMaps(page) {
   d.currentMaps = []
 
   d.pages[page].forEach((map, index) => {
-    let showMap = d.game.add.text(16 + 8, y, map.name, {font: '16pt Arial', fill: '#FFFFFF'})
+    let showMap = d.game.add.text(16 + 8, y, map.name, {font: '25pt Arial', fill: '#FFFFFF'})
+    showMap.font = 'ArcadeClassic'
     d.currentMaps.push(showMap)
     y += 32
   })

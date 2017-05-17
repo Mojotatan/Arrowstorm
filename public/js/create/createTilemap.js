@@ -20,7 +20,7 @@ export default function createTilemap() {
   me.tc = {}
   me.currentTile = 0
 
-  d.game.stage.backgroundColor = '#FFFAFA';
+  d.game.stage.backgroundColor = '#B7A182';
   let backgroundImage = d.game.add.image(0, 0, 'background')
   let spaceImage = d.game.add.image(0, 0, 'space')
   let nightImage = d.game.add.image(0, 0, 'night')
@@ -28,11 +28,13 @@ export default function createTilemap() {
   let arenaImage = d.game.add.image(0, 0, 'arena')
   let dungeonImage = d.game.add.image(0, 0, 'dungeon')
 
-  d.backgroundImage = backgroundImage
-  backgroundImage.visible = true
+  d.backgroundImage = arenaImage
+  backgroundImage.visible = false
   spaceImage.visible = false
   nightImage.visible = false
   sunsetImage.visible = false
+  arenaImage.visible = true
+  dungeonImage.visible = false
   me.backgroundForJSON = {file: 'background', scale: 1}
 
   d.backgroundButton = d.game.add.button(736, 96, 'background-button', backgroundOnClick, this)
@@ -99,7 +101,7 @@ export default function createTilemap() {
     sunsetImage.visible = false
     arenaImage.visible = true
     dungeonImage.visible = false
-    me.backgroundForJSON = {file: 'sunset', scale: 1}
+    me.backgroundForJSON = {file: 'arena', scale: 1}
   }
 
   function dungeonOnClick() {
@@ -111,7 +113,7 @@ export default function createTilemap() {
     sunsetImage.visible = false
     arenaImage.visible = false
     dungeonImage.visible = true
-    me.backgroundForJSON = {file: 'sunset', scale: 1}
+    me.backgroundForJSON = {file: 'dungeon', scale: 1}
   }
 
   me.map  = d.game.add.tilemap()
@@ -165,19 +167,22 @@ export default function createTilemap() {
   })
 
   //adding text
-  var style = { font: "18px Arial", wordWrap: false, align: "center" };
-  d.text = d.game.add.text(770, 60, "Select A Background", style)
+  var style = { font: "25px Arial", wordWrap: false, align: "center" };
+  d.text = d.game.add.text(733, 60, "Select A Background", style)
+  d.text.font = 'ArcadeClassic'
 
   // create map button
   let createStyle = { font: "15px Arial", fill: '#000000', boundsAlignH: "center", boundsAlignV: "middle" };
   let createMapBtn = d.game.add.button(736, 530, 'map-editor-btn', onClickCreate, this)
   let createMapText = d.game.add.text(0, 0, "Create Map", createStyle)
+  createMapText.font = 'ArcadeClassic'
   createMapBtn.addChild(createMapText)
   createMapText.setTextBounds(0, 0, 96, 48)
 
   // back to main menu button
   let backToMenuBtn = d.game.add.button(864, 530, 'map-editor-btn', () => d.game.state.start('menu'), this)
   let backToMenuText = d.game.add.text(0, 0, "Main Menu", createStyle)
+  backToMenuText.font = 'ArcadeClassic'
   backToMenuBtn.addChild(backToMenuText)
   backToMenuText.setTextBounds(0, 0, 96, 48)
 
@@ -217,7 +222,12 @@ function onClickCreate() {
   let finalString = JSON.stringify(finalJSON)
 
   axios.post('/maps', {name: mapName, creator, json: finalString})
-  .then(function(){
+  .then(function() {
+    return axios.get('/maps')
+  })
+  .then(maps => {
+    d.maps = maps.data.map(map => JSON.parse(map))
+    d.game.state.start('menu')
   })
 
 }

@@ -41,8 +41,6 @@ export default function updateFunc() {
     //Spike collisions
     if (hitSpikes1) {
       d.player1.kill()
-      //d.blood.animations.add('death', [0, 5], 10, false)
-      // bloodanimation
       d.blood = d.game.add.sprite(d.player1.x, d.player1.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
@@ -54,8 +52,6 @@ export default function updateFunc() {
     }
     if (hitSpikes2) {
       d.player2.kill()
-      //d.blood.animations.add('death', [0, 5], 1, false)
-      // bloodanimation
       d.blood = d.game.add.sprite(d.player2.x, d.player2.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
@@ -67,8 +63,6 @@ export default function updateFunc() {
     }
     if (hitSpikes3) {
       d.player3.kill()
-      //d.blood.animations.add('death', [0, 5], 1, false)
-      // bloodanimation
       d.blood = d.game.add.sprite(d.player3.x, d.player3.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
@@ -80,8 +74,6 @@ export default function updateFunc() {
     }
     if (hitSpikes4) {
       d.player4.kill()
-      //d.blood.animations.add('death', [0, 5], 1, false)
-      // bloodanimation
       d.blood = d.game.add.sprite(d.player4.x, d.player4.y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
