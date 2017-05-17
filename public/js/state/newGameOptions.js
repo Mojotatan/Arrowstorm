@@ -53,7 +53,7 @@ let newGameOptions = {
     pp1 = (d.myGame && d.myGame.player1) ? 'RoboRaj' : ''
     d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview1Char.setTextBounds(0, 0, 160, 80)
-    d.previewChar1.font = 'ArcadeClassic'
+    d.preview1Char.font = 'ArcadeClassic'
 
     let x2 = 352 + 168 * 1
     let y2 = 96 + 208 - 128
