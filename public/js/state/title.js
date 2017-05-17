@@ -49,7 +49,6 @@ let title = {
     d.creditAlex = d.game.add.text(832, 600, 'Alex', {font: '20pt ArcadeClassic', fill: '#FFFFFF', boundsAlignH: 'right'})
     d.creditAlex.setTextBounds(0, 0, 176, 128)
     d.creditAlex.alpha = 0
-    console.log(d.creditAlex.font)
 
     d.trigger = false
     d.alpha = false
