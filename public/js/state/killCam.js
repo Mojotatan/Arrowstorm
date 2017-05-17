@@ -6,7 +6,6 @@ let killCam = {
   create: function() {
     d.game.lockRender = false
     createFunc()
-    console.log(d.dead)
     if (d.dead.includes('player1')) d.player1.kill()
     if (d.dead.includes('player2')) d.player2.kill()
     if (d.dead.includes('player3')) d.player3.kill()

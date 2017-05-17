@@ -4,6 +4,10 @@ import {mapSel} from '../client'
 export function preview(map) {
   d.preview = d.game.add.group()
 
+  let previewBackground = d.preview.create(16, 16, map.background.file)
+  previewBackground.scale.set(map.background.scale / 2, map.background.scale / 2)
+
+
   map.blocks.forEach(block => {
     let x = block.x - 192
     x /= 2

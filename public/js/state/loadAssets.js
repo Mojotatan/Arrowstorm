@@ -47,7 +47,6 @@ let loadAssets = {
     d.game.load.image('make-map-btn', 'sprites/make-map-btn red.png')
     d.game.load.image('question-mark-btn', 'sprites/question-mark-btn.png')
     d.game.load.image('miniMap', 'sprites/miniMap.png')
-    d.game.load.image('join-game-btn', 'sprites/join-game-btn.png')
     d.game.load.image('stone-brick-dark-gray', 'sprites/stone-brick-dark-gray.png')
   },
   create: function() {

@@ -23,18 +23,18 @@ let gameOver = {
       }
       d.tex.text = 'Get Ready for Round '+ d.myGame.round
     } else {
-      let winner = {score: d.myGame.score[1], player: 'Player One'}
+      let winner = {score: d.myGame.score[1], player: d.myGame.alias[1] || 'Player One'}
       if (d.myGame.score[2] > winner.score) {
         winner.score = d.myGame.score[2]
-        winner.player = 'Player Two'
+        winner.player = d.myGame.alias[2] || 'Player Two'
       }
       if (d.myGame.score[3] > winner.score) {
         winner.score = d.myGame.score[3]
-        winner.player = 'Player Three'
+        winner.player = d.myGame.alias[3] || 'Player Three'
       }
       if (d.myGame.score[4] > winner.score) {
         winner.score = d.myGame.score[4]
-        winner.player = 'Player Four'
+        winner.player = d.myGame.alias[4] || 'Player Four'
       }
       d.tex.text = `${winner.player} wins`
 
