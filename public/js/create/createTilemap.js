@@ -20,7 +20,7 @@ export default function createTilemap() {
   me.tc = {}
   me.currentTile = 0
 
-  d.game.stage.backgroundColor = '#FFFAFA';
+  d.game.stage.backgroundColor = '#B7A182';
   let backgroundImage = d.game.add.image(0, 0, 'background')
   let spaceImage = d.game.add.image(0, 0, 'space')
   let nightImage = d.game.add.image(0, 0, 'night')
@@ -28,11 +28,13 @@ export default function createTilemap() {
   let arenaImage = d.game.add.image(0, 0, 'arena')
   let dungeonImage = d.game.add.image(0, 0, 'dungeon')
 
-  d.backgroundImage = backgroundImage
-  backgroundImage.visible = true
+  d.backgroundImage = arenaImage
+  backgroundImage.visible = false
   spaceImage.visible = false
   nightImage.visible = false
   sunsetImage.visible = false
+  arenaImage.visible = true
+  dungeonImage.visible = false
   me.backgroundForJSON = {file: 'background', scale: 1}
 
   d.backgroundButton = d.game.add.button(736, 96, 'background-button', backgroundOnClick, this)

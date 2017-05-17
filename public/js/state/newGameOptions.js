@@ -51,7 +51,7 @@ let newGameOptions = {
     d.previewChar1.scale.set(8, 8)
     d.previewChar1.visible = d.myGame && d.myGame.player1
     pp1 = (d.myGame && d.myGame.player1) ? 'RoboRaj' : ''
-    d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview1Char = d.game.add.text(x1, y1 + 256, pp1, {font: '30pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview1Char.setTextBounds(0, 0, 160, 80)
     d.preview1Char.font = 'ArcadeClassic'
 
@@ -59,7 +59,7 @@ let newGameOptions = {
     let y2 = 96 + 208 - 128
     let pp2 = ''
     if (d.myGame && d.myGame.player2) pp2 = d.myGame.alias[2] || 'Player 2'
-    d.preview2 = d.game.add.text(x2, 96, pp2, {font: '20pt Arial', fill: '#FF0000', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2 = d.game.add.text(x2, 96, pp2, {font: '30pt Arial', fill: '#FF0000', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview2.setTextBounds(0, 0, 160, 80)
     d.preview2.font = 'ArcadeClassic'
     d.previewChar2 = d.game.add.image(x2, y2, 'Billy')
@@ -67,7 +67,7 @@ let newGameOptions = {
     d.previewChar2.scale.set(8, 8)
     d.previewChar2.visible = d.myGame && d.myGame.player2
     pp2 = (d.myGame && d.myGame.player2) ? 'Billy' : ''
-    d.preview2Char = d.game.add.text(x2, y2 + 256, pp2, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview2Char = d.game.add.text(x2, y2 + 256, pp2, {font: '30pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview2Char.setTextBounds(0, 0, 160, 80)
     d.preview2Char.font = 'ArcadeClassic'
 
@@ -75,7 +75,7 @@ let newGameOptions = {
     let y3 = 96 + 208 - 128
     let pp3 = ''
     if (d.myGame && d.myGame.player3) pp3 = d.myGame.alias[3] || 'Player 3'
-    d.preview3 = d.game.add.text(x3, 96, pp3, {font: '20pt Arial', fill: '#008800', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3 = d.game.add.text(x3, 96, pp3, {font: '30pt Arial', fill: '#008800', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview3.setTextBounds(0, 0, 160, 80)
     d.preview3.font = 'ArcadeClassic'
     d.previewChar3 = d.game.add.image(x3, y3, 'Black Mage')
@@ -83,7 +83,7 @@ let newGameOptions = {
     d.previewChar3.scale.set(8, 8)
     d.previewChar3.visible = d.myGame && d.myGame.player3
     pp3 = (d.myGame && d.myGame.player3) ? 'Black Mage' : ''
-    d.preview3Char = d.game.add.text(x3, y3 + 256, pp3, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview3Char = d.game.add.text(x3, y3 + 256, pp3, {font: '30pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview3Char.setTextBounds(0, 0, 160, 80)
     d.preview3Char.font = 'ArcadeClassic'
 
@@ -91,7 +91,7 @@ let newGameOptions = {
     let y4 = 96 + 208 - 128
     let pp4 = ''
     if (d.myGame && d.myGame.player4) pp4 = d.myGame.alias[4] || 'Player 4'
-    d.preview4 = d.game.add.text(x4, 96, pp4, {font: '20pt Arial', fill: '#bbbb00', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4 = d.game.add.text(x4, 96, pp4, {font: '30pt Arial', fill: '#bbbb00', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview4.setTextBounds(0, 0, 160, 80)
     d.preview4.font = 'ArcadeClassic'
     d.previewChar4 = d.game.add.image(x4, y4, 'Gale')
@@ -99,7 +99,7 @@ let newGameOptions = {
     d.previewChar4.scale.set(8, 8)
     d.previewChar4.visible = d.myGame && d.myGame.player4
     pp4 = (d.myGame && d.myGame.player4) ? 'Gale' : ''
-    d.preview4Char = d.game.add.text(x4, y4 + 256, pp4, {font: '20pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
+    d.preview4Char = d.game.add.text(x4, y4 + 256, pp4, {font: '30pt Arial', boundsAlignH: 'center', boundsAlignV: 'middle'})
     d.preview4Char.setTextBounds(0, 0, 160, 80)
     d.preview4Char.font = 'ArcadeClassic'
 
