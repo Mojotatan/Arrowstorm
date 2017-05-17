@@ -165,19 +165,22 @@ export default function createTilemap() {
   })
 
   //adding text
-  var style = { font: "18px Arial", wordWrap: false, align: "center" };
-  d.text = d.game.add.text(770, 60, "Select A Background", style)
+  var style = { font: "25px Arial", wordWrap: false, align: "center" };
+  d.text = d.game.add.text(733, 60, "Select A Background", style)
+  d.text.font = 'ArcadeClassic'
 
   // create map button
   let createStyle = { font: "15px Arial", fill: '#000000', boundsAlignH: "center", boundsAlignV: "middle" };
   let createMapBtn = d.game.add.button(736, 530, 'map-editor-btn', onClickCreate, this)
   let createMapText = d.game.add.text(0, 0, "Create Map", createStyle)
+  createMapText.font = 'ArcadeClassic'
   createMapBtn.addChild(createMapText)
   createMapText.setTextBounds(0, 0, 96, 48)
 
   // back to main menu button
   let backToMenuBtn = d.game.add.button(864, 530, 'map-editor-btn', () => d.game.state.start('menu'), this)
   let backToMenuText = d.game.add.text(0, 0, "Main Menu", createStyle)
+  backToMenuText.font = 'ArcadeClassic'
   backToMenuBtn.addChild(backToMenuText)
   backToMenuText.setTextBounds(0, 0, 96, 48)
 
