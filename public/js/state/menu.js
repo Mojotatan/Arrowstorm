@@ -63,7 +63,7 @@ let menu = {
       // font: '18px Arial',
       fill: '#212121',
       // fontWeight: 'bold',
-      width: 300,
+      width: 285,
       padding: 8,
       borderWidth: 1,
       borderColor: '#000',
