@@ -99,7 +99,7 @@ export default function createTilemap() {
     sunsetImage.visible = false
     arenaImage.visible = true
     dungeonImage.visible = false
-    me.backgroundForJSON = {file: 'sunset', scale: 1}
+    me.backgroundForJSON = {file: 'arena', scale: 1}
   }
 
   function dungeonOnClick() {
@@ -111,7 +111,7 @@ export default function createTilemap() {
     sunsetImage.visible = false
     arenaImage.visible = false
     dungeonImage.visible = true
-    me.backgroundForJSON = {file: 'sunset', scale: 1}
+    me.backgroundForJSON = {file: 'dungeon', scale: 1}
   }
 
   me.map  = d.game.add.tilemap()
@@ -220,7 +220,12 @@ function onClickCreate() {
   let finalString = JSON.stringify(finalJSON)
 
   axios.post('/maps', {name: mapName, creator, json: finalString})
-  .then(function(){
+  .then(function() {
+    return axios.get('/maps')
+  })
+  .then(maps => {
+    d.maps = maps.data.map(map => JSON.parse(map))
+    d.game.state.start('menu')
   })
 
 }
