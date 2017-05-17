@@ -53,7 +53,8 @@ let menu = {
     mapText.setTextBounds(0, 0, 300, 112)
     d.mapBtn.addChild(mapText)
 
-    d.game.add.image(748, 252, 'miniMap')
+    let miniMap = d.game.add.image(748, 252, 'miniMap')
+    miniMap.scale.set(.27, .27)
 
     // instructions
     d.questionBtn = d.game.add.button(31, 500, 'question-mark-btn', this.startHowTo, this)

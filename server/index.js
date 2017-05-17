@@ -103,7 +103,7 @@ db.sync()
 				alias: {1: alias, 2: null, 3: null, 4: null},
 				map: {page: 0, y: 412},
 				score: {1: 0, 2: 0, 3: 0, 4: 0},
-				round: 0,
+				round: 1,
 				started: false
 			}
 			socket.join(`game ${key}`)
