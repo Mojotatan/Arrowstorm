@@ -114,42 +114,42 @@ export default function createFunc() {
 
   if (d.myGame.player1) {
     let name1 = d.myGame.alias[1] || 'Player One'
-    d.game.add.text(16, 0, name1, {font: '20pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(16, 0, name1, {font: '20pt ArcadeClassic', fill: '#FFFFFF'})
     let avatar1 = d.game.add.image(6, 176, d.myGame.chars[1])
     avatar1.frame = 2
     avatar1.crop(new Phaser.Rectangle(0, 0, 20, 16))
     avatar1.scale.set(9, 9)
-    d.game.add.text(80, 112, d.myGame.score[1], {font: '48pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(80, 112, d.myGame.score[1], {font: '48pt ArcadeClassic', fill: '#FFFFFF'})
   }
 
   if (d.myGame.player2) {
     let name2 = d.myGame.alias[2] || 'Player Two'
-    d.game.add.text(848, 0, name2, {font: '20pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(848, 0, name2, {font: '20pt ArcadeClassic', fill: '#FFFFFF'})
     let avatar2 = d.game.add.image(838, 176, d.myGame.chars[2])
     avatar2.frame = 2
     avatar2.crop(new Phaser.Rectangle(0, 0, 20, 16))
     avatar2.scale.set(9, 9)
-    d.game.add.text(912, 112, d.myGame.score[2], {font: '48pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(912, 112, d.myGame.score[2], {font: '48pt ArcadeClassic', fill: '#FFFFFF'})
   }
 
   if (d.myGame.player3) {
     let name3 = d.myGame.alias[3] || 'Player Three'
-    d.game.add.text(16, 320, name3, {font: '20pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(16, 320, name3, {font: '20pt ArcadeClassic', fill: '#FFFFFF'})
     let avatar3 = d.game.add.image(6, 176 + 320, d.myGame.chars[3])
     avatar3.frame = 2
     avatar3.crop(new Phaser.Rectangle(0, 0, 20, 16))
     avatar3.scale.set(9, 9)
-    d.game.add.text(80, 112 + 320, d.myGame.score[3], {font: '48pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(80, 112 + 320, d.myGame.score[3], {font: '48pt ArcadeClassic', fill: '#FFFFFF'})
   }
 
   if (d.myGame.player4) {
     let name4 = d.myGame.alias[4] || 'Player Four'
-    d.game.add.text(848, 320, name4, {font: '20pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(848, 320, name4, {font: '20pt ArcadeClassic', fill: '#FFFFFF'})
     let avatar4 = d.game.add.image(838, 176 + 320, d.myGame.chars[4])
     avatar4.frame = 2
     avatar4.crop(new Phaser.Rectangle(0, 0, 20, 16))
     avatar4.scale.set(9, 9)
-    d.game.add.text(912, 112 + 320, d.myGame.score[4], {font: '48pt Arial', fill: '#FFFFFF'})
+    d.game.add.text(912, 112 + 320, d.myGame.score[4], {font: '48pt ArcadeClassic', fill: '#FFFFFF'})
   }
 
   d[currPlayer].shotDirection = {left: false, right: false, up: false, down: false}

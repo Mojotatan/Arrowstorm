@@ -32,6 +32,7 @@ let title = {
     d.titleText1.setTextBounds(0, 0, 496, 180)
     d.titleText1.font = 'ArcadeClassic'
     d.titleText1.visible = false
+
     d.titleText2 = d.game.add.text(528, 0, 'STORM', {fill: '#FFFFFF', fontSize: 160, boundsAlignH: 'left'})
     d.titleText2.setTextBounds(0, 0, 496, 180)
     d.titleText2.font = 'ArcadeClassic'
