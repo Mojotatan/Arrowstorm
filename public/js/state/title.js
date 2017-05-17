@@ -28,14 +28,14 @@ let title = {
     d.startGame.scale.set(2, 2)
     d.startGame.alpha = 0
 
-    d.titleText1 = d.game.add.text(0, 0, 'ARROW', {fill: '#FFFFFF', fontSize: 160, boundsAlignH: 'right'})
+    d.titleText1 = d.game.add.text(0, 0, 'ARROW', {font: '130pt ArcadeClassic', fill: '#FFFFFF', boundsAlignH: 'right'})
     d.titleText1.setTextBounds(0, 0, 496, 180)
-    d.titleText1.font = 'ArcadeClassic'
+    //d.titleText1.font = 'ArcadeClassic'
     d.titleText1.visible = false
 
-    d.titleText2 = d.game.add.text(528, 0, 'STORM', {fill: '#FFFFFF', fontSize: 160, boundsAlignH: 'left'})
+    d.titleText2 = d.game.add.text(528, 0, 'STORM', {font: '130pt ArcadeClassic', fill: '#FFFFFF', boundsAlignH: 'left'})
     d.titleText2.setTextBounds(0, 0, 496, 180)
-    d.titleText2.font = 'ArcadeClassic'
+    //d.titleText2.font = 'ArcadeClassic'
     d.titleText2.visible = false
 
     d.credits = d.game.add.text(16, 544, 'Presented by DDot Studios', {font: '30pt ArcadeClassic', fill: '#FFFFFF'})

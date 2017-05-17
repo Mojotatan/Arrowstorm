@@ -9,7 +9,7 @@ html {
   height: 100%;
   box-sizing: border-box;
 	/*background-image: url("http://sdeerwallpaper.com/Cool-Wallpapers/dark-wood-backgrounds-Is-Cool-Wallpapers.jpg");*/
-  background-image: url(/sprites/stone-brick-dark-gray.png);
+  background-image: url(/sprites/stone-brick-light-gray.png);
 }
 
 body {
@@ -36,6 +36,7 @@ li {
   height: 75px;
   background-color: #B7A182;
   text-align: center;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 20px;
+  font-family: 'ArcadeClassic';
   padding-bottom: 1em
 }
