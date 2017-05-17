@@ -8,17 +8,17 @@ let newGameOptions = {
 
     // character select
     let instrShade = d.game.add.graphics(352, 0)
-    instrShade.beginFill(0x9999ff)
+    instrShade.beginFill(0xA84A25)
     instrShade.drawRect(0, 0, 688, 96)
     instrShade.endFill()
 
     let charShade = d.game.add.graphics(352, 96)
-    charShade.beginFill(0xcccccc)
+    charShade.beginFill(0xB7A182)
     charShade.drawRect(0, 0, 688, 416)
     charShade.endFill()
 
     let rosterShade = d.game.add.graphics(352, 512)
-    rosterShade.beginFill(0x9999ff)
+    rosterShade.beginFill(0xA84A25)
     rosterShade.drawRect(0, 0, 688, 128)
     rosterShade.endFill()
 
@@ -119,7 +119,7 @@ let newGameOptions = {
 
     // map select
     let mapShade = d.game.add.graphics(0, 0)
-    mapShade.beginFill(0xccddff)
+    mapShade.beginFill(0x599199)
     mapShade.drawRect(0, 0, 352, 640)
     mapShade.endFill()
 
@@ -131,7 +131,7 @@ let newGameOptions = {
     d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '20pt Arial', fill: '#FFFFFF'})
 
     d.mapSel = d.game.add.graphics(16, 412)
-    d.mapSel.beginFill(0x0099ff)
+    d.mapSel.beginFill(0x599199)
     d.mapSel.drawRect(0, 0, 320, 32)
     d.mapSel.endFill()
 

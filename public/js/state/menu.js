@@ -71,7 +71,7 @@ let menu = {
       placeHolder: 'Enter a name',
     })
 
-    d.game.stage.setBackgroundColor('#000842')
+    d.game.stage.setBackgroundColor('#A84A25')
   },
   startGame: function () {
     newGame()
