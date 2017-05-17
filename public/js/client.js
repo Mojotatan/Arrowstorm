@@ -177,7 +177,7 @@ Client.socket.on('opponentHasDied', function(opponent){
 })
 
 Client.socket.on('opponentPickedArrow', function(arrowIdx){
-	d.arrowsArray[arrowIdx].kill()
+	if (d.arrowsArray[arrowIdx]) d.arrowsArray[arrowIdx].kill()
 })
 
 Client.socket.on('opponentHitTC', function(data){
@@ -229,8 +229,8 @@ export function arrowShot(id, player, shotDirection) {
 	Client.socket.emit('playerHasShot', {id, player, shotDirection})
 }
 
-export function playerDead(id, player) {
-	Client.socket.emit('playerHasDied', {id, player})
+export function playerDead(id, victim) {
+	Client.socket.emit('playerHasDied', {id, victim})
 }
 
 export function arrowIsDead(id, idx) {
