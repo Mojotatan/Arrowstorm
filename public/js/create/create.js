@@ -164,7 +164,7 @@ export default function createFunc() {
   d.arrowsArray = []
 
   //create treasures
-  d.treasuresArray = ['extraArrows', 'wings', 'invisibility']
+  d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'shrink']
 
   if (d.player1) {
     d.player1.treasure = {}

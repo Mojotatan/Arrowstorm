@@ -15,72 +15,36 @@ export default function updateFunc() {
     let currPlayer = d.currentPlayer
 
     //Define collisions
-    let hitPlatform1, hitPlatform2, hitPlatform3, hitPlatform4, hitSpikes1, hitSpikes2, hitSpikes3, hitSpikes4
+    let hitPlatform1, hitPlatform2, hitPlatform3, hitPlatform4
 
     if (d.player1) {
       wrap(d.player1)
       hitPlatform1 = d.game.physics.arcade.collide(d.platforms, d.player1)
-      hitSpikes1 = d.game.physics.arcade.collide(d.spikes, d.player1)
     }
     if (d.player2) {
       wrap(d.player2)
       hitPlatform2 = d.game.physics.arcade.collide(d.platforms, d.player2)
-      hitSpikes2 = d.game.physics.arcade.collide(d.spikes, d.player2)
     }
     if (d.player3) {
       wrap(d.player3)
       hitPlatform3 = d.game.physics.arcade.collide(d.platforms, d.player3)
-      hitSpikes3 = d.game.physics.arcade.collide(d.spikes, d.player3)
     }
     if (d.player4) {
       wrap(d.player4)
       hitPlatform4 = d.game.physics.arcade.collide(d.platforms, d.player4)
-      hitSpikes4 = d.game.physics.arcade.collide(d.spikes, d.player4)
     }
 
     //Spike collisions
-    if (hitSpikes1) {
-      d.player1.kill()
-      d.blood = d.game.add.sprite(d.player1.x, d.player1.y, 'blood')
+    let hitspikes = d.game.physics.arcade.collide(d.spikes, d[currPlayer])
+    if (hitSpikes) {
+      d[currPlayer].kill()
+      d.blood = d.game.add.sprite(d[currPlayer].x, d[currPlayer].y, 'blood')
       d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
       d.blood.scale.set(2, 2)
       d.blood.anchor.x = .5
       d.blood.animations.play('death')
       d.blood.animations.currentAnim.killOnComplete = true
-      d.player1.numArrows = 0
-      playerDead(d.myGame.id, currPlayer)
-    }
-    if (hitSpikes2) {
-      d.player2.kill()
-      d.blood = d.game.add.sprite(d.player2.x, d.player2.y, 'blood')
-      d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
-      d.blood.scale.set(2, 2)
-      d.blood.anchor.x = .5
-      d.blood.animations.play('death')
-      d.blood.animations.currentAnim.killOnComplete = true
-      d.player2.numArrows = 0
-      playerDead(d.myGame.id, currPlayer)
-    }
-    if (hitSpikes3) {
-      d.player3.kill()
-      d.blood = d.game.add.sprite(d.player3.x, d.player3.y, 'blood')
-      d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
-      d.blood.scale.set(2, 2)
-      d.blood.anchor.x = .5
-      d.blood.animations.play('death')
-      d.blood.animations.currentAnim.killOnComplete = true
-      d.player3.numArrows = 0
-      playerDead(d.myGame.id, currPlayer)
-    }
-    if (hitSpikes4) {
-      d.player4.kill()
-      d.blood = d.game.add.sprite(d.player4.x, d.player4.y, 'blood')
-      d.blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
-      d.blood.scale.set(2, 2)
-      d.blood.anchor.x = .5
-      d.blood.animations.play('death')
-      d.blood.animations.currentAnim.killOnComplete = true
-      d.player4.numArrows = 0
+      d[currPlayer].numArrows = 0
       playerDead(d.myGame.id, currPlayer)
     }
 
