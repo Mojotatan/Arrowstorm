@@ -19,6 +19,11 @@ export default function treasureChest(treasureHitPlayer1, treasureHitPlayer2, tr
       d.player1.invisibleStart = d.game.time.now
     } else if (d.player1.treasure.payload === 'bouncyArrow') {
       d.player1.nextArrowType = 'bouncyArrow'
+    } else if (d.player1.treasure.payload === 'shrink') {
+      d.player1.scale.set(.5, .5)
+      d.game.time.events.add(5000, function() {
+        d.player1.scale.set(1.5, 1.5)
+      })
     }
 
     d.treasure.kill()
@@ -41,6 +46,11 @@ export default function treasureChest(treasureHitPlayer1, treasureHitPlayer2, tr
       d.player2.invisibleStart = d.game.time.now
     } else if (d.player2.treasure.payload === 'bouncyArrow') {
       d.player2.nextArrowType = 'bouncyArrow'
+    } else if (d.player2.treasure.payload === 'shrink') {
+      d.player2.scale.set(.5, .5)
+      d.game.time.events.add(5000, function() {
+        d.player2.scale.set(1.5, 1.5)
+      })
     }
 
     d.treasure.kill()
@@ -62,6 +72,11 @@ export default function treasureChest(treasureHitPlayer1, treasureHitPlayer2, tr
       d.player3.invisibleStart = d.game.time.now
     } else if (d.player3.treasure.payload === 'bouncyArrow') {
       d.player3.nextArrowType = 'bouncyArrow'
+    } else if (d.player3.treasure.payload === 'shrink') {
+      d.player3.scale.set(.5, .5)
+      d.game.time.events.add(5000, function() {
+        d.player3.scale.set(1.5, 1.5)
+      })
     }
 
     d.treasure.kill()
@@ -83,6 +98,11 @@ export default function treasureChest(treasureHitPlayer1, treasureHitPlayer2, tr
       d.player4.invisibleStart = d.game.time.now
     } else if (d.player4.treasure.payload === 'bouncyArrow') {
       d.player4.nextArrowType = 'bouncyArrow'
+    } else if (d.player4.treasure.payload === 'shrink') {
+      d.player4.scale.set(.5, .5)
+      d.game.time.events.add(5000, function() {
+        d.player4.scale.set(1.5, 1.5)
+      })
     }
 
     d.treasure.kill()
