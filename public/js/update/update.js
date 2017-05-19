@@ -35,7 +35,7 @@ export default function updateFunc() {
     }
 
     //Spike collisions
-    let hitspikes = d.game.physics.arcade.collide(d.spikes, d[currPlayer])
+    let hitSpikes = d.game.physics.arcade.collide(d.spikes, d[currPlayer])
     if (hitSpikes) {
       d[currPlayer].kill()
       d.blood = d.game.add.sprite(d[currPlayer].x, d[currPlayer].y, 'blood')
