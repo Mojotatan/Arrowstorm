@@ -71,7 +71,7 @@ db.sync()
 			let players = getAllPlayers(allGames[game])
 			console.log(players)
 			players.forEach(player => {
-				if (player === socket.id) {
+				if (allGames[game][player] === socket.id) {
 					allGames[game][player] = null
 					allGames[game].alias[player.slice(-1)] = null
 					socket.leave(`game ${allGames[game].id}`)
