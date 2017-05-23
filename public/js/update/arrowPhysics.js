@@ -26,85 +26,27 @@ export default function arrowPhysics() {
     }
 
     if (arrow.deploy) {
-      if (d.player1 && d.game.physics.arcade.collide(arrow, d.player1)) {
-        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
-          d.player1.kill()
-          playerDead(d.myGame.id, 'player1')
-          let blood = d.game.add.sprite(d.player1.x, d.player1.y, 'blood')
-          blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
-          blood.scale.set(2, 2)
-          blood.anchor.x = .5
-          blood.animations.play('death')
-          blood.animations.currentAnim.killOnComplete = true
-          d.player1.numArrows = 0
-        } else {
-          arrow.kill()
-          arrowIsDead(d.myGame.id, idx)
-          d.arrowsArray.push(arrow)
-          d.player1.numArrows++
-          appendArrowDisplay('player1', d.player1.numArrows)
+      d.players.forEach(player => {
+        if (d.game.physics.arcade.collide(arrow, d[player])) {
+          if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
+            d[player].kill()
+            playerDead(d.myGame.id, player)
+            d[player].numArrows = 0
+            let blood = d.game.add.sprite(d[player].x, d[player].y, 'blood')
+            blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
+            blood.scale.set(2, 2)
+            blood.anchor.x = .5
+            blood.animations.play('death')
+            blood.animations.currentAnim.killOnComplete = true
+          } else {
+            arrow.kill()
+            arrowIsDead(d.myGame.id, idx)
+            d.arrowsArray.push(arrow)
+            d[player].numArrows++
+            appendArrowDisplay(player, d[player].numArrows)
+          }
         }
-      }
-
-      if (d.player2 && d.game.physics.arcade.collide(arrow, d.player2)) {
-        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
-          d.player2.kill()
-          playerDead(d.myGame.id, 'player2')
-          let blood = d.game.add.sprite(d.player2.x, d.player2.y, 'blood')
-          blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
-          blood.scale.set(2, 2)
-          blood.anchor.x = .5
-          blood.animations.play('death')
-          blood.animations.currentAnim.killOnComplete = true
-          d.player2.numArrows = 0
-        } else {
-          arrow.kill()
-          arrowIsDead(d.myGame.id, idx)
-          d.arrowsArray.push(arrow)
-          d.player2.numArrows++
-          appendArrowDisplay('player2', d.player2.numArrows)
-        }
-      }
-
-      if (d.player3 && d.game.physics.arcade.collide(arrow, d.player3)) {
-        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
-          d.player3.kill()
-          playerDead(d.myGame.id, 'player3')
-          let blood = d.game.add.sprite(d.player3.x, d.player3.y, 'blood')
-          blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
-          blood.scale.set(2, 2)
-          blood.anchor.x = .5
-          blood.animations.play('death')
-          blood.animations.currentAnim.killOnComplete = true
-          d.player3.numArrows = 0
-        } else {
-          arrow.kill()
-          arrowIsDead(d.myGame.id, idx)
-          d.arrowsArray.push(arrow)
-          d.player3.numArrows++
-          appendArrowDisplay('player3', d.player3.numArrows)
-        }
-      }
-
-      if (d.player4 && d.game.physics.arcade.collide(arrow, d.player4)) {
-        if (arrow.body.velocity.x !== 0 || arrow.body.velocity.y !== 0 || arrow.type === 'bouncyArrow') {
-          d.player4.kill()
-          playerDead(d.myGame.id, 'player4')
-          let blood = d.game.add.sprite(d.player4.x, d.player4.y, 'blood')
-          blood.animations.add('death', [0, 1, 2, 3, 4, 5], 20, false)
-          blood.scale.set(2, 2)
-          blood.anchor.x = .5
-          blood.animations.play('death')
-          blood.animations.currentAnim.killOnComplete = true
-          d.player4.numArrows = 0
-        } else {
-          arrow.kill()
-          arrowIsDead(d.myGame.id, idx)
-          d.arrowsArray.push(arrow)
-          d.player4.numArrows++
-          appendArrowDisplay('player4', d.player4.numArrows)
-        }
-      }
+      })
     }
   })
 }

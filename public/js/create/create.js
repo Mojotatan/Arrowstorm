@@ -2,6 +2,7 @@ import Client from '../client'
 import createPlayer from './player'
 import fireArrow from '../update/fireArrow'
 import d from '../game'
+import {shade} from '../util'
 import createTreasureChest from './createTreasureChest'
 import {removeArrowDisplay} from '../update/arrowDisplay'
 
@@ -20,29 +21,17 @@ export default function createFunc() {
     }
 
   // draw style rectangles
-  let p1shade = d.game.add.graphics(0, 0)
   let fill1 = d.myGame.player1 ? 0x000088 : 0x373737
-  p1shade.beginFill(fill1)
-  p1shade.drawRect(0, 0, 192, 320)
-  p1shade.endFill()
+  shade(0, 0, 192, 320, fill1)
 
-  let p2shade = d.game.add.graphics(832, 0)
   let fill2 = d.myGame.player2 ? 0x880000 : 0x373737
-  p2shade.beginFill(fill2)
-  p2shade.drawRect(0, 0, 192, 320)
-  p2shade.endFill()
+  shade(832, 0, 192, 320, fill2)
 
-  let p3shade = d.game.add.graphics(0, 320)
   let fill3 = d.myGame.player3 ? 0x008800 : 0x373737
-  p3shade.beginFill(fill3)
-  p3shade.drawRect(0, 0, 192, 320)
-  p3shade.endFill()
+  shade(0, 320, 192, 320, fill3)
 
-  let p4shade = d.game.add.graphics(832, 320)
   let fill4 = d.myGame.player4 ? 0xbbbb00 : 0x373737
-  p4shade.beginFill(fill4)
-  p4shade.drawRect(0, 0, 192, 320)
-  p4shade.endFill()
+  shade(832, 320, 192, 320, fill4)
 
   //parse map data
   let map = d.map
@@ -90,11 +79,12 @@ export default function createFunc() {
   })
 
   // create players
-  let playerCount = 0
-  if (d.myGame.player1) playerCount++
-  if (d.myGame.player2) playerCount++
-  if (d.myGame.player3) playerCount++
-  if (d.myGame.player4) playerCount++
+  let players = ['player1', 'player2', 'player3', 'player4']
+  d.players = players.filter(player => {
+    return d.myGame[player]
+  })
+
+  let playerCount = d.players.length
 
   let starts = [map.p1Start, map.p2Start]
   if (playerCount > 2) {
@@ -107,10 +97,9 @@ export default function createFunc() {
     return starts.splice(rng, 1)[0]
   }
 
-  if (d.myGame.player1) createPlayer(d, d.myGame.chars[1], 'player1', rStart())
-  if (d.myGame.player2) createPlayer(d, d.myGame.chars[2], 'player2', rStart())
-  if (d.myGame.player3) createPlayer(d, d.myGame.chars[3], 'player3', rStart())
-  if (d.myGame.player4) createPlayer(d, d.myGame.chars[4], 'player4', rStart())
+  d.players.forEach(player => {
+    createPlayer(d.myGame.chars[player.slice(-1)], player, rStart())
+  })
 
   if (d.myGame.player1) {
     let name1 = d.myGame.alias[1] || 'Player One'
@@ -157,31 +146,16 @@ export default function createFunc() {
   d.spaceBar = d.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR)
   d.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR)
   d.spaceBar.onDown.add(() => {
-    fireArrow(d, false, null, d[currPlayer].shotDirection)
+    fireArrow(false, null, d[currPlayer].shotDirection)
     removeArrowDisplay(currPlayer)
   })
 
   d.arrowsArray = []
 
-  //create treasures
-  d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'shrink']
-
-  if (d.player1) {
-    d.player1.treasure = {}
-    d.player1.nextArrowType = 'regular'
-  }
-  if (d.player2) {
-    d.player2.treasure = {}
-    d.player2.nextArrowType = 'regular'
-  }
-  if (d.player3) {
-    d.player3.treasure = {}
-    d.player3.nextArrowType = 'regular'
-  }
-  if (d.player4) {
-    d.player4.treasure = {}
-    d.player4.nextArrowType = 'regular'
-  }
+  d.players.forEach(player => {
+    d[player].treasure = {}
+    d[player].nextArrowType = 'regular'
+  })
 
   d.treasure = null
   d.game.time.events.add(4000, function() {createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)})

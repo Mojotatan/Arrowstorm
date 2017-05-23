@@ -48,6 +48,7 @@ db.sync()
 	let allGames = {}
 	let history = {}
 
+	// generates a random 3 digit alphabetic key
 	const generateId = () => {
 		let alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 		let a = alpha[Math.floor(Math.random() * 26)]
@@ -58,30 +59,26 @@ db.sync()
 		else return abc
 	}
 
+	const getAllPlayers = (obj) => {
+		let players = ['player1', 'player2', 'player3', 'player4']
+		return players.filter(player => {
+			return obj[player]
+		})
+	}
+
 	const clearGames = (socket) => {
 		Object.keys(allGames).forEach(game => {
-			if (allGames[game].player1 === socket.id) {
-				allGames[game].player1 = null
-				allGames[game].alias[1] = null
-				socket.leave(`game ${allGames[game].id}`)
-				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
-			} else if (allGames[game].player2 === socket.id) {
-				allGames[game].player2 = null
-				allGames[game].alias[2] = null
-				socket.leave(`game ${allGames[game].id}`)
-				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
-			} else if (allGames[game].player3 === socket.id) {
-				allGames[game].player3 = null
-				allGames[game].alias[3] = null
-				socket.leave(`game ${allGames[game].id}`)
-				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
-			} else if (allGames[game].player4 === socket.id) {
-				allGames[game].player4 = null
-				allGames[game].alias[4] = null
-				socket.leave(`game ${allGames[game].id}`)
-				io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
-			}
-			if (!allGames[game].player1 && !allGames[game].player2 && !allGames[game].player3 && !allGames[game].player4) {
+			let players = getAllPlayers(allGames[game])
+			console.log(players)
+			players.forEach(player => {
+				if (allGames[game][player] === socket.id) {
+					allGames[game][player] = null
+					allGames[game].alias[player.slice(-1)] = null
+					socket.leave(`game ${allGames[game].id}`)
+					io.in(`game ${allGames[game].id}`).emit('playerJoined', allGames[game])
+				}
+			})
+			if (getAllPlayers(allGames[game]).length === 0) {
 				delete allGames[game] // causes some issues when a game is deleted but one player in menu still sees it
 			}
 		})
@@ -104,7 +101,8 @@ db.sync()
 				map: {page: 0, y: 412},
 				score: {1: 0, 2: 0, 3: 0, 4: 0},
 				round: 1,
-				started: false
+				started: false,
+				rng: {}
 			}
 			socket.join(`game ${key}`)
 			console.log('joining channel', `game ${key}`)
@@ -113,25 +111,14 @@ db.sync()
 		})
 		socket.on('joinGame', function(data) {
 			if (allGames[data.id]) {
-				if (!allGames[data.id].player1) {
-					allGames[data.id].player1 = socket.id
-					allGames[data.id].alias[1] = data.alias || null
-					socket.emit('assignedToPlayer', {game: allGames[data.id], player: 'player1'})
-					socket.join(`game ${data.id}`)
-				} else if (!allGames[data.id].player2) {
-					allGames[data.id].player2 = socket.id
-					allGames[data.id].alias[2] = data.alias || null
-					socket.emit('assignedToPlayer', {game: allGames[data.id], player: 'player2'})
-					socket.join(`game ${data.id}`)
-				} else if (!allGames[data.id].player3) {
-					allGames[data.id].player3 = socket.id
-					allGames[data.id].alias[3] = data.alias || null
-					socket.emit('assignedToPlayer', {game: allGames[data.id], player: 'player3'})
-					socket.join(`game ${data.id}`)
-				} else if (!allGames[data.id].player4) {
-					allGames[data.id].player4 = socket.id
-					allGames[data.id].alias[4] = data.alias || null
-					socket.emit('assignedToPlayer', {game: allGames[data.id], player: 'player4'})
+				let players = ['player1', 'player2', 'player3', 'player4']
+				players = players.filter(player => {
+					return (!allGames[data.id][player])
+				})
+				if (players[0]) {
+					allGames[data.id][players[0]] = socket.id
+					allGames[data.id].alias[players[0].slice(-1)] = data.alias || null
+					socket.emit('assignedToPlayer', {game: allGames[data.id], player: players[0]})
 					socket.join(`game ${data.id}`)
 				}
 
@@ -166,10 +153,10 @@ db.sync()
 				allGames[data.id].round++
 				allGames[data.id].score = data.score
 				let dead = []
-				if (history[data.id]['player1'] < history[data.id].length - 120) dead.push('player1')
-				if (history[data.id]['player2'] < history[data.id].length - 120) dead.push('player2')
-				if (history[data.id]['player3'] < history[data.id].length - 120) dead.push('player3')
-				if (history[data.id]['player4'] < history[data.id].length - 120) dead.push('player4')
+				let players = getAllPlayers(allGames[data.id])
+				players.forEach(player => {
+					if (history[data.id][player] < history[data.id].length - 120) dead.push(player)
+				})
 				io.in(`game ${data.id}`).emit('score', {myGame: allGames[data.id], history: history[data.id], dead})
 			}
 		})
@@ -179,17 +166,14 @@ db.sync()
 			if (allGames[data.id]) {
 				if (allGames[data.id].player1 === socket.id) {
 					allGames[data.id].chars[1] = data.char
-					io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
 				} else if (allGames[data.id].player2 === socket.id) {
 					allGames[data.id].chars[2] = data.char
-					io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
 				} else if (allGames[data.id].player3 === socket.id) {
 					allGames[data.id].chars[3] = data.char
-					io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
 				} else if (allGames[data.id].player4 === socket.id) {
 					allGames[data.id].chars[4] = data.char
-					io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
 				}
+				io.in(`game ${data.id}`).emit('optionsUpdate', allGames[data.id])
 			}
 		})
 		socket.on('mapSel', function(data) {
@@ -203,15 +187,11 @@ db.sync()
 		socket.on('playerHasMoved', function(data){
 			if (allGames[data.id]) {
 				socket.broadcast.to(`game ${data.id}`).emit('opponentHasMoved', data)
-				let log = Object.assign({}, data, {action: 'move'})
-				if (allGames[data.id].player1 === socket.id) log.player = 'player1'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player2'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player3'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player4'
 
 				// push data to history
 				// if the last history action is from the other player, it combines the two action states
 				// to keep the replay fast
+				let log = Object.assign({}, data, {action: 'move'})
 				let eot = history[data.id].length - 1
 				let dupes = history[data.id][eot].filter(entry => {return entry.player === log.player})
 				if (dupes.length === 0) {
@@ -224,13 +204,9 @@ db.sync()
 		socket.on('playerHasShot', function(data){
 			if (allGames[data.id]) {
 				socket.broadcast.to(`game ${data.id}`).emit('opponentHasShot', data)
-				let log = Object.assign({}, data, {action: 'shot'})
-				if (allGames[data.id].player1 === socket.id) log.player = 'player1'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player2'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player3'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player4'
 
 				// push data to history
+				let log = Object.assign({}, data, {action: 'shot'})
 				let eot = history[data.id].length - 1
 				let dupes = history[data.id][eot].filter(entry => {return entry.player === log.player})
 				if (dupes.length === 0) {
@@ -243,13 +219,9 @@ db.sync()
 		socket.on('playerHasDied', function(data){
 			if (allGames[data.id]) {
 				history[data.id][data.victim] = history[data.id][data.victim] || history[data.id].length
-				let log = Object.assign({}, data, {action: 'death'})
-				if (allGames[data.id].player1 === socket.id) log.player = 'player1'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player2'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player3'
-				else if (allGames[data.id].player1 === socket.id) log.player = 'player4'
 
 				// push data to history
+				let log = Object.assign({}, data, {action: 'death'})
 				let eot = history[data.id].length - 1
 				let dupes = history[data.id][eot].filter(entry => {return entry.player === log.player})
 				if (dupes.length === 0) {

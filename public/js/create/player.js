@@ -1,6 +1,7 @@
+import d from '../game'
 import {appendArrowDisplay} from '../update/arrowDisplay'
 
-export default function createPlayer (d, spriteName, player, position) {
+export default function createPlayer (spriteName, player, position) {
   // character sprites are 20 by 32
 
   d[player] = d.game.add.sprite(position.x, position.y, spriteName)
