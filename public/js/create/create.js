@@ -2,7 +2,7 @@ import Client from '../client'
 import createPlayer from './player'
 import fireArrow from '../update/fireArrow'
 import d from '../game'
-import shade from '../util'
+import {shade} from '../util'
 import createTreasureChest from './createTreasureChest'
 import {removeArrowDisplay} from '../update/arrowDisplay'
 
@@ -153,7 +153,6 @@ export default function createFunc() {
   d.arrowsArray = []
 
   //create treasures
-  d.treasuresArray = ['extraArrows', 'wings', 'invisibility', 'shrink']
 
   if (d.player1) {
     d.player1.treasure = {}

@@ -1,4 +1,5 @@
 import d from '../game'
+import {shade} from '../util'
 
 export default function createTileSelector() {
 
@@ -11,7 +12,9 @@ export default function createTileSelector() {
   me.tileSelectorBackground.drawRect(672, 0, 32, 640)
   me.tileSelectorBackground.endFill()
 
+  console.log(d.mapEditor)
   me.tileSelector.add(me.tileSelectorBackground)
+  console.log(d.mapEditor)
 
   createTile(672, 0, 'brick')
   createTile(672, 32, 'cobble')

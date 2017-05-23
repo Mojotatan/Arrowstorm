@@ -1,5 +1,5 @@
-import {findA} from '../util'
 import fireArrow from './fireArrow'
+import aim from './aim'
 import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, hitTC, point} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
@@ -68,20 +68,27 @@ export default function updateFunc() {
       if (d.treasure.body.velocity.y > 1000) d.treasure.body.velocity.y = 1000
 
       // treasureChest details and logic
-      if (treasureHitPlayer1 || treasureHitPlayer2 || treasureHitPlayer3 || treasureHitPlayer4 ) {
-
-        treasureChest(treasureHitPlayer1, treasureHitPlayer2, treasureHitPlayer3, treasureHitPlayer4)
-
-        if (treasureHitPlayer1 && d.currentPlayer === 'player1') {
+      if (treasureHitPlayer1) {
+        treasureChest('player1')
+        if (d.currentPlayer === 'player1') {
           hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
         }
-        else if (treasureHitPlayer2 && d.currentPlayer === 'player2') {
+      }
+      else if (treasureHitPlayer2) {
+        treasureChest('player2')
+        if (d.currentPlayer === 'player2') {
           hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
         }
-        else if (treasureHitPlayer3 && d.currentPlayer === 'player3') {
+      }
+      else if (treasureHitPlayer3) {
+        treasureChest('player3')
+        if (d.currentPlayer === 'player3') {
           hitTC(d.myGame.id, d.player3.treasure.payload, "player3")
         }
-        else if (treasureHitPlayer4 && d.currentPlayer === 'player4') {
+      }
+      else if (treasureHitPlayer4) {
+        treasureChest('player4')
+        if (d.currentPlayer === 'player4') {
           hitTC(d.myGame.id, d.player4.treasure.payload, "player4")
         }
       }
@@ -159,107 +166,15 @@ export default function updateFunc() {
       d[currPlayer].body.velocity.y = -300
     }
 
-    // you can turn your player by either moving in a direction or by aiming in a direction
-    // the direction you aim in takes precedent over the direction you move in
-    // which allows for strafing
-    if (d.aimLeft.isDown) {
-      if (d[currPlayer].scale.x < 0) d[currPlayer].scale.x *= -1
-    }
-    else if (d.aimRight.isDown) {
-      if (d[currPlayer].scale.x > 0) d[currPlayer].scale.x *= -1
-    }
-
-    // for the diagonal directions
-    let distanceFromCenter = findA(8)
-
-    if (d.aimDown.isDown) {
-      if (d.aimDown.isDown && d.aimLeft.isDown) {
-        d[currPlayer].bow.rotation = -.785
-        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 + distanceFromCenter)
-      }
-      else if (d.aimDown.isDown && d.aimRight.isDown) {
-        d[currPlayer].bow.rotation = -.785
-        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 + distanceFromCenter)
-      }
-      else {
-        d[currPlayer].bow.rotation = -1.57
-        d[currPlayer].bow.position.set(10, 24)
-      }
-    }
-    if (d.aimUp.isDown) {
-      if (d.aimUp.isDown && d.aimLeft.isDown) {
-        d[currPlayer].bow.rotation = .785
-        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 - distanceFromCenter)
-      }
-      else if (d.aimUp.isDown && d.aimRight.isDown) {
-        d[currPlayer].bow.rotation = .785
-        d[currPlayer].bow.position.set(10 - distanceFromCenter, 16 - distanceFromCenter)
-      }
-      else {
-        d[currPlayer].bow.rotation = 1.57
-        d[currPlayer].bow.position.set(10, 8)
-      }
-    }
+    // aiming the bow
+    aim()
 
     // arrow collisions
     arrowPhysics()
 
-    if (d.player1 && d.player1.wings === true && d.game.time.now - d.player1.wingStart > 5000) {
-      d.player1.wings = false
-      d.player1.wingLeft.kill()
-      d.player1.wingRight.kill()
-    }
-
-    if (d.player2 && d.player2.wings === true && d.game.time.now - d.player2.wingStart > 5000) {
-      d.player2.wings = false
-      d.player2.wingLeft.kill()
-      d.player2.wingRight.kill()
-    }
-
-    if (d.player3 && d.player3.wings === true && d.game.time.now - d.player3.wingStart > 5000) {
-      d.player3.wings = false
-      d.player3.wingLeft.kill()
-      d.player3.wingRight.kill()
-    }
-
-    if (d.player4 && d.player4.wings === true && d.game.time.now - d.player4.wingStart > 5000) {
-      d.player4.wings = false
-      d.player4.wingLeft.kill()
-      d.player4.wingRight.kill()
-    }
-
-    if (d.player1 && d.player1.invisibility === true && d.game.time.now - d.player1.invisibleStart > 5000) {
-      d.player1.invisibility = false
-      d.player1.alpha = 1
-    }
-
-    if (d.player2 && d.player2.invisibility === true && d.game.time.now - d.player2.invisibleStart > 5000) {
-      d.player2.invisibility = false
-      d.player2.alpha = 1
-    }
-
-    if (d.player3 && d.player3.invisibility === true && d.game.time.now - d.player3.invisibleStart > 5000) {
-      d.player3.invisibility = false
-      d.player3.alpha = 1
-    }
-
-    if (d.player4 && d.player4.invisibility === true && d.game.time.now - d.player4.invisibleStart > 5000) {
-      d.player4.invisibility = false
-      d.player4.alpha = 1
-    }
-
-    if (d.currentPlayer === 'player1') {
-      playerMoved(d.myGame.id, d.currentPlayer, d.player1.x, d.player1.y, d.player1.frame, d.player1.scale.x, d.player1.bow.position, d.player1.bow.rotation) //just sending the scale.x not the entire obj
-    }
-    else if (d.currentPlayer === 'player2') {
-      playerMoved(d.myGame.id, d.currentPlayer, d.player2.x, d.player2.y, d.player2.frame, d.player2.scale.x, d.player2.bow.position, d.player2.bow.rotation)
-    }
-    else if (d.currentPlayer === 'player3') {
-      playerMoved(d.myGame.id, d.currentPlayer, d.player3.x, d.player3.y, d.player3.frame, d.player3.scale.x, d.player3.bow.position, d.player3.bow.rotation)
-    }
-    else if (d.currentPlayer === 'player4') {
-      playerMoved(d.myGame.id, d.currentPlayer, d.player4.x, d.player4.y, d.player4.frame, d.player4.scale.x, d.player4.bow.position, d.player4.bow.rotation)
-    }
+    // send your movement to server
+    playerMoved(d.myGame.id, d.currentPlayer, d[player].x, d[player].y, d[player].frame, d[player].scale.x, d[player].bow.position, d[player].bow.rotation)
+    
   }
 
   let maxAlive = 0

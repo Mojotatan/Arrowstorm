@@ -1,5 +1,5 @@
 import d from '../game'
-import shade from '../util'
+import {shade} from '../util'
 import {preview, renderMaps, getPreview} from '../update/preview'
 import {letsGo, mapSel, chooseChar, leaveGame} from '../client'
 
@@ -118,7 +118,7 @@ let newGameOptions = {
 
     // map shading
     shade(0, 0, 352, 640, 0x599199)
-    shade(0, 288, 352, 288, 0x373737)
+    shade(0, 352, 352, 288, 0x373737)
 
     let mapSelectText = d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '30pt Arial', fill: '#FFFFFF'})
     mapSelectText.font = 'ArcadeClassic'
