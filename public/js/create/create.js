@@ -79,11 +79,12 @@ export default function createFunc() {
   })
 
   // create players
-  let playerCount = 0
-  if (d.myGame.player1) playerCount++
-  if (d.myGame.player2) playerCount++
-  if (d.myGame.player3) playerCount++
-  if (d.myGame.player4) playerCount++
+  let players = ['player1', 'player2', 'player3', 'player4']
+  d.players = players.filter(player => {
+    return d.myGame[player]
+  })
+
+  let playerCount = d.players.length
 
   let starts = [map.p1Start, map.p2Start]
   if (playerCount > 2) {
@@ -96,10 +97,9 @@ export default function createFunc() {
     return starts.splice(rng, 1)[0]
   }
 
-  if (d.myGame.player1) createPlayer(d, d.myGame.chars[1], 'player1', rStart())
-  if (d.myGame.player2) createPlayer(d, d.myGame.chars[2], 'player2', rStart())
-  if (d.myGame.player3) createPlayer(d, d.myGame.chars[3], 'player3', rStart())
-  if (d.myGame.player4) createPlayer(d, d.myGame.chars[4], 'player4', rStart())
+  d.players.forEach(player => {
+    createPlayer(d.myGame.chars[player.slice(-1)], player, rStart())
+  })
 
   if (d.myGame.player1) {
     let name1 = d.myGame.alias[1] || 'Player One'
@@ -152,24 +152,10 @@ export default function createFunc() {
 
   d.arrowsArray = []
 
-  //create treasures
-
-  if (d.player1) {
-    d.player1.treasure = {}
-    d.player1.nextArrowType = 'regular'
-  }
-  if (d.player2) {
-    d.player2.treasure = {}
-    d.player2.nextArrowType = 'regular'
-  }
-  if (d.player3) {
-    d.player3.treasure = {}
-    d.player3.nextArrowType = 'regular'
-  }
-  if (d.player4) {
-    d.player4.treasure = {}
-    d.player4.nextArrowType = 'regular'
-  }
+  d.players.forEach(player => {
+    d[player].treasure = {}
+    d[player].nextArrowType = 'regular'
+  })
 
   d.treasure = null
   d.game.time.events.add(4000, function() {createTreasureChest(map.treasureSpawn.x, map.treasureSpawn.y)})

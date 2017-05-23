@@ -6,6 +6,8 @@ export default function aim() {
   // the direction you aim in takes precedent over the direction you move in
   // which allows for strafing
 
+  let currPlayer = d.currentPlayer
+
   if (d.aimLeft.isDown) {
     if (d[currPlayer].scale.x < 0) d[currPlayer].scale.x *= -1
   }

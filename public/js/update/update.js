@@ -1,12 +1,12 @@
 import fireArrow from './fireArrow'
 import aim from './aim'
-import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, hitTC, point} from '../client'
+import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, point} from '../client'
 import d, { localState } from '../game'
 import wrap from './wrap'
-import createTreasureChest from '../create/createTreasureChest'
 import playerAim from './playerAim'
 import arrowPhysics from './arrowPhysics'
-import treasureChest from './treasureChest'
+import treasurePhysics from './treasurePhysics'
+import movement from './movement'
 
 //import Client from '../client'
 
@@ -15,24 +15,11 @@ export default function updateFunc() {
     let currPlayer = d.currentPlayer
 
     //Define collisions
-    let hitPlatform1, hitPlatform2, hitPlatform3, hitPlatform4
-
-    if (d.player1) {
-      wrap(d.player1)
-      hitPlatform1 = d.game.physics.arcade.collide(d.platforms, d.player1)
-    }
-    if (d.player2) {
-      wrap(d.player2)
-      hitPlatform2 = d.game.physics.arcade.collide(d.platforms, d.player2)
-    }
-    if (d.player3) {
-      wrap(d.player3)
-      hitPlatform3 = d.game.physics.arcade.collide(d.platforms, d.player3)
-    }
-    if (d.player4) {
-      wrap(d.player4)
-      hitPlatform4 = d.game.physics.arcade.collide(d.platforms, d.player4)
-    }
+    d.players.forEach(player => {
+      wrap(d[player])
+      let hitPlatform = d.game.physics.arcade.collide(d.platforms, d[player])
+      if (player === currPlayer) d.amIGrounded = hitPlatform
+    })
 
     //Spike collisions
     let hitSpikes = d.game.physics.arcade.collide(d.spikes, d[currPlayer])
@@ -51,51 +38,9 @@ export default function updateFunc() {
     if (d.treasure) {
       wrap(d.treasure)
       // Treasure chest collisions
-      let treasureHitPlatforms = d.game.physics.arcade.collide(d.treasure, d.platforms)
-      let treasureHitPlayer1, treasureHitPlayer2, treasureHitPlayer3, treasureHitPlayer4
-      if (d.player1) treasureHitPlayer1 = d.game.physics.arcade.collide(d.treasure, d.player1)
-      if (d.player2) treasureHitPlayer2 = d.game.physics.arcade.collide(d.treasure, d.player2)
-      if (d.player3) treasureHitPlayer3 = d.game.physics.arcade.collide(d.treasure, d.player3)
-      if (d.player4) treasureHitPlayer4 = d.game.physics.arcade.collide(d.treasure, d.player4)
-
-      if (treasureHitPlatforms) {
-        d.treasure.body.velocity.x = 0
-        d.treasure.body.velocity.y = 0
-        d.treasure.body.acceleration = 0
-        d.treasure.body.gravity.y = 0
-        d.treasure.body.immovable = true
-      }
-      if (d.treasure.body.velocity.y > 1000) d.treasure.body.velocity.y = 1000
-
-      // treasureChest details and logic
-      if (treasureHitPlayer1) {
-        treasureChest('player1')
-        if (d.currentPlayer === 'player1') {
-          hitTC(d.myGame.id, d.player1.treasure.payload, "player1")
-        }
-      }
-      else if (treasureHitPlayer2) {
-        treasureChest('player2')
-        if (d.currentPlayer === 'player2') {
-          hitTC(d.myGame.id, d.player2.treasure.payload, "player2")
-        }
-      }
-      else if (treasureHitPlayer3) {
-        treasureChest('player3')
-        if (d.currentPlayer === 'player3') {
-          hitTC(d.myGame.id, d.player3.treasure.payload, "player3")
-        }
-      }
-      else if (treasureHitPlayer4) {
-        treasureChest('player4')
-        if (d.currentPlayer === 'player4') {
-          hitTC(d.myGame.id, d.player4.treasure.payload, "player4")
-        }
-      }
+      treasurePhysics()
     }
 
-    // initializing cursor
-    let cursors = d.game.input.keyboard.createCursorKeys();
     playerAim(currPlayer)
 
 
@@ -111,60 +56,16 @@ export default function updateFunc() {
       }
     }
 
-    // max downward velocity
-    if (d[currPlayer].body.velocity.y > 1000) d[currPlayer].body.velocity.y = 1000
+    if (d[currPlayer].body.velocity.y > 1000) d[currPlayer].body.velocity.y = 1000 // max downward velocity
 
     d[currPlayer].bow.rotation = 0
     d[currPlayer].bow.position.set(2, 16)
 
-    // d[currPlayer].body.velocity.y = (d[currPlayer].body.touching.left || d[currPlayer].body.touching.right) && d[currPlayer].body.velocity.y > 0 ? 6 : d[currPlayer].body.velocity.y
     d[currPlayer].body.gravity.y = (d[currPlayer].body.touching.left || d[currPlayer].body.touching.right) && d[currPlayer].body.velocity.y > 0 ? 50 : 1200
 
-    if (cursors.left.isDown && !d[currPlayer].forceJump) {
-      d[currPlayer].body.velocity.x += d[currPlayer].body.touching.down ? -300 : -150
-      if (d[currPlayer].jump === 'right' && d[currPlayer].body.velocity.x < 150) d[currPlayer].body.velocity.x = 150
 
-      if (d[currPlayer].scale.x < 0) d[currPlayer].scale.x *= -1
-
-      d[currPlayer].animations.play('walk')
-
-    }
-    else if (cursors.right.isDown && !d[currPlayer].forceJump) {
-      //  Move to the right
-      d[currPlayer].body.velocity.x += d[currPlayer].body.touching.down ? 300 : 150
-      if (d[currPlayer].jump === 'left' && d[currPlayer].body.velocity.x > -150) d[currPlayer].body.velocity.x = -150
-
-      if (d[currPlayer].scale.x > 0) d[currPlayer].scale.x *= -1
-
-      d[currPlayer].animations.play('walk')
-    }
-    else {
-      d[currPlayer].animations.stop()
-      d[currPlayer].frame = 2
-    }
-
-    let amIGrounded
-    if (currPlayer === 'player1') amIGrounded = hitPlatform1
-    else if (currPlayer === 'player2') amIGrounded = hitPlatform2
-    else if (currPlayer === 'player3') amIGrounded = hitPlatform3
-    else if (currPlayer === 'player4') amIGrounded = hitPlatform4
-
-    if (cursors.up.isDown && d[currPlayer].body.touching.down && amIGrounded) {
-      d[currPlayer].body.velocity.y = -600
-    }
-    else if (cursors.up.isDown && !d[currPlayer].jump && (d[currPlayer].body.touching.right || d[currPlayer].body.touching.left) && amIGrounded) {
-      d[currPlayer].body.velocity.y = -600
-      let dir = d[currPlayer].body.touching.right ? -1 : 1
-      d[currPlayer].body.velocity.x = 300 * dir
-      d[currPlayer].scale.x *= -1
-      d[currPlayer].forceJump = true
-      d[currPlayer].jump = d[currPlayer].body.touching.right ? 'left' : 'right'
-    }
-
-    // flying with wings
-    if (cursors.up.isDown && d[currPlayer].treasure.payload === 'wings' && d[currPlayer].wings === true) {
-      d[currPlayer].body.velocity.y = -300
-    }
+    // controls
+    movement()
 
     // aiming the bow
     aim()
@@ -173,28 +74,16 @@ export default function updateFunc() {
     arrowPhysics()
 
     // send your movement to server
-    playerMoved(d.myGame.id, d.currentPlayer, d[player].x, d[player].y, d[player].frame, d[player].scale.x, d[player].bow.position, d[player].bow.rotation)
+    playerMoved(d.myGame.id, currPlayer, d[currPlayer].x, d[currPlayer].y, d[currPlayer].frame, d[currPlayer].scale.x, d[currPlayer].bow.position, d[currPlayer].bow.rotation)
     
   }
 
   let maxAlive = 0
   let curAlive = 0
-  if (d.player1) {
+  d.players.forEach(player => {
     maxAlive++
-    if (d.player1.alive) curAlive++
-  }
-  if (d.player2) {
-    maxAlive++
-    if (d.player2.alive) curAlive++
-  }
-  if (d.player3) {
-    maxAlive++
-    if (d.player3.alive) curAlive++
-  }
-  if (d.player4) {
-    maxAlive++
-    if (d.player4.alive) curAlive++
-  }
+    if (d[player].alive) curAlive++
+  })
 
   if (curAlive <= 1 && curAlive !== maxAlive) {
     if (d.go) {
