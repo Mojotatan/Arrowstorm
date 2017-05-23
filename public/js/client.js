@@ -108,14 +108,25 @@ Client.socket.on('optionsUpdate', function(data) {
 	renderMaps(d.currentPage)
 	d.mapSel.position.y = data.map.y
 	getPreview(d.currentPage)
-	let xy1 = d.previewChar1.position || {x: 352 + 168 * 0, y: 96 + 208 - 128}
-	let xy2 = d.previewChar2.position || {x: 352 + 168 * 1, y: 96 + 208 - 128}
-	let xy3 = d.previewChar3.position || {x: 352 + 168 * 2, y: 96 + 208 - 128}
-	let xy4 = d.previewChar4.position || {x: 352 + 168 * 3, y: 96 + 208 - 128}
+	let xy = {
+		1: d.previewChar1.position || {x: 352 + 168 * 0, y: 96 + 208 - 128},
+		2: d.previewChar2.position || {x: 352 + 168 * 1, y: 96 + 208 - 128},
+		3: d.previewChar3.position || {x: 352 + 168 * 2, y: 96 + 208 - 128},
+		4: d.previewChar4.position || {x: 352 + 168 * 3, y: 96 + 208 - 128}
+	}
 	d.previewChar1.kill()
 	d.previewChar2.kill()
 	d.previewChar3.kill()
 	d.previewChar4.kill()
+
+	// let players = ['player1', 'player2', 'player3', 'player4']
+	// players = players.filter(player => {
+	// 	return data[player]
+	// })
+	// players.forEach(player => {
+	// 	d.pre
+	// })
+
 	if (data.player1) {
 		d.previewChar1 = d.game.add.image(xy1.x, xy1.y, data.chars[1])
 		d.previewChar1.frame = 2
@@ -163,7 +174,7 @@ Client.socket.on('opponentHasShot', function(data){
 	let opponentName = data.player
 	removeArrowDisplay(opponentName)
 	let opponentShotDir = data.shotDirection
-	fireArrow(d, true, opponentName, opponentShotDir)
+	fireArrow(true, opponentName, opponentShotDir)
 })
 
 Client.socket.on('opponentHasDied', function(opponent){
@@ -185,11 +196,7 @@ Client.socket.on('opponentHitTC', function(data){
 	let opponent = data.player
 	d[opponent].treasure = {}
 	d[opponent].treasure.payload = treasure
-
-	if (opponent === 'player1') {treasureChest(true, false)}
-	else if (opponent === 'player2') {treasureChest(false, true)}
-	else if (opponent === 'player3') {treasureChest(false, false, true)}
-	else if (opponent === 'player4') {treasureChest(false, false, false, true)}
+	treasureChest(opponent)
 })
 
 //utility functions that invoke client

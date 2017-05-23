@@ -1,4 +1,3 @@
-import fireArrow from './fireArrow'
 import aim from './aim'
 import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, point} from '../client'
 import d, { localState } from '../game'

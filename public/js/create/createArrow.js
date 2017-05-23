@@ -1,4 +1,6 @@
-export default function createArrow(d, player, arrowType) {
+import d from '../game'
+
+export default function createArrow(player, arrowType) {
 
   // Create each arrow if player.numArrows > 0
   let currPlayer = d.currentPlayer
