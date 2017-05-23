@@ -1,7 +1,7 @@
 import {findA} from '../util'
 import fireArrow from './fireArrow'
 import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, hitTC, point} from '../client'
-import d, { localState } from '../game'
+import d from '../game'
 import wrap from './wrap'
 import createTreasureChest from '../create/createTreasureChest'
 import playerAim from './playerAim'
