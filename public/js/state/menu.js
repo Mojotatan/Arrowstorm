@@ -11,19 +11,12 @@ let menu = {
 
     let titleStyle = {fontSize: 120, fill: '#FFFFFF', boundsAlignH: "center", boundsAlignV: "middle"}
     let titleText = d.game.add.text(0, 0, 'ARROW STORM', titleStyle)
-
-    //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
     titleText.setTextBounds(0, 0, 1024, 150);
 
     titleText.font = 'ArcadeClassic'
 
     // games to join
-    // let joinShade = d.game.add.graphics(31, 170)
-    // joinShade.beginFill(0xe6e6ff)
-    // joinShade.drawRect(0, 0, 300, 300)
-    // joinShade.endFill()
-
-    let joinShade = d.game.add.image(31, 170, 'make-map-btn')
+    d.game.add.image(31, 170, 'make-map-btn')
 
     d.lobbyGames = d.game.add.group()
 

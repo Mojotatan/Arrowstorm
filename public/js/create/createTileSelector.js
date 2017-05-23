@@ -1,4 +1,5 @@
 import d from '../game'
+import {shade} from '../util'
 
 export default function createTileSelector() {
 

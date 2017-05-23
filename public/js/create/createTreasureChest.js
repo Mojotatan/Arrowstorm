@@ -2,6 +2,9 @@ import d from '../game'
 
 export default function createTreasureChest(posX, posY) {
 
+  // let treasuresArray = ['extraArrows', 'wings', 'invisibility', 'shrink']
+  let treasuresArray = ['extraArrows', 'wings', 'invisibility', 'shrink']
+
   let currPlayer
 
   if (d.currentPlayer) {
@@ -19,7 +22,7 @@ export default function createTreasureChest(posX, posY) {
 
   d.treasure.checkWorldBounds = true
 
-  d[currPlayer].treasure.payload = d.treasuresArray[Math.floor(Math.random() * d.treasuresArray.length)]
+  d[currPlayer].treasure.payload = treasuresArray[Math.floor(Math.random() * treasuresArray.length)]
   console.log('d.treasure.payload is', d[currPlayer].treasure.payload)
 
 }

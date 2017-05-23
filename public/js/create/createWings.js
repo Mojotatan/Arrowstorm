@@ -2,7 +2,6 @@ export default function createWings (d, player) {
 
   // the first two sprites on the sheet are always for walking
   // the last sprite is a standing animation if there is one
-  //d[player].animations.add('walk', [0, 1], 10, true)
 
   d[player].wingLeft = d.game.add.sprite(0, 0, 'wing')
   d[player].wingLeft.anchor.set(1, 0.5)

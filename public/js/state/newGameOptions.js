@@ -1,4 +1,5 @@
 import d from '../game'
+import {shade} from '../util'
 import {preview, renderMaps, getPreview} from '../update/preview'
 import {letsGo, mapSel, chooseChar, leaveGame} from '../client'
 
@@ -6,21 +7,10 @@ import {letsGo, mapSel, chooseChar, leaveGame} from '../client'
 let newGameOptions = {
   create: function() {
 
-    // character select
-    let instrShade = d.game.add.graphics(352, 0)
-    instrShade.beginFill(0xA84A25)
-    instrShade.drawRect(0, 0, 688, 96)
-    instrShade.endFill()
-
-    let charShade = d.game.add.graphics(352, 96)
-    charShade.beginFill(0xB7A182)
-    charShade.drawRect(0, 0, 688, 416)
-    charShade.endFill()
-
-    let rosterShade = d.game.add.graphics(352, 512)
-    rosterShade.beginFill(0xA84A25)
-    rosterShade.drawRect(0, 0, 688, 128)
-    rosterShade.endFill()
+    // character shading
+    shade(352, 0, 688, 96, 0xA84A25)
+    shade(352, 96, 688, 416, 0xB7A182)
+    shade(352, 512, 688, 128, 0xA84A25)
 
     d.leaveBtn = d.game.add.button(352 + 16, 0 + 16, 'back', function(){
       leaveGame()
@@ -126,24 +116,14 @@ let newGameOptions = {
     d.chooseGale.scale.set(3, 3)
 
 
-    // map select
-    let mapShade = d.game.add.graphics(0, 0)
-    mapShade.beginFill(0x599199)
-    mapShade.drawRect(0, 0, 352, 640)
-    mapShade.endFill()
-
-    let mapSelShade = d.game.add.graphics(0, 320 + 32)
-    mapSelShade.beginFill(0x373737)
-    mapSelShade.drawRect(0, 0, 352, 320 - 32)
-    mapSelShade.endFill()
+    // map shading
+    shade(0, 0, 352, 640, 0x599199)
+    shade(0, 352, 352, 288, 0x373737)
 
     let mapSelectText = d.game.add.text(16, 320 + 32 + 16, 'Map Select', {font: '30pt Arial', fill: '#FFFFFF'})
     mapSelectText.font = 'ArcadeClassic'
 
-    d.mapSel = d.game.add.graphics(16, 412)
-    d.mapSel.beginFill(0x599199)
-    d.mapSel.drawRect(0, 0, 320, 32)
-    d.mapSel.endFill()
+    d.mapSel = shade(16, 412, 320, 32, 0x599199)
 
     d.pages = {}
     for (let i = 0; i < Math.ceil(d.maps.length / 7); i++) {
