@@ -1,6 +1,6 @@
 import aim from './aim'
 import {playerMoved, onAimRight, onAimUp, onAimLeft, onAimDown, playerDead, point} from '../client'
-import d, { localState } from '../game'
+import d from '../game'
 import wrap from './wrap'
 import playerAim from './playerAim'
 import arrowPhysics from './arrowPhysics'
