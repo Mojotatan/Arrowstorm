@@ -3,7 +3,7 @@ import d from '../game'
 export default function createTreasureChest(posX, posY) {
 
   // let treasuresArray = ['extraArrows', 'wings', 'invisibility', 'shrink']
-  let treasuresArray = ['wings']
+  let treasuresArray = ['extraArrows', 'wings', 'invisibility', 'shrink']
 
   let currPlayer
 
