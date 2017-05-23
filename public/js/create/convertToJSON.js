@@ -4,7 +4,9 @@ export default function convertToJSON(me){
    let id = x + '' + y
    let obj = {tile: me.tileType, x, y, id}
 
-   if (x < 640 && me.tileType.startsWith('spikes')) {
+   console.log('me.tileType is ', me.tileType)
+
+   if (x < 640 && me.tileType && me.tileType.startsWith('spikes')) {
      let existsInSpikes = me.spikes.some(elem => elem.id === obj.id)
      if (existsInSpikes) {
       me.spikes = existsInArray(me.spikes, obj, me)
