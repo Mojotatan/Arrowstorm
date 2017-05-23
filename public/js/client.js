@@ -128,25 +128,25 @@ Client.socket.on('optionsUpdate', function(data) {
 	// })
 
 	if (data.player1) {
-		d.previewChar1 = d.game.add.image(xy1.x, xy1.y, data.chars[1])
+		d.previewChar1 = d.game.add.image(xy[1].x, xy[1].y, data.chars[1])
 		d.previewChar1.frame = 2
 		d.previewChar1.scale.set(8, 8)
 		d.preview1Char.text = data.chars[1]
 	}
 	if (data.player2) {
-		d.previewChar2 = d.game.add.image(xy2.x, xy2.y, data.chars[2])
+		d.previewChar2 = d.game.add.image(xy[2].x, xy[2].y, data.chars[2])
 		d.previewChar2.frame = 2
 		d.previewChar2.scale.set(8, 8)
 		d.preview2Char.text = data.chars[2]
 	}
 	if (data.player3) {
-		d.previewChar3 = d.game.add.image(xy3.x, xy3.y, data.chars[3])
+		d.previewChar3 = d.game.add.image(xy[3].x, xy[3].y, data.chars[3])
 		d.previewChar3.frame = 2
 		d.previewChar3.scale.set(8, 8)
 		d.preview3Char.text = data.chars[3]
 	}
 	if (data.player4) {
-		d.previewChar4 = d.game.add.image(xy4.x, xy4.y, data.chars[4])
+		d.previewChar4 = d.game.add.image(xy[4].x, xy[4].y, data.chars[4])
 		d.previewChar4.frame = 2
 		d.previewChar4.scale.set(8, 8)
 		d.preview4Char.text = data.chars[4]
